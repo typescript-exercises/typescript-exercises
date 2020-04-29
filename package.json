@@ -1,0 +1,35 @@
+{
+  "name": "typescript-1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@types/chai": "^4.2.0",
+    "@types/mz": "^0.0.32",
+    "@types/node": "^12.6.8",
+    "chai": "^4.2.0",
+    "chalk": "^2.4.2",
+    "mz": "^2.7.0",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3"
+  },
+  "scripts": {
+    "0": "ts-node exercises/exercise-0/index.ts",
+    "1": "ts-node exercises/exercise-1/index.ts",
+    "2": "ts-node exercises/exercise-2/index.ts",
+    "3": "ts-node exercises/exercise-3/index.ts",
+    "4": "ts-node exercises/exercise-4/index.ts",
+    "5": "ts-node exercises/exercise-5/index.ts",
+    "6": "ts-node exercises/exercise-6/index.ts",
+    "7": "ts-node exercises/exercise-7/index.ts",
+    "8": "ts-node exercises/exercise-8/index.ts",
+    "9": "ts-node exercises/exercise-9/index.ts",
+    "10": "ts-node exercises/exercise-10/index.ts",
+    "11": "ts-node exercises/exercise-11/index.ts",
+    "12": "ts-node exercises/exercise-12/index.ts",
+    "13": "ts-node exercises/exercise-13/index.ts",
+    "14": "ts-node exercises/exercise-14/index.ts",
+    "15": "ts-node exercises/exercise-15/index.ts"
+  }
+}

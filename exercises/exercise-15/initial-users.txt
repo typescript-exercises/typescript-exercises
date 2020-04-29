@@ -1,0 +1,9 @@
+E{"_id":0,"name":"Max Mustermann","age":25,"occupation":"Chimney sweep"}
+D{"_id":1,"name":"John Malkovich","age":52,"occupation":"Actor"}
+E{"_id":2,"name":"Kate Müller","age":23,"occupation":"Astronaut"}
+E{"_id":3,"name":"Moses","age":70,"occupation":"Desert guide"}
+E{"_id":4,"name":"Superman","age":28,"occupation":"Ordinary person"}
+E{"_id":5,"name":"Inspector Gadget","age":31,"occupation":"Undercover"}
+E{"_id":6,"name":"Genius","age":39,"occupation":"Magical entity"}
+E{"_id":7,"name":"Max Pax","age":20,"occupation":"SC2 Expert"}
+E{"_id":8,"name":"Maximum Impact","age":99,"occupation":"Magical entity"}

@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "strict": true,
+    "typeRoots": [
+      "exercises/exercise-10/declarations",
+      "exercises/exercise-11/declarations",
+      "node_modules/@types"
+    ]
+  }
+}
