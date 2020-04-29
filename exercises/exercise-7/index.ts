@@ -10,7 +10,7 @@ Intro:
     called PowerUser which is supposed to combine
     everything User and Admin have.
 
-Higher difficuly exercise:
+Higher difficulty exercise:
 
     Define type PowerUser which should have all fields
     from both User and Admin (except for type),

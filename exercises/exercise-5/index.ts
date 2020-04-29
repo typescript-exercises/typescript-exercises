@@ -14,7 +14,7 @@ Exercise:
     when personType='admin'. Also filterPersons should accept
     partial User/Admin type according to the personType.
 
-Higher difficuly bonus exercise:
+Higher difficulty bonus exercise:
 
     Implement a function `getObjectKeys()` which returns proper type
     for any argument given, so that you don't need to cast it.

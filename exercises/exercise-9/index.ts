@@ -13,7 +13,7 @@ Intro:
     He promised that if we switch to Promises, this would
     bring promising results. Promises, promises, promises.
 
-Higher difficuly exercise:
+Higher difficulty exercise:
 
     We don't want to reimplement all the data-requesting
     functions. Let's decorate the old callback-based
