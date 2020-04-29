@@ -5,8 +5,8 @@ import chalk from 'chalk';
 Intro:
 
     All 2 users liked the idea of the community. We should go
-    forward and introduce some. We are in Germany after all.
-    Let's introduce a couple of admins.
+    forward and introduce some order. We are in Germany after all.
+    Let's add a couple of admins.
 
     Initially we only had users in the in-memory database. After
     introducing Admins, we need to fix the types so that
