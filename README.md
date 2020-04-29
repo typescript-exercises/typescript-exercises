@@ -36,6 +36,6 @@ and get an overview of TypeScript capabilities and principles.
  1. Make sure you have `node.js` (and `yarn` if you prefer it over `npm`)
     installed on your machine.
 
- 2. Start by opening `exercises/exercise-0/index.ts`.
+ 2. Start by opening `exercises/exercise-00/index.ts`.
 
  3. Once done with the exercise, proceed to the next one.
