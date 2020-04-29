@@ -26,6 +26,10 @@ Exercise:
 
 Run:
 
+    npm run 6
+
+    - OR -
+
     yarn -s 6
 
 */

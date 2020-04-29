@@ -30,6 +30,10 @@ Exercise:
 
 Run:
 
+    npm run 15
+
+    - OR -
+
     yarn -s 15
 
 */

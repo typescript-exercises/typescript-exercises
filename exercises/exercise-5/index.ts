@@ -25,6 +25,10 @@ Higher difficuly bonus exercise:
 
 Run:
 
+    npm run 5
+
+    - OR -
+
     yarn -s 5
 
 */

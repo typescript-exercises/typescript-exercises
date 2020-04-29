@@ -23,6 +23,10 @@ Higher difficulty bonus exercise:
 
 Run:
 
+    npm run 4
+
+    - OR -
+
     yarn -s 4
 
 */

@@ -24,6 +24,10 @@ Exercise:
 
 Run:
 
+    npm run 13
+
+    - OR -
+
     yarn -s 13
 
 */

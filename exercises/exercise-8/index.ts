@@ -29,6 +29,10 @@ Exercise:
 
 Run:
 
+    npm run 8
+
+    - OR -
+
     yarn -s 8
 
 */

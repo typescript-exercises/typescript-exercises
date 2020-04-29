@@ -22,7 +22,7 @@ and get an overview of TypeScript capabilities and principles.
 
  3. Don't open next exercises before finishing previous ones.
     Next exercises may contain spoilers and will prevent you
-    from enjoying the delighful process of TypeScript debugging.
+    from enjoying the delightful process of TypeScript debugging.
 
  4. Feel free to send a pull-request with your solutions if you
     need some additional feedback.
@@ -33,8 +33,9 @@ and get an overview of TypeScript capabilities and principles.
 
 ## Installation and usage
 
- 1. Make sure you have `node.js` and `yarn` installed on your machine.
+ 1. Make sure you have `node.js` (and `yarn` if you prefer it over `npm`)
+    installed on your machine.
 
- 2. Start by opening `exercises/exercise-0/index.tx`.
+ 2. Start by opening `exercises/exercise-0/index.ts`.
 
  3. Once done with the exercise, proceed to the next one.

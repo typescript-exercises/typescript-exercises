@@ -20,6 +20,10 @@ Exercise:
 
 Run this exercise:
 
+    npm run 1
+
+    - OR -
+
     yarn -s 1
 
 */

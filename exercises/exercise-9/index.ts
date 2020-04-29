@@ -26,6 +26,10 @@ Higher difficuly exercise:
 
 Run:
 
+    npm run 9
+
+    - OR -
+
     yarn -s 9
 
 */
