@@ -8,10 +8,10 @@ Intro:
     This makes us a tech startup officially now.
     But one of the consultants spoiled our dreams about
     inevitable future IT leadership.
-    He said that callbacks-based asynchronicity is not
-    popular anymore. And everyone should use Promises.
+    He said that callback-based asynchronicity is not
+    popular anymore and everyone should use Promises.
     He promised that if we switch to Promises, this would
-    bring promising results. Promises-promises-promises.
+    bring promising results. Promises, promises, promises.
 
 Higher difficuly exercise:
 

@@ -6,7 +6,7 @@ import {expect} from 'chai';
 
 Intro:
 
-    We've grown over 10 users and we should use some serious
+    We've grown over 10 users and we should use a serious
     database for admins and users. Such as a text file.
     And it turns out that we should write our own database library.
     Why not, we are a technology company in the end!
@@ -14,7 +14,7 @@ Intro:
 Exercise:
 
     Implement the suggested Database class according to the usage.
-    This database should store records one JSON object each line.
+    This database should store records, one JSON object each line.
     Each line starts with "E" character which means "Record [E]xists".
     This can be useful for the future when we decide to mark
     records as deleted.
