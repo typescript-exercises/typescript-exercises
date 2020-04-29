@@ -4,7 +4,7 @@ import chalk from 'chalk';
 
 Intro:
 
-    Filtering was comletely removed from the project.
+    Filtering was completely removed from the project.
     It turned out that this feature was just not needed
     for the end-user and we spent a lot of time just because
     our office manager told us to do so. Next time we should
@@ -18,10 +18,10 @@ Intro:
 Exercise:
 
     Implement swap which receives 2 persons and returns them in
-    the reverse order. Actually the function itself is already
-    there. We just need to provide it with proper types.
+    the reverse order. The function itself is already
+    there, actually. We just need to provide it with proper types.
     Also this function shouldn't necessary be limited to just
-    Person types, let's type it so that it works with any types
+    Person types, lets type it so that it works with any two types
     specified.
 
 Run:

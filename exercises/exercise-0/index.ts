@@ -5,16 +5,16 @@ import chalk from 'chalk';
 Intro:
 
     We are starting a small community of users. For performance
-    reasons we decided to store all users right in the code.
+    reasons we have decided to store all users right in the code.
     This way we can provide our developers with more
-    user-interaction opportunities. At least with user-related data.
-    All the GDPR-related issues we will solve some other day.
+    user-interaction opportunities. With user-related data, at least.
+    All the GDPR-related issues we will solved some other day.
     This would be the base for our future experiments during
     this workshop.
 
 Exercise:
 
-    Given the data, define an interface "User" and use it accordingly.
+    Given the data, define the interface "User" and use it accordingly.
 
 Run this exercise:
 

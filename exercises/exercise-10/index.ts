@@ -12,7 +12,7 @@ import {
 Intro:
 
     In order to engage users in the communication with
-    each other we decided to decorate user names
+    each other we have decided to decorate usernames
     in various ways. A brief search led us to a library
     called "str-utils". Bad thing is that it lacks
     TypeScript declarations.

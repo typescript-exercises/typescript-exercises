@@ -5,15 +5,15 @@ import chalk from 'chalk';
 Intro:
 
     Time to filter the data! In order to be flexible
-    we filter users using a number of criterias and
-    return only those matching all the criterias.
+    we filter users using a number of criteria and
+    return only those matching all of the criteria.
     We don't need Admins yet, we only filter Users.
 
 Exercise:
 
     Without duplicating type structures, modify
     filterUsers function definition so that we can
-    pass only those criterias which are needed
+    pass only those criteria which are needed,
     and not the whole User information as it is
     required now according to typing.
 

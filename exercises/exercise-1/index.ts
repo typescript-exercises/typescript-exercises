@@ -5,18 +5,18 @@ import chalk from 'chalk';
 Intro:
 
     All 2 users liked the idea of the community. We should go
-    forward and put some order. We are in Germany after all.
+    forward and introduce some. We are in Germany after all.
     Let's introduce a couple of admins.
 
-    Initially we only had users in the in-memory database, now
-    since we introduced Admin, we need to fix the types so that
+    Initially we only had users in the in-memory database. After
+    introducing Admins, we need to fix the types so that
     everything works well together.
 
 Exercise:
 
     Type "Person" is missing, please define it and use
-    in persons array and logPerson function in order to fix all
-    the TS errors.
+    it in persons array and logPerson function in order to fix
+    all the TS errors.
 
 Run this exercise:
 

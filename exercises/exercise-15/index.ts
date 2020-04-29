@@ -9,7 +9,7 @@ Intro:
 
     CEO's friend Nick told us that databases don't only store static
     data, but also provide API for adding new data and modifying
-    existing data. That was completely unexpected for us.
+    existing data. That was completely unexpected from us.
     After drinking hard for a week we decided to move forward.
 
 Exercise:
