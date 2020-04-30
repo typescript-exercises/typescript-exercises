@@ -42,7 +42,7 @@ Exercise:
     Provide type declaration for that module in:
     declarations/stats/index.d.ts
 
-Higher difficulty bonus excercise:
+Higher difficulty bonus exercise:
 
     Avoid duplicates of type declarations.
 
