@@ -76,4 +76,4 @@ console.log(chalk.yellow('Users:'));
 persons.filter(isUser).forEach(logPerson);
 
 // In case if you are stuck:
-// https://www.typescriptlang.org/docs/handbook/advanced-types.html#typeof-type-guards
+// https://www.typescriptlang.org/docs/handbook/advanced-types.html#using-type-predicates
