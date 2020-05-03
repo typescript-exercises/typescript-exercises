@@ -32,3 +32,9 @@ Is kinda ugly.
 
 ## Exercise 4
 
+Says it introduces mapped types (in the hint) but these are not necessary.
+You can solve the problem using `Partial` and the bonus using `Omit`.
+It took me a minute to figure out what the bonus was asking, but I like it.
+The `as (keyof Criteria)` in `filterUsers` is ugly but I think unavoidable.
+
+## Exercise 5

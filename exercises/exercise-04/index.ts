@@ -95,9 +95,10 @@ function logPerson(person: Person) {
     console.log(` - ${chalk.green(person.name)}, ${person.age}, ${additionalInformation}`);
 }
 
-function filterUsers(persons: Person[], criteria: User): User[] {
+type Criteria = Partial<Omit<User, 'type'>>;
+function filterUsers(persons: Person[], criteria: Criteria): User[] {
     return persons.filter(isUser).filter((user) => {
-        let criteriaKeys = Object.keys(criteria) as (keyof User)[];
+        let criteriaKeys = Object.keys(criteria) as (keyof Criteria)[];
         return criteriaKeys.every((fieldName) => {
             return user[fieldName] === criteria[fieldName];
         });
@@ -109,7 +110,7 @@ console.log(chalk.yellow('Users of age 23:'));
 filterUsers(
     persons,
     {
-        age: 23
+        age: 23,
     }
 ).forEach(logPerson);
 
