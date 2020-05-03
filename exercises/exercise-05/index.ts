@@ -64,11 +64,18 @@ function logPerson(person: Person) {
     );
 }
 
-function filterPersons(persons: Person[], personType: string, criteria: unknown): unknown[] {
+function getObjectKeys<T extends object>(o: T): (keyof T)[] {
+    return Object.keys(o) as (keyof T)[];
+}
+
+function filterPersons(persons: Person[], personType: 'user', criteria: Partial<User>): User[];
+function filterPersons(persons: Person[], personType: 'admin', criteria: Partial<Admin>): Admin[];
+
+function filterPersons(persons: Person[], personType: string, criteria: Partial<Person>): unknown[] {
     return persons
         .filter((person) => person.type === personType)
         .filter((person) => {
-            let criteriaKeys = Object.keys(criteria) as (keyof Person)[];
+            let criteriaKeys = getObjectKeys(criteria);
             return criteriaKeys.every((fieldName) => {
                 return person[fieldName] === criteria[fieldName];
             });
@@ -77,6 +84,11 @@ function filterPersons(persons: Person[], personType: string, criteria: unknown)
 
 let usersOfAge23: User[] = filterPersons(persons, 'user', { age: 23 });
 let adminsOfAge23: Admin[] = filterPersons(persons, 'admin', { age: 23 });
+
+// @ts-ignore
+let astronautAdmins: Admin[] = filterPersons(persons, 'admin', { occupation: 'Astronaut' });
+
+let peopleOfAge23: Person[] = filterPersons(persons, Math.random() < 0.5 ? 'user' : 'admin', {age: 23});
 
 console.log(chalk.yellow('Users of age 23:'));
 usersOfAge23.forEach(logPerson);
