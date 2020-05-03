@@ -65,3 +65,13 @@ let peopleOfAge23: Person[] = filterPersons(
 );
 ```
 
+## Exercise 6
+
+I really enjoy the tone ("CEO's friend Nick").
+
+This introduces tuple types and generics (those weren't introduced earlier?).
+
+This one is quite easy compared to Exercise 5.
+
+## Exercise 7
+

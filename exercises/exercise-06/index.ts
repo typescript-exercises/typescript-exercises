@@ -21,7 +21,7 @@ Exercise:
     the reverse order. The function itself is already
     there, actually. We just need to provide it with proper types.
     Also this function shouldn't necessary be limited to just
-    Person types, lets type it so that it works with any two types
+    Person types, let's type it so that it works with any two types
     specified.
 
 Run:
@@ -88,7 +88,7 @@ const users: User[] = [
     }
 ];
 
-function swap(v1, v2) {
+function swap<A, B>(v1: A, v2: B): [B, A] {
     return [v2, v1];
 }
 
