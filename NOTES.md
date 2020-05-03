@@ -96,4 +96,67 @@ Instructions could be more clear that you're expected to wrap errors in an `Erro
 
 ## Exercise 10
 
+Introduces `.d.ts` files.
 
+Took me a minute to realize he meant:
+
+    exercises/exercise-10/node_modules/str-utils
+
+and not
+
+    node_modules/str-utils
+
+This might be a useful trick for literate-ts!
+
+Not totally clear to me why he had both `export const` and `export function` in the
+stub `index.d.ts` file. The `const` approach is a good option if you want to use a type
+alias instead of repeating function signatures.
+
+## Exercise 11
+
+Adding this to my `.vscode/settings.json` makes it possible to open files in node_modules:
+
+```json
+{
+  "files.exclude": {
+    "**/node_modules": false,
+  }
+}
+```
+
+It would be nice if he made something fail if you forgot to include `| null` in the get*Element
+declarations.
+
+I did the bonus via this:
+
+```ts
+type CompArgs<T> = [T[], (a: T, b: T) => number];
+
+export function getMaxIndex<T>(...args: CompArgs<T>): number;
+```
+
+But I don't like that you lose the paramter names this way. I don't think it's possible
+to write a more generic type, though, at least not any way I can see:
+
+```ts
+type ComparatorFn<T, R> = (input: T[], comparator: (a: T, b: T) => number) => R;
+
+export const getMaxIndex = ...?
+```
+
+Since there are only two possible return types, this is also a solution:
+
+```ts
+function GetIndexFn<T>(input: T[], comparator: (a: T, b: T) => number): number;
+function GetElementFn<T>(input: T[], comparator: (a: T, b: T) => number): T | null;
+
+export const getMaxIndex: typeof GetIndexFn;
+export const getMinIndex: typeof GetIndexFn;
+export const getMedianIndex: typeof GetIndexFn;
+export const getMaxElement: typeof GetElementFn;
+export const getMinElement: typeof GetElementFn;
+export const getMedianElement: typeof GetElementFn;
+export const getAverageValue: typeof GetElementFn;
+```
+
+I believe you have to define `GetIndexFn` as a function (not a type) and use `typeof` to make this work.
