@@ -82,4 +82,18 @@ if you don't do the bonus exercise (intersecting tagged union types w/ omit).
 
 ## Exercise 8
 
+Continues introducing generic types using success/error API responses.
+
+→ I don't like the extensive use of callbacks here.
+
+## Exercise 9
+
+Introduces Promises. Not really clear to me what you're supposed to do in this exercise
+if you don't want to do the bonus problem?
+
+I think this is a great problem (implement `promisify`).
+Instructions could be more clear that you're expected to wrap errors in an `Error` object.
+
+## Exercise 10
+
 
