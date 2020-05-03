@@ -75,3 +75,11 @@ This one is quite easy compared to Exercise 5.
 
 ## Exercise 7
 
+Introduces intersection types. Not really clear to me what the goal of this one is
+if you don't do the bonus exercise (intersecting tagged union types w/ omit).
+
+→ when are we going to get to tagged unions? Why all the user-defined type guards?
+
+## Exercise 8
+
+

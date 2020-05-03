@@ -14,7 +14,7 @@ Higher difficulty exercise:
 
     Define type PowerUser which should have all fields
     from both User and Admin (except for type),
-    and also have type 'powerUser' without duplicating
+    and also have type 'PowerUser' without duplicating
     all the fields in the code.
 
 Run:
@@ -41,7 +41,7 @@ interface Admin {
     role: string;
 }
 
-type PowerUser = unknown;
+type PowerUser = Omit<User, 'type'> & Omit<Admin, 'type'> & {type: 'powerUser'};
 
 type Person = User | Admin | PowerUser;
 
