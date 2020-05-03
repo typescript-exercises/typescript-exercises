@@ -10,3 +10,25 @@ The annotation on `users` is optional.
 
 Introduces union types.
 
+## Exercise 2
+
+Not clear what he's trying to introduce here:
+`in` for refinement, user-defined type guards, tagged unions?
+
+(From the hint it seems to be `in`.)
+
+The annotation on `additionalInformation` in `logPerson` is not required.
+
+## Exercise 3
+
+Introduces user-defined type guards, I think? But at the same time as a tag.
+Maybe building up to tagged unions?
+
+```ts
+let additionalInformation: string = '';
+```
+
+Is kinda ugly.
+
+## Exercise 4
+
