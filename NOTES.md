@@ -174,5 +174,9 @@ import 'date-wizard';
 
 This one gave me some trouble; I wanted to put a `declare namespace` or `namespace` somewhere but it turns out not to be necessary and I'm not 100% sure why.
 
+meta: I wish the files weren't all called `index.*`.
+
 ## Exercise 13
+
+`class Database<T>` --> possibly a good time to introduce parameter properties.
 
