@@ -160,3 +160,19 @@ export const getAverageValue: typeof GetElementFn;
 ```
 
 I believe you have to define `GetIndexFn` as a function (not a type) and use `typeof` to make this work.
+
+## Exercise 12
+
+Covers module augmentation. I really like having an explicit problem showing this.
+
+I'm not sure I agree with the terminology / method here:
+
+```ts
+// This enabled module augmentation mode.
+import 'date-wizard';
+```
+
+This one gave me some trouble; I wanted to put a `declare namespace` or `namespace` somewhere but it turns out not to be necessary and I'm not 100% sure why.
+
+## Exercise 13
+
