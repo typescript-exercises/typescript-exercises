@@ -1,6 +1,6 @@
 import {Database} from './database';
 import * as path from 'path';
-import {promises as fs} from 'mz/fs';
+import {promises as fs} from 'fs';
 import {expect} from 'chai';
 
 /*

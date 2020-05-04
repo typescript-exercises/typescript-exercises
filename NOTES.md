@@ -187,29 +187,35 @@ I wound up with some `any`s that I'd like to clear up. Curious to see his soluti
 … got it down to one, and errors for filtering on non-scalar values.
 It would be nice if the types would force you to compare numbers and numbers, for instance.
 
+→ why is the `find` method declared `async`?
+
 ## Exercise 14
 
 There are some awkward relationships between mapped types and `Record`, e.g.
 
-    function project<
-      T extends object,
-      K extends keyof T
-    >(
-      o: T,
-      p: Record<K, 1>
-    ): {[k in K]: T[k]};
+```ts
+function project<
+  T extends object,
+  K extends keyof T
+>(
+  o: T,
+  p: Record<K, 1>
+): {[k in K]: T[k]};
+```
 
 If you have an object of type `{[k in keyof T]?: 1}`, then you can't call this function.
 
 Even more annoying, it still doesn't work if you use a mapped type in the declaration:
 
-    function project<
-      T extends object,
-      K extends keyof T
-    >(
-      o: T,
-      p: {[k in K]: 1}
-    ): {[k in K]: T[k]};
+```ts
+function project<
+  T extends object,
+  K extends keyof T
+>(
+  o: T,
+  p: {[k in K]: 1}
+): {[k in K]: T[k]};
+```
 
 Because of the optionalness in the caller's type. To make it work you have to add the `?`
 to the declaration. It serves no purpose and seems to cause no harm, but still.
@@ -219,3 +225,10 @@ to the declaration. It serves no purpose and seems to cause no harm, but still.
 → Also to make sure that it errors if you pass in an illegal sort/project field.
 
 ## Exercise 15
+
+This problem seems more about runtime than about types.
+The tests don't test that you write out the results.
+
+    TypeError: Cannot read property 'copyFile' of undefined
+
+I fixed it by changing `mz/fs` to `fs` in the import.
