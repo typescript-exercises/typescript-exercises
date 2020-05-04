@@ -180,3 +180,7 @@ meta: I wish the files weren't all called `index.*`.
 
 `class Database<T>` --> possibly a good time to introduce parameter properties.
 
+This was a lot of work, more on the implementation for me than for the types.
+
+I wound up with some `any`s that I'd like to clear up. Curious to see his solution!
+

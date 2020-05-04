@@ -38,6 +38,7 @@ interface User {
     age: number;
     occupation: string;
     registered: string;
+    grades: number[];
 }
 
 interface Admin {
@@ -65,6 +66,12 @@ async function testUsersDatabase() {
     // $lt operator means "<", syntax {fieldName: {$lt: value}}
     // see more https://docs.mongodb.com/manual/reference/operator/query/lt/
     expect((await usersDatabase.find({age: {$lt: 30}})).map(({_id}) => _id)).to.have.same.members([0, 2, 4, 7]);
+
+    // Can't use any of these operators with array types.
+    expect(
+        // @ts-ignore
+        (await usersDatabase.find({grades: {$eq: 'Magical entity'}})).map(({_id}) => _id)
+    ).to.have.same.members([]);
 
     // $and condition is satisfied when all the nested conditions are satisfied: {$and: [condition1, condition2, ...]}
     // see more https://docs.mongodb.com/manual/reference/operator/query/and/
