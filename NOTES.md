@@ -184,3 +184,8 @@ This was a lot of work, more on the implementation for me than for the types.
 
 I wound up with some `any`s that I'd like to clear up. Curious to see his solution!
 
+… got it down to one, and errors for filtering on non-scalar values.
+It would be nice if the types would force you to compare numbers and numbers, for instance.
+
+## Exercise 14
+
