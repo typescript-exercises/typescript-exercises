@@ -41,7 +41,7 @@ interface Admin {
     role: string;
 }
 
-type PowerUser = unknown;
+type PowerUser = Pick<User & Admin, Exclude<keyof (User & Admin), "type">> & { type: 'powerUser'}
 
 type Person = User | Admin | PowerUser;
 

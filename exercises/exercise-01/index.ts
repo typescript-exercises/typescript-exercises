@@ -28,6 +28,8 @@ Run this exercise:
 
 */
 
+type Person = User | Admin;
+
 interface User {
     name: string;
     age: number;
@@ -40,7 +42,7 @@ interface Admin {
     role: string;
 }
 
-const persons: User[] /* <- Person[] */ = [
+const persons: Person[] /* <- Person[] */ = [
     {
         name: 'Max Mustermann',
         age: 25,
@@ -63,7 +65,7 @@ const persons: User[] /* <- Person[] */ = [
     }
 ];
 
-function logPerson(user: User) {
+function logPerson(user: Person) {
     console.log(` - ${chalk.green(user.name)}, ${user.age}`);
 }
 
