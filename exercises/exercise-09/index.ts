@@ -71,8 +71,19 @@ type ApiResponse<T> = (
     }
 );
 
-function promisify(arg: unknown): unknown {
-    return null;
+type PromisifyOldDefinition<T> = (callback: (response: ApiResponse<T>) => void) => void;
+type PromisifyNewDefinition<T> = () => Promise<T>;
+
+function promisify<T>(oldFunction: PromisifyOldDefinition<T>): PromisifyNewDefinition<T> {
+    return () => new Promise((resolve, reject) => {
+        oldFunction((response) => {
+            if (response.status === 'success') {
+                resolve(response.data)
+            } else {
+                reject(response.error)
+            }
+        });
+    });
 }
 
 const oldApi = {
