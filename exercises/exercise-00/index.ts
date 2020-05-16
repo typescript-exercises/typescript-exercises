@@ -26,7 +26,13 @@ Run this exercise:
 
 */
 
-const users: unknown[] = [
+interface Users {
+    name: string,
+    age: number,
+    occupation: string
+}
+
+const users: Users[] = [
     {
         name: 'Max Mustermann',
         age: 25,
@@ -39,7 +45,7 @@ const users: unknown[] = [
     }
 ];
 
-function logPerson(user: unknown) {
+function logPerson(user: Users) {
     console.log(` - ${chalk.green(user.name)}, ${user.age}`);
 }
 
