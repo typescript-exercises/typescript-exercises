@@ -49,6 +49,8 @@ interface Admin {
 
 type Person = User | Admin;
 
+type FilterCriteria<T> = Partial<Omit<T, 'type'>>;
+
 const persons: Person[] = [
     { type: 'user', name: 'Max Mustermann', age: 25, occupation: 'Chimney sweep' },
     { type: 'admin', name: 'Jane Doe', age: 32, role: 'Administrator' },
@@ -64,11 +66,17 @@ function logPerson(person: Person) {
     );
 }
 
-function filterPersons(persons: Person[], personType: string, criteria: unknown): unknown[] {
+function getObjectKeys<O>(obj: O): (keyof O)[] {
+    return Object.keys(obj) as (keyof O)[];
+}
+
+function filterPersons(persons: Person[], personType: 'user', criteria: FilterCriteria<User>): User[];
+function filterPersons(persons: Person[], personType: 'admin', criteria: FilterCriteria<Admin>): Admin[];
+function filterPersons(persons: Person[], personType: 'user' | 'admin', criteria: FilterCriteria<Person>): Person[] {
     return persons
         .filter((person) => person.type === personType)
         .filter((person) => {
-            let criteriaKeys = Object.keys(criteria) as (keyof Person)[];
+            let criteriaKeys = getObjectKeys(criteria);
             return criteriaKeys.every((fieldName) => {
                 return person[fieldName] === criteria[fieldName];
             });
