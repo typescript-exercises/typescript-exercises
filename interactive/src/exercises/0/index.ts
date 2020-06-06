@@ -1,5 +1,3 @@
-import chalk from 'chalk';
-
 /*
 
 Intro:
@@ -16,17 +14,11 @@ Exercise:
 
     Given the data, define the interface "User" and use it accordingly.
 
-Run this exercise:
-
-    npm run 0
-
-    - OR -
-
-    yarn -s 0
-
 */
 
-const users: unknown[] = [
+export type User = unknown;
+
+export const users: unknown[] = [
     {
         name: 'Max Mustermann',
         age: 25,
@@ -39,12 +31,15 @@ const users: unknown[] = [
     }
 ];
 
-function logPerson(user: unknown) {
-    console.log(` - ${chalk.green(user.name)}, ${user.age}`);
+export function logPerson(user: unknown) {
+    console.log(` - ${user.name}, ${user.age}`);
 }
 
-console.log(chalk.yellow('Users:'));
+console.log('Users:');
 users.forEach(logPerson);
 
-// In case if you are stuck:
+
+/* In case if you are stuck:
+
 // https://www.typescriptlang.org/docs/handbook/interfaces.html#introduction
+*/
