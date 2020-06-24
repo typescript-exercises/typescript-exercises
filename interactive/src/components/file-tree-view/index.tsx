@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
+import React, {useCallback, useMemo} from 'react';
 import {FileTree} from 'lib/file-tree';
-import {useCallback, useMemo} from 'react';
-import React from 'react';
 import {DirectoryIcon, FileIcon} from './icons';
 
 interface FileTreeBranch {
@@ -15,9 +14,9 @@ function buildTree(fileTree: FileTree): FileTreeBranch[] {
     const result: FileTreeBranch[] = [];
     const items: {[key: string]: FileTreeBranch} = {};
     for (const filename of Object.keys(fileTree)) {
-        const bits = filename.split('/');
+        const bits = filename.replace(/^\//, '').split('/');
         let parentTreeItem = null;
-        let parentTreePath = [];
+        const parentTreePath = [];
         while (bits.length > 1) {
             const bit = bits.shift()!;
             parentTreePath.push(bit);
@@ -30,7 +29,7 @@ function buildTree(fileTree: FileTree): FileTreeBranch[] {
                     children: []
                 };
                 if (parentTreeItem) {
-                    parentTreeItem.children.push(items[parentPath])
+                    parentTreeItem.children.push(items[parentPath]);
                 } else {
                     result.push(items[parentPath]);
                 }
@@ -67,14 +66,17 @@ const FileTreeBranchLabelText = styled.div`
     z-index: 1;
 `;
 
-const FileTreeBranchLabel = styled.div<{selected: boolean, selectable: boolean}>`
+const FileTreeBranchLabel = styled.div<{selected: boolean; selectable: boolean}>`
     display: block;
-    cursor: ${({selectable}) => selectable ? 'pointer' : 'default'};
-    pointer-events: ${({selectable}) => selectable ? 'all' : 'none'};
-    color: ${({selected}) => selected ? 'white' : 'black'};
+    cursor: ${({selectable}) => (selectable ? 'pointer' : 'default')};
+    pointer-events: ${({selectable}) => (selectable ? 'all' : 'none')};
+    color: ${({selected}) => (selected ? 'white' : 'black')};
     height: 30px;
     line-height: 30px;
-    ${({selected}) => selected ? `
+    font-size: 14px;
+    ${({selected}) =>
+        selected
+            ? `
         &::before {
             z-index: 0;
             display: block;
@@ -84,45 +86,39 @@ const FileTreeBranchLabel = styled.div<{selected: boolean, selectable: boolean}>
             left: 0;
             right: 0;
             height: 30px;
-        }` : ''}
+        }`
+            : ''}
 `;
 
-const FileTreeBranchContent = styled.div`
-    
-`;
+const FileTreeBranchContent = styled.div``;
 
 function FileTreeViewBranch({
     branch,
     selectedFilename,
     onSelectFilename
 }: {
-    branch: FileTreeBranch,
-    selectedFilename: string,
-    onSelectFilename: (filename: string) => void
+    branch: FileTreeBranch;
+    selectedFilename: string;
+    onSelectFilename: (filename: string) => void;
 }) {
     const onClick = useCallback(() => {
         onSelectFilename(branch.filename);
     }, [branch, onSelectFilename]);
-    let selected = selectedFilename === branch.filename;
-    let isDirectory = branch.children.length > 0;
+    const selected = selectedFilename === branch.filename;
+    const isDirectory = branch.children.length > 0;
     return (
         <FileTreeBranchWrapper>
-            <FileTreeBranchLabel
-                onClick={onClick}
-                selectable={branch.children.length === 0}
-                selected={selected}
-            >
+            <FileTreeBranchLabel onClick={onClick} selectable={branch.children.length === 0} selected={selected}>
                 <FileTreeBranchLabelText>
                     {isDirectory ? (
                         <DirectoryIcon color='gray' />
                     ) : (
                         <FileIcon color={selected ? 'rgba(255,255,255,0.75)' : 'gray'} />
-                    )}
-                    {' '}
+                    )}{' '}
                     {branch.name}
                 </FileTreeBranchLabelText>
             </FileTreeBranchLabel>
-            {isDirectory &&
+            {isDirectory && (
                 <FileTreeBranchContent>
                     {branch.children.map((subBranch) => (
                         <FileTreeViewBranch
@@ -133,7 +129,7 @@ function FileTreeViewBranch({
                         />
                     ))}
                 </FileTreeBranchContent>
-            }
+            )}
         </FileTreeBranchWrapper>
     );
 }
@@ -143,13 +139,11 @@ export function FileTreeView({
     selectedFilename,
     onSelectFilename
 }: {
-    fileTree: FileTree,
-    selectedFilename: string,
-    onSelectFilename: (filename: string) => void
+    fileTree: FileTree;
+    selectedFilename: string;
+    onSelectFilename: (filename: string) => void;
 }) {
-    const treeItems = useMemo(() => {
-        return buildTree(fileTree);
-    }, [fileTree]);
+    const treeItems = useMemo(() => buildTree(fileTree), [fileTree]);
     return (
         <FileTreeViewWrapper>
             {treeItems.map((branch) => (
@@ -161,5 +155,5 @@ export function FileTreeView({
                 />
             ))}
         </FileTreeViewWrapper>
-    )
+    );
 }

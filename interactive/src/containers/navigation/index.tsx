@@ -1,14 +1,18 @@
 import styled from '@emotion/styled';
 import React from 'react';
+import {load} from 'components/loading-container';
+import {exerciseStructures} from 'lib/exercise-structures';
+import {exercisesProgress} from 'observables/exercises-progress';
 
 const Wrapper = styled.div`
     flex: 0 0 auto;
     display: flex;
     flex-direction: row;
     background: #faf9f8;
-    border-bottom: 1px solid #294E80;
+    border-bottom: 1px solid #294e80;
     align-items: center;
-    padding: 0 15px;
+    padding: 0 10px;
+    user-select: none;
 `;
 
 const NavBar = styled.nav`
@@ -16,14 +20,25 @@ const NavBar = styled.nav`
     list-style-type: none;
 `;
 
-const NavBarItem = styled.li`
+const NavBarLabel = styled.li`
+    display: inline-block;
+    font-weight: bold;
+    margin-right: 20px;
+    opacity: 0.75;
+`;
+
+const NavBarItem = styled.li<{selectable: boolean; current: boolean}>`
     display: inline-block;
     margin: 0;
     padding: 0;
     position: relative;
     line-height: 30px;
+    color: ${({selectable}) => (selectable ? 'inherit' : 'gray')};
+    // pointer-events: ${({selectable, current}) => (selectable && !current ? 'all' : 'none')};
+    cursor: ${({selectable, current}) => (selectable && !current ? 'pointer' : 'inherit')};
+    font-weight: ${({current}) => (current ? 'bold' : 'normal')};
     &::after {
-        content: '›';
+        content: '·';
         margin: 0 5px;
         opacity: 0.25;
     }
@@ -32,34 +47,25 @@ const NavBarItem = styled.li`
     }
 `;
 
-const SettingsBar = styled.div`
-    font-weight: bold;
-`;
-
 export function Navigation() {
     return (
         <Wrapper>
             <NavBar>
-                <NavBarItem>Start</NavBarItem>
-                <NavBarItem>1</NavBarItem>
-                <NavBarItem>2</NavBarItem>
-                <NavBarItem>3</NavBarItem>
-                <NavBarItem>4</NavBarItem>
-                <NavBarItem>5</NavBarItem>
-                <NavBarItem>6</NavBarItem>
-                <NavBarItem>7</NavBarItem>
-                <NavBarItem>8</NavBarItem>
-                <NavBarItem>9</NavBarItem>
-                <NavBarItem>10</NavBarItem>
-                <NavBarItem>11</NavBarItem>
-                <NavBarItem>12</NavBarItem>
-                <NavBarItem>13</NavBarItem>
-                <NavBarItem>14</NavBarItem>
-                <NavBarItem>15</NavBarItem>
+                {load(exercisesProgress.observable$, ({currentExerciseNumber, lastCompletedExerciseNumber}) => (
+                    <>
+                        <NavBarLabel>Exercises</NavBarLabel>
+                        {Object.keys(exerciseStructures).map((exerciseNumber) => (
+                            <NavBarItem
+                                selectable={Number(exerciseNumber) <= lastCompletedExerciseNumber + 1}
+                                current={Number(exerciseNumber) === currentExerciseNumber}
+                                onClick={() => exercisesProgress.goToExercise(Number(exerciseNumber))}
+                                key={exerciseNumber}>
+                                {exerciseNumber}
+                            </NavBarItem>
+                        ))}
+                    </>
+                ))}
             </NavBar>
-            <SettingsBar>
-                Settings
-            </SettingsBar>
         </Wrapper>
     );
 }

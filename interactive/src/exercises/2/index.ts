@@ -18,14 +18,6 @@ Exercise:
     it in persons array and logPerson function in order to fix
     all the TS errors.
 
-Run this exercise:
-
-    npm run 1
-
-    - OR -
-
-    yarn -s 1
-
 */
 
 interface User {
@@ -40,7 +32,9 @@ interface Admin {
     role: string;
 }
 
-const persons: User[] /* <- Person[] */ = [
+export type Person = unknown;
+
+export const persons: User[] /* <- Person[] */ = [
     {
         name: 'Max Mustermann',
         age: 25,
@@ -63,7 +57,7 @@ const persons: User[] /* <- Person[] */ = [
     }
 ];
 
-function logPerson(user: User) {
+export function logPerson(user: User) {
     console.log(` - ${chalk.green(user.name)}, ${user.age}`);
 }
 

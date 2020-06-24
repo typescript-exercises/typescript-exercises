@@ -1,4 +1,4 @@
-import {IsTypeEqual, typeAssert} from './node_modules/type-assertions/index';
+import {IsTypeEqual, typeAssert} from 'type-assertions';
 import {User, logPerson, users} from './index';
 
 typeAssert<IsTypeEqual<User, {name: string, age: number, occupation: string}>>();

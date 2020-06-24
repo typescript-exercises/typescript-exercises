@@ -1,0 +1,106 @@
+{
+  "extends": [
+    "eslint-config-react-app",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": ["react-app", "react", "@typescript-eslint", "prettier", "import"],
+  "env": {
+    "browser": true,
+    "jest": true,
+    "node": true,
+    "es6": true
+  },
+  "rules": {
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-use-before-define": [
+      "error",
+      {
+        "functions": false,
+        "classes": false
+      }
+    ],
+    "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "args": "after-used",
+        "ignoreRestSiblings": true,
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-empty-interface": "warn",
+    "@typescript-eslint/no-non-null-assertion": "off",
+
+    "react/prop-types": "off",
+    "react/display-name": "off",
+    "react/no-unescaped-entities": "off",
+    "react/jsx-curly-brace-presence": [
+      "error",
+      {
+        "props": "never",
+        "children": "never"
+      }
+    ],
+    "react/jsx-boolean-value": "error",
+    "react/jsx-key": "off",
+    "react-hooks/rules-of-hooks": "off",
+
+    "prettier/prettier": ["error", {"singleQuote": true}],
+    "no-irregular-whitespace": "off",
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "util",
+            "message": "This is NodeJS library, don't use it"
+          },
+          {
+            "name": "path",
+            "message": "This is NodeJS library, don't use it"
+          }
+        ],
+        "patterns": ["fp-ts/es6/*"]
+      }
+    ],
+    "no-duplicate-imports": ["error", {"includeExports": true}],
+    "arrow-body-style": ["warn", "as-needed"],
+    "id-blacklist": ["error", "_", "x"],
+    "no-restricted-globals": ["error", "name", "toString", "pending"],
+    "prefer-template": "error",
+    "import/no-relative-parent-imports": "error",
+    "import/order": ["error", {
+      "groups": ["builtin", "external", "internal", "sibling"],
+      "pathGroups": [
+        {
+          "pattern": "{components,containers,exercises,lib,observables,operators}/**",
+          "group": "internal",
+          "position": "after"
+        }
+      ],
+      "pathGroupsExcludedImportTypes": ["parent", "sibling", "index"],
+      "alphabetize": {
+        "order": "asc",
+        "caseInsensitive": true
+      }
+    }]
+  },
+  "settings": {
+    "react": {
+      "pragma": "React",
+      "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".ts", ".tsx"]
+      }
+    }
+  },
+  "parser": "@typescript-eslint/parser"
+}

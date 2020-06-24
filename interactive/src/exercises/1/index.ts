@@ -8,7 +8,7 @@ Intro:
     user-interaction opportunities. With user-related data, at least.
     All the GDPR-related issues we will solved some other day.
     This would be the base for our future experiments during
-    this workshop.
+    these exercises.
 
 Exercise:
 

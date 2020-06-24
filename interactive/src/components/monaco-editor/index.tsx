@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
-import {OriginalMonacoEditor, OriginalMonacoEditorProps} from 'components/monaco-editor/original-monaco-editor';
-import React, {useEffect, useRef, useState} from 'react';
 import debounce from 'debounce';
+import React, {useEffect, useRef, useState} from 'react';
+import {OriginalMonacoEditor, OriginalMonacoEditorProps} from 'components/monaco-editor/original-monaco-editor';
 
 const MonacoEditorWrapper = styled.div`
     width: 100%;
@@ -15,19 +15,31 @@ export function MonacoEditor(props: OriginalMonacoEditorProps) {
     const wrapperRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         const updateSize = debounce(() => {
-            if (wrapperRef.current) {
-                setSize({
-                    width: `${wrapperRef.current.offsetWidth}px`,
-                    height: `${wrapperRef.current.offsetHeight}px`
-                });
-            }
+            setSize((size) => {
+                if (!wrapperRef.current) {
+                    return size;
+                }
+                const newWidth = `${wrapperRef.current.offsetWidth}px`;
+                const newHeight = `${wrapperRef.current.offsetHeight}px`;
+                if (size.width === newWidth && size.height === newHeight) {
+                    return size;
+                }
+                return {
+                    width: newWidth,
+                    height: newHeight
+                };
+            });
         }, 100);
         window.addEventListener('resize', updateSize, {passive: true});
-        return () => window.removeEventListener('resize', updateSize);
+        const interval = setInterval(updateSize, 500);
+        return () => {
+            window.removeEventListener('resize', updateSize);
+            clearInterval(interval);
+        };
     }, [wrapperRef]);
     return (
         <MonacoEditorWrapper ref={wrapperRef}>
-            <OriginalMonacoEditor {...props} width={size.width} height={size.height} />
+            <OriginalMonacoEditor {...props} {...size} />
         </MonacoEditorWrapper>
     );
 }

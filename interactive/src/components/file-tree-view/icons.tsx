@@ -11,13 +11,7 @@ export const DirectoryIcon = ({color}: {color: string}) => (
 
 export const FileIcon = ({color}: {color: string}) => (
     <svg version='1.1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16'>
-        <path
-            d='M2 10L8 10L8 4L14 4L14 16L2 16'
-            fill={color}
-        />
-        <path
-            d='M2 9L7 9L7 4'
-            fill={color}
-        />
+        <path d='M2 10L8 10L8 4L14 4L14 16L2 16' fill={color} />
+        <path d='M2 9L7 9L7 4' fill={color} />
     </svg>
 );

@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
-import {TsLogo} from 'components/header/ts-logo';
 import React from 'react';
+import {TsLogo} from 'components/header/ts-logo';
 
 const HeaderWrapper = styled.header`
     flex: 0 0 auto;
-    background: #294E80;
+    background: #294e80;
     padding: 10px 16px;
     z-index: 1;
 `;
@@ -40,9 +40,7 @@ export function Header() {
             <HeaderLogo>
                 <TsLogo />
                 TypeScript
-                <HeaderSubLogo>
-                    exercises
-                </HeaderSubLogo>
+                <HeaderSubLogo>exercises</HeaderSubLogo>
             </HeaderLogo>
         </HeaderWrapper>
     );
