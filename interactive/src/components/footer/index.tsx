@@ -14,6 +14,7 @@ const FooterWrapper = styled.footer`
     a:active {
         color: inherit;
     }
+    z-index: 1;
 `;
 
 const currentYear = new Date().getFullYear();

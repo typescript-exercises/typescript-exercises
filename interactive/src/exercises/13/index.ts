@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import * as dateWizard from 'date-wizard';
 import './module-augmentations/date-wizard';
 
@@ -28,14 +27,6 @@ Exercise:
 
     Extend type declaration of that module in:
     module-augmentations/date-wizard/index.ts
-
-Run:
-
-    npm run 12
-
-    - OR -
-
-    yarn -s 12
 
 */
 
@@ -87,11 +78,15 @@ function logPerson(person: Person, index: number) {
     let registeredAt = dateWizard(person.registered, '{date}.{month}.{year} {hours}:{minutes}');
     let num = `#${dateWizard.pad(index + 1)}`;
     console.log(
-        ` - ${num}: ${chalk.green(person.name)}, ${person.age}, ${additionalInformation}, ${registeredAt}`
+        ` - ${num}: ${person.name}, ${person.age}, ${additionalInformation}, ${registeredAt}`
     );
 }
 
-console.log(chalk.yellow('All users:'));
+export {
+    dateWizard
+};
+
+console.log('All users:');
 
 ([] as Person[])
     .concat(users, admins)
@@ -99,7 +94,7 @@ console.log(chalk.yellow('All users:'));
 
 console.log();
 
-console.log(chalk.yellow('Early birds:'));
+console.log('Early birds:');
 
 ([] as Person[])
     .concat(users, admins)

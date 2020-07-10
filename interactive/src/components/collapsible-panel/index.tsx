@@ -19,7 +19,8 @@ const Header = styled.div<{collapsed: boolean; orientation: Orientation}>`
     transform: rotate(0) translateX(0);
     transform-origin: top left;
     cursor: pointer;
-    background: #f6f6f6;
+    background: #eee;
+    border-bottom: 1px #ddd solid;
     ${({collapsed, orientation}) =>
         collapsed && orientation === 'vertical'
             ? `
@@ -34,8 +35,9 @@ const Header = styled.div<{collapsed: boolean; orientation: Orientation}>`
 const HeaderLabel = styled.div`
     flex: 1 1 auto;
     font-weight: bold;
-    opacity: 0.75;
-    padding: 5px 10px;
+    color: rgba(0, 0, 0, 0.75);
+    line-height: 30px;
+    padding: 0 10px;
 `;
 
 const Content = styled.div<{collapsed: boolean; orientation: Orientation}>`
@@ -60,7 +62,7 @@ const CollapseButton = styled.button`
     float: right;
     border: none;
     padding: 5px 10px;
-    background: #f6f6f6;
+    background: transparent;
     font-weight: bold;
     cursor: pointer;
     &::before {
@@ -70,14 +72,14 @@ const CollapseButton = styled.button`
 
 const Wrapper = styled.div<{collapsed: boolean; orientation: Orientation}>`
     position: relative;
-    background-color: ${({collapsed}) => (collapsed ? '#f6f6f6' : `white`)};
+    background-color: ${({collapsed}) => (collapsed ? '#eee' : `#f6f6f6`)};
     display: flex;
     flex-direction: column;
     flex: 0 0 ${({collapsed, orientation}) => (collapsed ? '30px' : `${orientation === 'vertical' ? width : height}px`)};
-    ${({orientation}) => (orientation === 'vertical' ? 'border-right' : 'border-bottom')}: 1px #aaa solid;
+    ${({orientation}) => (orientation === 'vertical' ? 'border-right' : 'border-bottom')}: 1px #ddd solid;
     &:last-of-type {
         ${({orientation}) => (orientation === 'vertical' ? 'border-right' : 'border-bottom')}: none;
-        ${({orientation}) => (orientation === 'vertical' ? 'border-left' : 'border-top')}: 1px #aaa solid;
+        ${({orientation}) => (orientation === 'vertical' ? 'border-left' : 'border-top')}: 1px #ddd solid;
     }
     transition: flex-basis 0.2s linear, background-color 0.2s linear;
 `;

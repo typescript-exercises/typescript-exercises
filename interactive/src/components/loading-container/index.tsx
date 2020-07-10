@@ -1,6 +1,6 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useLayoutEffect, useMemo, useState} from 'react';
 import PulseLoader from 'react-spinners/PulseLoader';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 
 function Loading() {
     return <PulseLoader color='gray' />;
@@ -8,26 +8,32 @@ function Loading() {
 
 type RenderCallback<T> = (value: T) => React.ReactNode;
 
-function LoadingContainer<T>({observable, render}: {observable: Observable<T>; render: RenderCallback<T>}) {
-    const [lastUpdate, setLastUpdate] = useState(undefined as undefined | T);
+function useObservable<T>(observable: Observable<T>): T | undefined {
+    const [, setUpdate] = useState(false);
 
-    const [cachedUpdate, subscription] = useMemo(() => {
-        let triggerUpdate = false;
-        let cachedUpdate: undefined | T;
-        const subscription = observable.subscribe((update) => {
-            if (triggerUpdate) {
-                setLastUpdate(update);
-            } else {
-                cachedUpdate = update;
+    const {subscription, value} = useMemo(() => {
+        const state = {
+            value: undefined as T | undefined,
+            subscription: undefined as Subscription | undefined
+        };
+        let emitChanges = false;
+        state.subscription = observable.subscribe((newValue) => {
+            state.value = newValue;
+            if (emitChanges) {
+                setUpdate((update) => !update);
             }
         });
-        triggerUpdate = true;
-        return [cachedUpdate, subscription];
-    }, [observable, setLastUpdate]);
+        emitChanges = true;
+        return state;
+    }, [observable, setUpdate]);
 
-    useEffect(() => () => subscription.unsubscribe(), [subscription]);
+    useLayoutEffect(() => () => subscription?.unsubscribe(), [subscription]);
 
-    const update = lastUpdate !== undefined ? lastUpdate : cachedUpdate;
+    return value;
+}
+
+function LoadingContainer<T>({observable, render}: {observable: Observable<T>; render: RenderCallback<T>}) {
+    const update = useObservable(observable);
 
     if (update === undefined) {
         return <Loading />;

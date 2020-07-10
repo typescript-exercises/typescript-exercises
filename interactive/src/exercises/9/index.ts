@@ -1,5 +1,3 @@
-import chalk from 'chalk';
-
 /*
 
 Intro:
@@ -24,16 +22,8 @@ Intro:
 Exercise:
 
     Remove UsersApiResponse and AdminsApiResponse types
-    and use generics in order to specify API response formats
-    for each of the functions.
-
-Run:
-
-    npm run 8
-
-    - OR -
-
-    yarn -s 8
+    and use generic type ApiResponse in order to specify API
+    response formats for each of the functions.
 
 */
 
@@ -63,6 +53,8 @@ const users: User[] = [
     { type: 'user', name: 'Kate Müller', age: 23, occupation: 'Astronaut' }
 ];
 
+export type ApiResponse<T> = unknown;
+
 type AdminsApiResponse = (
     {
         status: 'success';
@@ -74,7 +66,7 @@ type AdminsApiResponse = (
     }
 );
 
-function requestAdmins(callback: (response: AdminsApiResponse) => void) {
+export function requestAdmins(callback: (response: AdminsApiResponse) => void) {
     callback({
         status: 'success',
         data: admins
@@ -92,21 +84,21 @@ type UsersApiResponse = (
     }
 );
 
-function requestUsers(callback: (response: UsersApiResponse) => void) {
+export function requestUsers(callback: (response: UsersApiResponse) => void) {
     callback({
         status: 'success',
         data: users
     });
 }
 
-function requestCurrentServerTime(callback: (response: unknown) => void) {
+export function requestCurrentServerTime(callback: (response: unknown) => void) {
     callback({
         status: 'success',
         data: Date.now()
     });
 }
 
-function requestCoffeeMachineQueueLength(callback: (response: unknown) => void) {
+export function requestCoffeeMachineQueueLength(callback: (response: unknown) => void) {
     callback({
         status: 'error',
         error: 'Numeric value has exceeded Number.MAX_SAFE_INTEGER.'
@@ -115,13 +107,13 @@ function requestCoffeeMachineQueueLength(callback: (response: unknown) => void) 
 
 function logPerson(person: Person) {
     console.log(
-        ` - ${chalk.green(person.name)}, ${person.age}, ${person.type === 'admin' ? person.role : person.occupation}`
+        ` - ${person.name}, ${person.age}, ${person.type === 'admin' ? person.role : person.occupation}`
     );
 }
 
 function startTheApp(callback: (error: Error | null) => void) {
     requestAdmins((adminsResponse) => {
-        console.log(chalk.yellow('Admins:'));
+        console.log('Admins:');
         if (adminsResponse.status === 'success') {
             adminsResponse.data.forEach(logPerson);
         } else {
@@ -131,7 +123,7 @@ function startTheApp(callback: (error: Error | null) => void) {
         console.log();
 
         requestUsers((usersResponse) => {
-            console.log(chalk.yellow('Users:'));
+            console.log('Users:');
             if (usersResponse.status === 'success') {
                 usersResponse.data.forEach(logPerson);
             } else {
@@ -141,7 +133,7 @@ function startTheApp(callback: (error: Error | null) => void) {
             console.log();
 
             requestCurrentServerTime((serverTimeResponse) => {
-                console.log(chalk.yellow('Server time:'));
+                console.log('Server time:');
                 if (serverTimeResponse.status === 'success') {
                     console.log(`   ${new Date(serverTimeResponse.data).toLocaleString()}`);
                 } else {
@@ -151,7 +143,7 @@ function startTheApp(callback: (error: Error | null) => void) {
                 console.log();
 
                 requestCoffeeMachineQueueLength((coffeeMachineQueueLengthResponse) => {
-                    console.log(chalk.yellow('Coffee machine queue length:'));
+                    console.log('Coffee machine queue length:');
                     if (coffeeMachineQueueLengthResponse.status === 'success') {
                         console.log(`   ${coffeeMachineQueueLengthResponse.data}`);
                     } else {

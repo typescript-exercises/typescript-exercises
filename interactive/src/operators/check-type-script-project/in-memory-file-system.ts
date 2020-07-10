@@ -27,6 +27,13 @@ const unique = (ss: string[]) =>
 
 const ROOT = '/';
 
+const tsLibsContext = require.context('!!raw-loader!typescript/lib', true, /\.d\.ts$/);
+
+const tsLibs = tsLibsContext.keys().reduce((acc, filename) => {
+    acc[`/_internal/${filename.replace(/^\.\//, '')}`] = tsLibsContext(filename).default;
+    return acc;
+}, {} as {[filename: string]: string});
+
 function resolvePathWrapper<T>(operation: (f: string) => T): (f: string) => T;
 function resolvePathWrapper<T, A1>(operation: (f: string, a1: A1) => T): (f: string, a1: A1) => T;
 function resolvePathWrapper<T, O>(operation: (filename: string, ...other: O[]) => T) {
@@ -44,12 +51,7 @@ export class InMemoryFileSystem implements ts.System {
     constructor(files: FileContentTree) {
         files = {
             ...files,
-            '/_internal/lib.d.ts': require('!!raw-loader!typescript/lib/lib.d.ts').default,
-            '/_internal/lib.es5.d.ts': require('!!raw-loader!typescript/lib/lib.es5.d.ts').default,
-            '/_internal/lib.dom.d.ts': require('!!raw-loader!typescript/lib/lib.dom.d.ts').default,
-            '/_internal/lib.webworker.importscripts.d.ts': require('!!raw-loader!typescript/lib/lib.webworker.importscripts.d.ts')
-                .default,
-            '/_internal/lib.scripthost.d.ts': require('!!raw-loader!typescript/lib/lib.scripthost.d.ts').default
+            ...tsLibs
         };
         const modifiedTime = new Date();
         this.files = Object.keys(files).reduce((res, filename) => {

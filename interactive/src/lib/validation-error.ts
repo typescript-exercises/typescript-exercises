@@ -1,5 +1,5 @@
 export interface ValidationError {
-    file: string;
+    file: string | null;
     start: number;
     length: number;
     messageText: string;

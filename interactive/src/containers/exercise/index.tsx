@@ -1,15 +1,19 @@
 import styled from '@emotion/styled';
 import React, {useCallback, useMemo, useState} from 'react';
 import {CollapsiblePanel} from 'components/collapsible-panel';
+import {FileTitle} from 'components/file-title';
 import {FileTreeView} from 'components/file-tree-view';
 import {load} from 'components/loading-container';
 import {MonacoEditor} from 'components/monaco-editor';
 import {ValidationErrors} from 'components/validation-errors';
 import {exerciseStructures} from 'lib/exercise-structures';
+import {FileTree} from 'lib/file-tree';
 import {ValidationError} from 'lib/validation-error';
 import {createExercise} from 'observables/exercise';
 import {exercisesProgress} from 'observables/exercises-progress';
 import {checkTypeScriptProject} from 'operators/check-type-script-project';
+
+const lastExerciseNumber = Number(Object.keys(exerciseStructures).pop());
 
 const ExerciseWrapper = styled.div`
     height: 100%;
@@ -49,6 +53,17 @@ const CompletedExerciseButton = styled.button`
     font-size: 18px;
 `;
 
+function calculateModifiedFilenames(exerciseNumber: number, fileTree: FileTree) {
+    const files = exerciseStructures[exerciseNumber];
+    const result: Record<string, true> = {};
+    for (const [filename, {content}] of Object.entries(fileTree)) {
+        if (content !== files[filename].content) {
+            result[filename] = true;
+        }
+    }
+    return result;
+}
+
 export function Exercise({exerciseNumber}: {exerciseNumber: number}) {
     const exercise = useMemo(() => createExercise(exerciseNumber), [exerciseNumber]);
     const [position, setPosition] = useState(undefined as number | undefined);
@@ -56,6 +71,9 @@ export function Exercise({exerciseNumber}: {exerciseNumber: number}) {
     const [selectedFilename, setSelectedFilename] = useState('/index.ts');
     const onErrorClick = useCallback(
         (error: ValidationError) => {
+            if (!error.file) {
+                return;
+            }
             setSelectedFilename(error.file);
             setPosition(error.start);
         },
@@ -68,25 +86,28 @@ export function Exercise({exerciseNumber}: {exerciseNumber: number}) {
         [exercise]
     );
 
-    return load(exercise.observable$, (fileContents) => (
+    return load(exercise.observable$, (fileTree) => (
         <ExerciseWrapper>
             <CollapsiblePanel id='files' header='Files' orientation='vertical'>
                 <FileTreeView
                     selectedFilename={selectedFilename}
-                    fileTree={exerciseStructures[exerciseNumber].files}
+                    fileTree={exerciseStructures[exerciseNumber]}
                     onSelectFilename={setSelectedFilename}
+                    modifiedFilenames={calculateModifiedFilenames(exerciseNumber, fileTree)}
+                    revertFile={exercise.revert}
                 />
             </CollapsiblePanel>
             <MainAreaWrapper>
+                <FileTitle filename={selectedFilename} readOnly={Boolean(fileTree[selectedFilename].readOnly)} />
                 <EditorWrapper>
                     <MonacoEditor
                         namespace={String(exerciseNumber)}
                         selectedFilename={selectedFilename}
-                        values={fileContents}
+                        values={fileTree}
                         onChange={onChange}
-                        onSwitchFile={setSelectedFilename}
                         theme='vs-light'
                         position={position}
+                        onNavigate={() => null}
                         options={{
                             minimap: {
                                 enabled: false
@@ -104,11 +125,17 @@ export function Exercise({exerciseNumber}: {exerciseNumber: number}) {
                             {errors.length === 0 && (
                                 <CompletedExerciseWrapper>
                                     <CompletedExerciseLabel>
-                                        Good job! Exercise {exerciseNumber} is completed.
+                                        {exerciseNumber === lastExerciseNumber ? (
+                                            <>Congratulations! You have completed the whole set of exercises.</>
+                                        ) : (
+                                            <>Good job! Exercise {exerciseNumber} is completed.</>
+                                        )}
                                     </CompletedExerciseLabel>
-                                    <CompletedExerciseButton onClick={exercisesProgress.completeExercise}>
-                                        Next exercise
-                                    </CompletedExerciseButton>
+                                    {exerciseNumber !== lastExerciseNumber && (
+                                        <CompletedExerciseButton onClick={exercisesProgress.completeExercise}>
+                                            Next exercise
+                                        </CompletedExerciseButton>
+                                    )}
                                 </CompletedExerciseWrapper>
                             )}
                         </ExercisePanelWrapper>

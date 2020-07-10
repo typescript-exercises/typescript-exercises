@@ -1,5 +1,3 @@
-import chalk from 'chalk';
-
 /*
 
 Intro:
@@ -10,20 +8,12 @@ Intro:
     called PowerUser which is supposed to combine
     everything User and Admin have.
 
-Higher difficulty exercise:
+Exercise:
 
     Define type PowerUser which should have all fields
     from both User and Admin (except for type),
     and also have type 'powerUser' without duplicating
     all the fields in the code.
-
-Run:
-
-    npm run 7
-
-    - OR -
-
-    yarn -s 7
 
 */
 
@@ -43,9 +33,9 @@ interface Admin {
 
 type PowerUser = unknown;
 
-type Person = User | Admin | PowerUser;
+export type Person = User | Admin | PowerUser;
 
-const persons: Person[] = [
+export const persons: Person[] = [
     { type: 'user', name: 'Max Mustermann', age: 25, occupation: 'Chimney sweep' },
     { type: 'admin', name: 'Jane Doe', age: 32, role: 'Administrator' },
     { type: 'user', name: 'Kate Müller', age: 23, occupation: 'Astronaut' },
@@ -71,7 +61,7 @@ function isPowerUser(person: Person): person is PowerUser {
     return person.type === 'powerUser';
 }
 
-function logPerson(person: Person) {
+export function logPerson(person: Person) {
     let additionalInformation: string = '';
     if (isAdmin(person)) {
         additionalInformation = person.role;
@@ -82,20 +72,20 @@ function logPerson(person: Person) {
     if (isPowerUser(person)) {
         additionalInformation = `${person.role}, ${person.occupation}`;
     }
-    console.log(`${chalk.green(person.name)}, ${person.age}, ${additionalInformation}`);
+    console.log(`${person.name}, ${person.age}, ${additionalInformation}`);
 }
 
-console.log(chalk.yellow('Admins:'));
+console.log('Admins:');
 persons.filter(isAdmin).forEach(logPerson);
 
 console.log();
 
-console.log(chalk.yellow('Users:'));
+console.log('Users:');
 persons.filter(isUser).forEach(logPerson);
 
 console.log();
 
-console.log(chalk.yellow('Power users:'));
+console.log('Power users:');
 persons.filter(isPowerUser).forEach(logPerson);
 
 // In case if you are stuck:

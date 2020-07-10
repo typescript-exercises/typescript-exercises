@@ -1,10 +1,14 @@
-import {editor, Uri, languages} from 'monaco-editor';
+import {debounce} from 'debounce';
+import {editor, languages, Uri} from 'monaco-editor';
 import React from 'react';
 import {FileTree} from 'lib/file-tree';
 import {revalidateModel} from './revalidate-model';
 
 languages.typescript.typescriptDefaults.setCompilerOptions({
-    strict: true
+    strict: true,
+    target: languages.typescript.ScriptTarget.ES2018,
+    moduleResolution: languages.typescript.ModuleResolutionKind.NodeJs,
+    typeRoots: ['declarations']
 });
 
 export interface OriginalMonacoEditorProps {
@@ -16,7 +20,7 @@ export interface OriginalMonacoEditorProps {
     values: FileTree;
     selectedFilename: string;
     onChange: (filename: string, content: string) => void;
-    onSwitchFile: (filename: string) => void;
+    onNavigate: (filename: string) => void;
     position: number | undefined;
 }
 
@@ -34,15 +38,24 @@ export class OriginalMonacoEditor extends React.Component<OriginalMonacoEditorPr
     protected instanceDiv: HTMLElement | null = null;
     protected models: Models = {};
     protected viewStates: {[filename: string]: editor.ICodeEditorViewState} = {};
+    protected lastUpdates: {[filename: string]: string} = {};
 
     public componentDidMount() {
         this.models = Object.keys(this.props.values).reduce((res, filename) => {
+            const value = this.props.values[filename].content;
+            this.lastUpdates[filename] = value;
             const model = editor.createModel(
-                this.props.values[filename].content,
+                value,
                 extensionsToLanguages[filename.split('.').pop()!],
                 Uri.file(`${this.props.namespace}/${filename}`)
             );
-            model.onDidChangeContent(() => this.props.onChange(filename, model.getValue()));
+            model.onDidChangeContent(
+                debounce(() => {
+                    const newValue = model.getValue();
+                    this.lastUpdates[filename] = newValue;
+                    this.props.onChange(filename, newValue);
+                }, 200)
+            );
             res[filename] = model;
             return res;
         }, {} as Models);
@@ -96,6 +109,14 @@ export class OriginalMonacoEditor extends React.Component<OriginalMonacoEditorPr
         }
         if (this.props.width !== prevProps.width || this.props.height !== prevProps.height) {
             this.instance.layout();
+        }
+        if (this.props.values !== prevProps.values) {
+            for (const [filename, value] of Object.entries(this.props.values)) {
+                if (value.content !== this.lastUpdates[filename]) {
+                    this.lastUpdates[filename] = value.content;
+                    this.models[filename].setValue(value.content);
+                }
+            }
         }
     }
 

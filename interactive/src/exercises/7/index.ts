@@ -1,5 +1,3 @@
-import chalk from 'chalk';
-
 /*
 
 Intro:
@@ -24,14 +22,6 @@ Exercise:
     Person types, lets type it so that it works with any two types
     specified.
 
-Run:
-
-    npm run 6
-
-    - OR -
-
-    yarn -s 6
-
 */
 
 interface User {
@@ -50,12 +40,12 @@ interface Admin {
 
 function logUser(user: User) {
     const pos = users.indexOf(user) + 1;
-    console.log(` - #${pos} User: ${chalk.green(user.name)}, ${user.age}, ${user.occupation}`);
+    console.log(` - #${pos} User: ${user.name}, ${user.age}, ${user.occupation}`);
 }
 
 function logAdmin(admin: Admin) {
     const pos = admins.indexOf(admin) + 1;
-    console.log(` - #${pos} Admin: ${chalk.green(admin.name)}, ${admin.age}, ${admin.role}`);
+    console.log(` - #${pos} Admin: ${admin.name}, ${admin.age}, ${admin.role}`);
 }
 
 const admins: Admin[] = [
@@ -88,40 +78,40 @@ const users: User[] = [
     }
 ];
 
-function swap(v1, v2) {
+export function swap(v1, v2) {
     return [v2, v1];
 }
 
 function test1() {
-    console.log(chalk.yellow('test1:'));
+    console.log('test1:');
     const [secondUser, firstAdmin] = swap(admins[0], users[1]);
     logUser(secondUser);
     logAdmin(firstAdmin);
 }
 
 function test2() {
-    console.log(chalk.yellow('test2:'));
+    console.log('test2:');
     const [secondAdmin, firstUser] = swap(users[0], admins[1]);
     logAdmin(secondAdmin);
     logUser(firstUser);
 }
 
 function test3() {
-    console.log(chalk.yellow('test3:'));
+    console.log('test3:');
     const [secondUser, firstUser] = swap(users[0], users[1]);
     logUser(secondUser);
     logUser(firstUser);
 }
 
 function test4() {
-    console.log(chalk.yellow('test4:'));
+    console.log('test4:');
     const [firstAdmin, secondAdmin] = swap(admins[1], admins[0]);
     logAdmin(firstAdmin);
     logAdmin(secondAdmin);
 }
 
 function test5() {
-    console.log(chalk.yellow('test5:'));
+    console.log('test5:');
     const [stringValue, numericValue] = swap(123, 'Hello World');
     console.log(` - String: ${stringValue}`);
     console.log(` - Numeric: ${numericValue}`);

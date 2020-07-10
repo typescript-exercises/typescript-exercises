@@ -1,5 +1,3 @@
-import chalk from 'chalk';
-
 /*
 
 Intro:
@@ -21,14 +19,6 @@ Higher difficulty bonus exercise:
 
     Exclude "type" from filter criterias.
 
-Run:
-
-    npm run 4
-
-    - OR -
-
-    yarn -s 4
-
 */
 
 interface User {
@@ -45,9 +35,9 @@ interface Admin {
     role: string;
 }
 
-type Person = User | Admin;
+export type Person = User | Admin;
 
-const persons: Person[] = [
+export const persons: Person[] = [
     { type: 'user', name: 'Max Mustermann', age: 25, occupation: 'Chimney sweep' },
     {
         type: 'admin',
@@ -81,10 +71,10 @@ const persons: Person[] = [
     }
 ];
 
-const isAdmin = (person: Person): person is Admin => person.type === 'admin';
-const isUser = (person: Person): person is User => person.type === 'user';
+export const isAdmin = (person: Person): person is Admin => person.type === 'admin';
+export const isUser = (person: Person): person is User => person.type === 'user';
 
-function logPerson(person: Person) {
+export function logPerson(person: Person) {
     let additionalInformation: string = '';
     if (isAdmin(person)) {
         additionalInformation = person.role;
@@ -92,10 +82,10 @@ function logPerson(person: Person) {
     if (isUser(person)) {
         additionalInformation = person.occupation;
     }
-    console.log(` - ${chalk.green(person.name)}, ${person.age}, ${additionalInformation}`);
+    console.log(` - ${person.name}, ${person.age}, ${additionalInformation}`);
 }
 
-function filterUsers(persons: Person[], criteria: User): User[] {
+export function filterUsers(persons: Person[], criteria: User): User[] {
     return persons.filter(isUser).filter((user) => {
         let criteriaKeys = Object.keys(criteria) as (keyof User)[];
         return criteriaKeys.every((fieldName) => {
@@ -104,7 +94,7 @@ function filterUsers(persons: Person[], criteria: User): User[] {
     });
 }
 
-console.log(chalk.yellow('Users of age 23:'));
+console.log('Users of age 23:');
 
 filterUsers(
     persons,

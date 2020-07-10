@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import {
     strReverse,
     strToLower,
@@ -28,14 +27,6 @@ Exercise:
 
     Try to avoid duplicates of type declarations,
     use type aliases.
-
-Run:
-
-    npm run 10
-
-    - OR -
-
-    yarn -s 10
 
 */
 
@@ -74,7 +65,7 @@ const users: User[] = [
 const isAdmin = (person: Person): person is Admin => person.type === 'admin';
 const isUser = (person: Person): person is User => person.type === 'user';
 
-const nameDecorators = [
+export const nameDecorators = [
     strReverse,
     strToLower,
     strToUpper,
@@ -95,7 +86,7 @@ function logPerson(person: Person) {
     ];
     const name = randomNameDecorator(person.name);
     console.log(
-        ` - ${chalk.green(name)}, ${person.age}, ${additionalInformation}`
+        ` - ${name}, ${person.age}, ${additionalInformation}`
     );
 }
 

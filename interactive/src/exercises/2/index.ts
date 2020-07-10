@@ -1,5 +1,3 @@
-import chalk from 'chalk';
-
 /*
 
 Intro:
@@ -58,7 +56,7 @@ export const persons: User[] /* <- Person[] */ = [
 ];
 
 export function logPerson(user: User) {
-    console.log(` - ${chalk.green(user.name)}, ${user.age}`);
+    console.log(` - ${user.name}, ${user.age}`);
 }
 
 persons.forEach(logPerson);

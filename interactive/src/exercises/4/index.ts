@@ -1,5 +1,3 @@
-import chalk from 'chalk';
-
 /*
 
 Intro:
@@ -14,14 +12,6 @@ Exercise:
 
     Figure out how to help TypeScript understand types in
     this situation and apply necessary fixes.
-
-Run:
-
-    npm run 3
-
-    - OR -
-
-    yarn -s 3
 
 */
 
@@ -39,24 +29,24 @@ interface Admin {
     role: string;
 }
 
-type Person = User | Admin;
+export type Person = User | Admin;
 
-const persons: Person[] = [
+export const persons: Person[] = [
     { type: 'user', name: 'Max Mustermann', age: 25, occupation: 'Chimney sweep' },
     { type: 'admin', name: 'Jane Doe', age: 32, role: 'Administrator' },
     { type: 'user', name: 'Kate Müller', age: 23, occupation: 'Astronaut' },
     { type: 'admin', name: 'Bruce Willis', age: 64, role: 'World saver' }
 ];
 
-function isAdmin(person: Person) {
+export function isAdmin(person: Person) {
     return person.type === 'admin';
 }
 
-function isUser(person: Person) {
+export function isUser(person: Person) {
     return person.type === 'user';
 }
 
-function logPerson(person: Person) {
+export function logPerson(person: Person) {
     let additionalInformation: string = '';
     if (isAdmin(person)) {
         additionalInformation = person.role;
@@ -64,15 +54,15 @@ function logPerson(person: Person) {
     if (isUser(person)) {
         additionalInformation = person.occupation;
     }
-    console.log(` - ${chalk.green(person.name)}, ${person.age}, ${additionalInformation}`);
+    console.log(` - ${person.name}, ${person.age}, ${additionalInformation}`);
 }
 
-console.log(chalk.yellow('Admins:'));
+console.log('Admins:');
 persons.filter(isAdmin).forEach(logPerson);
 
 console.log();
 
-console.log(chalk.yellow('Users:'));
+console.log('Users:');
 persons.filter(isUser).forEach(logPerson);
 
 // In case if you are stuck:

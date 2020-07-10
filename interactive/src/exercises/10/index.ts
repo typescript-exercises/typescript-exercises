@@ -1,5 +1,3 @@
-import chalk from 'chalk';
-
 /*
 
 Intro:
@@ -11,26 +9,19 @@ Intro:
     He said that callback-based asynchronicity is not
     popular anymore and everyone should use Promises.
     He promised that if we switch to Promises, this would
-    bring promising results. Promises, promises, promises.
+    bring promising results.
 
-Higher difficulty exercise:
+Exercise:
 
     We don't want to reimplement all the data-requesting
     functions. Let's decorate the old callback-based
     functions with the new Promise-compatible result.
     The final function should return a Promise which
     would resolve with the final data directly
-    (i.e. users or admins) or would reject with an error.
+    (i.e. users or admins) or would reject with an error
+    (or type Error).
 
     The function should be named promisify.
-
-Run:
-
-    npm run 9
-
-    - OR -
-
-    yarn -s 9
 
 */
 
@@ -60,7 +51,7 @@ const users: User[] = [
     { type: 'user', name: 'Kate Müller', age: 23, occupation: 'Astronaut' }
 ];
 
-type ApiResponse<T> = (
+export type ApiResponse<T> = (
     {
         status: 'success';
         data: T;
@@ -71,7 +62,7 @@ type ApiResponse<T> = (
     }
 );
 
-function promisify(arg: unknown): unknown {
+export function promisify(arg: unknown): unknown {
     return null;
 }
 
@@ -102,7 +93,7 @@ const oldApi = {
     }
 };
 
-const api = {
+export const api = {
     requestAdmins: promisify(oldApi.requestAdmins),
     requestUsers: promisify(oldApi.requestUsers),
     requestCurrentServerTime: promisify(oldApi.requestCurrentServerTime),
@@ -111,24 +102,24 @@ const api = {
 
 function logPerson(person: Person) {
     console.log(
-        ` - ${chalk.green(person.name)}, ${person.age}, ${person.type === 'admin' ? person.role : person.occupation}`
+        ` - ${person.name}, ${person.age}, ${person.type === 'admin' ? person.role : person.occupation}`
     );
 }
 
 async function startTheApp() {
-    console.log(chalk.yellow('Admins:'));
+    console.log('Admins:');
     (await api.requestAdmins()).forEach(logPerson);
     console.log();
 
-    console.log(chalk.yellow('Users:'));
+    console.log('Users:');
     (await api.requestUsers()).forEach(logPerson);
     console.log();
 
-    console.log(chalk.yellow('Server time:'));
+    console.log('Server time:');
     console.log(`   ${new Date(await api.requestCurrentServerTime()).toLocaleString()}`);
     console.log();
 
-    console.log(chalk.yellow('Coffee machine queue length:'));
+    console.log('Coffee machine queue length:');
     console.log(`   ${await api.requestCoffeeMachineQueueLength()}`);
 }
 

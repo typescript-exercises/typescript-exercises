@@ -1,5 +1,3 @@
-import chalk from 'chalk';
-
 /*
 
 Intro:
@@ -16,14 +14,6 @@ Exercise:
     and should output relevant information according to
     the input: occupation for User and role for Admin.
 
-Run:
-
-    npm run 2
-
-    - OR -
-
-    yarn -s 2
-
 */
 
 interface User {
@@ -38,9 +28,9 @@ interface Admin {
     role: string;
 }
 
-type Person = User | Admin;
+export type Person = User | Admin;
 
-const persons: Person[] = [
+export const persons: Person[] = [
     {
         name: 'Max Mustermann',
         age: 25,
@@ -63,14 +53,14 @@ const persons: Person[] = [
     }
 ];
 
-function logPerson(person: Person) {
+export function logPerson(person: Person) {
     let additionalInformation: string;
     if (person.role) {
         additionalInformation = person.role;
     } else {
         additionalInformation = person.occupation;
     }
-    console.log(` - ${chalk.green(person.name)}, ${person.age}, ${additionalInformation}`);
+    console.log(` - ${person.name}, ${person.age}, ${additionalInformation}`);
 }
 
 persons.forEach(logPerson);

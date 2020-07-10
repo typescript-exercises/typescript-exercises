@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import {
     getMaxIndex,
     getMaxElement,
@@ -46,14 +45,6 @@ Higher difficulty bonus exercise:
 
     Avoid duplicates of type declarations.
 
-Run:
-
-    npm run 11
-
-    - OR -
-
-    yarn -s 11
-
 */
 
 interface User {
@@ -92,7 +83,7 @@ function logUser(user: User | null) {
         return;
     }
     const pos = users.indexOf(user) + 1;
-    console.log(` - #${pos} User: ${chalk.green(user.name)}, ${user.age}, ${user.occupation}`);
+    console.log(` - #${pos} User: ${user.name}, ${user.age}, ${user.occupation}`);
 }
 
 function logAdmin(admin: Admin | null) {
@@ -101,53 +92,63 @@ function logAdmin(admin: Admin | null) {
         return;
     }
     const pos = admins.indexOf(admin) + 1;
-    console.log(` - #${pos} Admin: ${chalk.green(admin.name)}, ${admin.age}, ${admin.role}`);
+    console.log(` - #${pos} Admin: ${admin.name}, ${admin.age}, ${admin.role}`);
 }
 
 const compareUsers = (a: User, b: User) => a.age - b.age;
 const compareAdmins = (a: Admin, b: Admin) => a.age - b.age;
-const colorizeIndex = (value: number) => chalk.red(String(value + 1));
+const colorizeIndex = (value: number) => String(value + 1);
 
-console.log(chalk.yellow('Youngest user:'));
+export {
+    getMaxIndex,
+    getMaxElement,
+    getMinIndex,
+    getMinElement,
+    getMedianIndex,
+    getMedianElement,
+    getAverageValue
+};
+
+console.log('Youngest user:');
 logUser(getMinElement(users, compareUsers));
 console.log(` - was ${colorizeIndex(getMinIndex(users, compareUsers))}th to register`);
 
 console.log();
 
-console.log(chalk.yellow('Median user:'));
+console.log('Median user:');
 logUser(getMedianElement(users, compareUsers));
 console.log(` - was ${colorizeIndex(getMedianIndex(users, compareUsers))}th to register`);
 
 console.log();
 
-console.log(chalk.yellow('Oldest user:'));
+console.log('Oldest user:');
 logUser(getMaxElement(users, compareUsers));
 console.log(` - was ${colorizeIndex(getMaxIndex(users, compareUsers))}th to register`);
 
 console.log();
 
-console.log(chalk.yellow('Average user age:'));
-console.log(` - ${chalk.red(String(getAverageValue(users, ({age}: User) => age)))} years`);
+console.log('Average user age:');
+console.log(` - ${String(getAverageValue(users, ({age}: User) => age))} years`);
 
 console.log();
 
-console.log(chalk.yellow('Youngest admin:'));
+console.log('Youngest admin:');
 logAdmin(getMinElement(admins, compareAdmins));
 console.log(` - was ${colorizeIndex(getMinIndex(users, compareUsers))}th to register`);
 
 console.log();
 
-console.log(chalk.yellow('Median admin:'));
+console.log('Median admin:');
 logAdmin(getMedianElement(admins, compareAdmins));
 console.log(` - was ${colorizeIndex(getMedianIndex(users, compareUsers))}th to register`);
 
 console.log();
 
-console.log(chalk.yellow('Oldest admin:'));
+console.log('Oldest admin:');
 logAdmin(getMaxElement(admins, compareAdmins));
 console.log(` - was ${colorizeIndex(getMaxIndex(users, compareUsers))}th to register`);
 
 console.log();
 
-console.log(chalk.yellow('Average admin age:'));
-console.log(` - ${chalk.red(String(getAverageValue(admins, ({age}: Admin) => age)))} years`);
+console.log('Average admin age:');
+console.log(` - ${String(getAverageValue(admins, ({age}: Admin) => age))} years`);

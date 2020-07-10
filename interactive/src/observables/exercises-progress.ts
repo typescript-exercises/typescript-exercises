@@ -26,17 +26,16 @@ export const exercisesProgress = (() => {
             state = {
                 ...state,
                 lastCompletedExerciseNumber: Math.max(state.lastCompletedExerciseNumber, state.currentExerciseNumber),
-                currentExerciseNumber: Math.max(state.currentExerciseNumber + 1, Object.keys(exerciseStructures).length)
+                currentExerciseNumber: Math.min(state.currentExerciseNumber + 1, Object.keys(exerciseStructures).length)
             };
             subject.next(state);
             saveToLocalStorage();
         },
         goToExercise(exerciseNumber: number) {
-            console.log(exerciseNumber);
             state = {
                 ...state,
                 currentExerciseNumber: Math.min(
-                    // state.lastCompletedExerciseNumber + 1,
+                    state.lastCompletedExerciseNumber + 1,
                     Object.keys(exerciseStructures).length,
                     exerciseNumber
                 )
