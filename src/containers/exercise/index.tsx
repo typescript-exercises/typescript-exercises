@@ -142,7 +142,9 @@ export function Exercise({exerciseNumber}: {exerciseNumber: number}) {
                                     <ValidationErrors errors={errors} onClick={onErrorClick} />
                                     <ButtonsWrapper>
                                         {'I give up, '}
-                                        <ExerciseButton onClick={showSolutions}>show possible solution</ExerciseButton>
+                                        <ExerciseButton onClick={showSolutions}>
+                                            show a possible solution
+                                        </ExerciseButton>
                                     </ButtonsWrapper>
                                 </>
                             )}
