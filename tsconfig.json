@@ -1,12 +1,29 @@
 {
   "compilerOptions": {
+    "baseUrl": "src",
     "target": "es5",
-    "module": "commonjs",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "strict": true,
-    "typeRoots": [
-      "exercises/exercise-10/declarations",
-      "exercises/exercise-11/declarations",
-      "node_modules/@types"
-    ]
-  }
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react"
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "src/exercises"
+  ]
 }
