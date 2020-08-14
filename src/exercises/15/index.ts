@@ -28,12 +28,12 @@ Exercise:
 */
 
 Object
-export class ObjectManupulator {
+export class ObjectManipulator {
 
     constructor(protected obj) {}
 
     public set(key, value) {
-        return new ObjectManupulator({...this.obj, [key]: value});
+        return new ObjectManipulator({...this.obj, [key]: value});
     }
 
     public get(key) {
@@ -43,7 +43,7 @@ export class ObjectManupulator {
     public delete(key) {
         const newObj = {...this.obj};
         delete newObj[key];
-        return new ObjectManupulator(newObj);
+        return new ObjectManipulator(newObj);
     }
 
     public getObject() {
