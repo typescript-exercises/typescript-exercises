@@ -73,11 +73,7 @@ export const MonacoEditor = decorateWithAutoResize(
                 );
                 this.models[filename] = model;
                 if (solution !== undefined) {
-                    this.solutionsModels[filename] = editor.createModel(
-                        solution,
-                        language,
-                        Uri.file(`solution-${props.namespace}/${filename}`)
-                    );
+                    this.solutionsModels[filename] = editor.createModel(solution, language);
                 }
             }
             this.solutionsFilenames = Object.keys(this.solutionsModels);
