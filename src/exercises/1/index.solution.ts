@@ -30,6 +30,15 @@ Welcome to:
         7. Module augmentation.
         8. Advanced type mapping.
 
+    Rules and principles:
+
+        1. Avoid using "any" type at all costs.
+        2. Difficulty quickly grows one exercise after another.
+        3. Feel free to send pull-requests if you've came up
+           with improvements!
+        4. Provide feedback to the creator of these exercises.
+        5. Enjoy.
+
 Brief UI guide:
 
     +--------------------------------------------------------------+
