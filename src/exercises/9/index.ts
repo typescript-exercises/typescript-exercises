@@ -16,7 +16,7 @@ Intro:
     In case of error: { status: 'error', error: ERROR_MESSAGE }
 
     The API engineer started creating types for this API and
-    quickly figured out that the amount of types needs to be
+    quickly figured out that the amount of types needed to be
     created is too big.
 
 Exercise:

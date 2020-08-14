@@ -18,7 +18,7 @@ Exercise:
     Implement swap which receives 2 persons and returns them in
     the reverse order. The function itself is already
     there, actually. We just need to provide it with proper types.
-    Also this function shouldn't necessary be limited to just
+    Also this function shouldn't necessarily be limited to just
     Person types, lets type it so that it works with any two types
     specified.
 

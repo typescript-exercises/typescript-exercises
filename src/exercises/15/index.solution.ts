@@ -29,21 +29,21 @@ Exercise:
 
 type ObjectWithNewProp<T, K extends string, V> = T & {[NK in K]: V};
 
-export class ObjectManupulator<T> {
+export class ObjectManipulator<T> {
     constructor(protected obj: T) {}
 
-    public set<K extends string, V>(key: K, value: V): ObjectManupulator<ObjectWithNewProp<T, K, V>> {
-        return new ObjectManupulator({...this.obj, [key]: value} as ObjectWithNewProp<T, K, V>);
+    public set<K extends string, V>(key: K, value: V): ObjectManipulator<ObjectWithNewProp<T, K, V>> {
+        return new ObjectManipulator({...this.obj, [key]: value} as ObjectWithNewProp<T, K, V>);
     }
 
     public get<K extends keyof T>(key: K): T[K] {
         return this.obj[key];
     }
 
-    public delete<K extends keyof T>(key: K): ObjectManupulator<Omit<T, K>> {
+    public delete<K extends keyof T>(key: K): ObjectManipulator<Omit<T, K>> {
         const newObj = {...this.obj};
         delete newObj[key];
-        return new ObjectManupulator(newObj);
+        return new ObjectManipulator(newObj);
     }
 
     public getObject(): T {
