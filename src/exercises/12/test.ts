@@ -33,27 +33,27 @@ typeAssert<
 typeAssert<
     IsTypeEqual<
         typeof getMaxElement,
-        <T>(input: T[], comparator: (a: T, b: T) => number) => T
+        <T>(input: T[], comparator: (a: T, b: T) => number) => T | null
     >
 >();
 
 typeAssert<
     IsTypeEqual<
         typeof getMinElement,
-        <T>(input: T[], comparator: (a: T, b: T) => number) => T
+        <T>(input: T[], comparator: (a: T, b: T) => number) => T | null
     >
 >();
 
 typeAssert<
     IsTypeEqual<
         typeof getMedianElement,
-        <T>(input: T[], comparator: (a: T, b: T) => number) => T
+        <T>(input: T[], comparator: (a: T, b: T) => number) => T | null
     >
 >();
 
 typeAssert<
     IsTypeEqual<
         typeof getAverageValue,
-        <T>(input: T[], getValue: (item: T) => number) => number
+        <T>(input: T[], getValue: (item: T) => number) => number | null
     >
 >();
