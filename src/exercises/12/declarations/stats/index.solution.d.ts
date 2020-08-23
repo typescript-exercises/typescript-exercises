@@ -11,5 +11,5 @@ declare module 'stats' {
     export const getMinElement: GetElement;
     export const getMedianElement: GetElement;
 
-    export const getAverageValue: <T>(input: T[], getValue: (item: T) => number) => number;
+    export const getAverageValue: <T>(input: T[], getValue: (item: T) => number) => number | null;
 }
