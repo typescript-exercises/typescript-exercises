@@ -6,7 +6,7 @@ declare module 'stats' {
     export const getMinIndex: GetIndex;
     export const getMedianIndex: GetIndex;
 
-    type GetElement = <T>(input: T[], comparator: Comparator<T>) => T;
+    type GetElement = <T>(input: T[], comparator: Comparator<T>) => T | null;
     export const getMaxElement: GetElement;
     export const getMinElement: GetElement;
     export const getMedianElement: GetElement;
