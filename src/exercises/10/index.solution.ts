@@ -92,7 +92,7 @@ type PromisifiedObject<T> = {[K in keyof T]: PromiseBasedAsyncFunction<T[K]>};
 
 export function promisifyAll<T extends {[key: string]: any}>(obj: SourceObject<T>): PromisifiedObject<T> {
     const result: Partial<PromisifiedObject<T>> = {};
-    for (const key of Object.keys(result) as (keyof T)[]) {
+    for (const key of Object.keys(obj) as (keyof T)[]) {
         result[key] = promisify(obj[key]);
     }
     return result as PromisifiedObject<T>;
