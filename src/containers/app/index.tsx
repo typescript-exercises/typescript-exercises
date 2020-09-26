@@ -3,7 +3,7 @@ import React from 'react';
 import {load} from 'components/loading-container';
 import {Exercise} from 'containers/exercise';
 import {PageLayout} from 'containers/page-layout';
-import {exercisesProgress} from 'observables/exercises-progress';
+import {urlParams} from 'observables/url-params';
 import {fonts} from './fonts';
 
 const globalStyles = css`
@@ -26,8 +26,8 @@ export function App() {
         <>
             <Global styles={globalStyles} />
             <PageLayout>
-                {load(exercisesProgress.observable$, ({currentExerciseNumber}) => (
-                    <Exercise key={currentExerciseNumber} exerciseNumber={currentExerciseNumber} />
+                {load(urlParams.observable$, (params) => (
+                    <Exercise key={params.exercise} exerciseNumber={Number(params.exercise)} />
                 ))}
             </PageLayout>
         </>

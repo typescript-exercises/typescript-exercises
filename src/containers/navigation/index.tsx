@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
 import React from 'react';
+import {combineLatest} from 'rxjs';
 import {load} from 'components/loading-container';
 import {exerciseStructures} from 'lib/exercise-structures';
 import {exercisesProgress} from 'observables/exercises-progress';
+import {urlParams} from 'observables/url-params';
 
 const Wrapper = styled.div`
     flex: 0 0 auto;
@@ -27,15 +29,14 @@ const NavBarLabel = styled.li`
     opacity: 0.75;
 `;
 
-const NavBarItem = styled.li<{selectable: boolean; current: boolean}>`
+const NavBarItem = styled.li<{completed: boolean; current: boolean}>`
     display: inline-block;
     margin: 0;
     padding: 0;
     position: relative;
     line-height: 30px;
-    color: ${({selectable}) => (selectable ? 'inherit' : 'gray')};
-    // pointer-events: ${({selectable, current}) => (selectable && !current ? 'all' : 'none')};
-    cursor: ${({selectable, current}) => (selectable && !current ? 'pointer' : 'inherit')};
+    color: ${({completed}) => (completed ? 'inherit' : 'gray')};
+    cursor: pointer;
     font-weight: ${({current}) => (current ? 'bold' : 'normal')};
     &::after {
         content: '·';
@@ -51,20 +52,23 @@ export function Navigation() {
     return (
         <Wrapper>
             <NavBar>
-                {load(exercisesProgress.observable$, ({currentExerciseNumber, lastCompletedExerciseNumber}) => (
-                    <>
-                        <NavBarLabel>Exercises</NavBarLabel>
-                        {Object.keys(exerciseStructures).map((exerciseNumber) => (
-                            <NavBarItem
-                                selectable={Number(exerciseNumber) <= lastCompletedExerciseNumber + 1}
-                                current={Number(exerciseNumber) === currentExerciseNumber}
-                                onClick={() => exercisesProgress.goToExercise(Number(exerciseNumber))}
-                                key={exerciseNumber}>
-                                {exerciseNumber}
-                            </NavBarItem>
-                        ))}
-                    </>
-                ))}
+                {load(
+                    combineLatest([exercisesProgress.observable$, urlParams.observable$]),
+                    ([{completedExercises}, params]) => (
+                        <>
+                            <NavBarLabel>Exercises</NavBarLabel>
+                            {Object.keys(exerciseStructures).map((exerciseNumber) => (
+                                <NavBarItem
+                                    completed={completedExercises[exerciseNumber]}
+                                    current={Number(exerciseNumber) === Number(params.exercise)}
+                                    onClick={() => exercisesProgress.goToExercise(Number(exerciseNumber))}
+                                    key={exerciseNumber}>
+                                    {exerciseNumber}
+                                </NavBarItem>
+                            ))}
+                        </>
+                    )
+                )}
             </NavBar>
         </Wrapper>
     );

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {CollapsiblePanel} from 'components/collapsible-panel';
 import {FileTitle} from 'components/file-title';
 import {FileTreeView} from 'components/file-tree-view';
@@ -11,6 +11,7 @@ import {FileTree} from 'lib/file-tree';
 import {ValidationError} from 'lib/validation-error';
 import {createExercise} from 'observables/exercise';
 import {exercisesProgress} from 'observables/exercises-progress';
+import {urlParams} from 'observables/url-params';
 import {checkTypeScriptProject} from 'operators/check-type-script-project';
 
 const lastExerciseNumber = Number(Object.keys(exerciseStructures).pop());
@@ -79,15 +80,24 @@ export function Exercise({exerciseNumber}: {exerciseNumber: number}) {
     const [solutionsVisible, setSolutionsVisible] = useState(false);
     const validationErrors$ = useMemo(() => exercise.observable$.pipe(checkTypeScriptProject()), [exercise]);
     const [selectedFilename, setSelectedFilename] = useState('/index.ts');
+    useEffect(() => {
+        const subscription = urlParams.observable$.subscribe((params) => {
+            setSelectedFilename(String(params.file));
+        });
+        return () => subscription.unsubscribe();
+    }, [setSelectedFilename]);
+
+    const goToFile = useCallback((file: string) => urlParams.extend({file}), []);
+
     const onErrorClick = useCallback(
         (error: ValidationError) => {
             if (!error.file) {
                 return;
             }
-            setSelectedFilename(error.file);
+            goToFile(error.file);
             setPosition(error.start);
         },
-        [setPosition, setSelectedFilename]
+        [setPosition, goToFile]
     );
     const onChange = useCallback(
         (filename: string, content: string) => {
@@ -106,7 +116,7 @@ export function Exercise({exerciseNumber}: {exerciseNumber: number}) {
                 <FileTreeView
                     selectedFilename={selectedFilename}
                     fileTree={exerciseStructures[exerciseNumber]}
-                    onSelectFilename={setSelectedFilename}
+                    onSelectFilename={goToFile}
                     modifiedFilenames={calculateModifiedFilenames(exerciseNumber, fileTree)}
                     revertFile={exercise.revert}
                 />
@@ -144,7 +154,9 @@ export function Exercise({exerciseNumber}: {exerciseNumber: number}) {
                                         {'I give up, '}
                                         <ExerciseButton onClick={showSolutions}>
                                             show a possible solution
-                                        </ExerciseButton>
+                                        </ExerciseButton>{' '}
+                                        &nbsp; or
+                                        <ExerciseButton onClick={exercisesProgress.skipExercise}>skip</ExerciseButton>
                                     </ButtonsWrapper>
                                 </>
                             )}
@@ -152,7 +164,7 @@ export function Exercise({exerciseNumber}: {exerciseNumber: number}) {
                                 <CompletedExerciseWrapper>
                                     <CompletedExerciseLabel>
                                         {exerciseNumber === lastExerciseNumber ? (
-                                            <>Congratulations! You have completed the whole set of exercises.</>
+                                            <>Congratulations! That was the last exercise.</>
                                         ) : (
                                             <>Good job! Exercise {exerciseNumber} is completed.</>
                                         )}
