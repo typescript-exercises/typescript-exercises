@@ -53,9 +53,11 @@ export const persons: Person[] = [
     }
 ];
 
+function isAdmin(person: User | Admin): person is Admin {return (person as Admin).role !== undefined;}
+
 export function logPerson(person: Person) {
     let additionalInformation: string;
-    if (person.role) {
+    if (isAdmin(person)) {
         additionalInformation = person.role;
     } else {
         additionalInformation = person.occupation;
