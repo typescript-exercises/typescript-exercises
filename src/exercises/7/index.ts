@@ -23,11 +23,6 @@ Exercise:
     specified.
 
 */
-
-import { Person } from "../2";
-
-
-
 interface User {
     type: 'user';
     name: string;
