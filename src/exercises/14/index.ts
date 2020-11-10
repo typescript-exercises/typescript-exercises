@@ -43,7 +43,7 @@ Bonus:
  * @param {Array} input
  * @return {Array | Function}
  */
-export function map(mapper, input) {
+export function map<T>(mapper:((item:T)=>T), input:T[]):Function|T[]{
     if (arguments.length === 0) {
         return map;
     }
@@ -74,7 +74,7 @@ export function map(mapper, input) {
  * @param {Array} input
  * @return {Array | Function}
  */
-export function filter(filterer, input) {
+export function filter<T>(filterer:(item:T)=>T, input:T[]):T[]|Function{
     if (arguments.length === 0) {
         return map;
     }
@@ -117,7 +117,7 @@ export function filter(filterer, input) {
  * @param {Array} input
  * @return {* | Function}
  */
-export function reduce(reducer, initialValue, input) {
+export function reduce<T>(reducer:((item:T)=>T), initialValue:number, input):Function|number{
     if (arguments.length === 0) {
         return reduce;
     }
@@ -159,7 +159,7 @@ export function reduce(reducer, initialValue, input) {
  * @param {Number} b
  * @return {Number | Function}
  */
-export function add(a, b) {
+export function add(a:number, b:number) :number |Function{
     if (arguments.length === 0) {
         return add;
     }
@@ -187,7 +187,7 @@ export function add(a, b) {
  * @param {Number} b
  * @return {Number | Function}
  */
-export function subtract(a, b) {
+export function subtract(a:number, b:number):number|Function {
     if (arguments.length === 0) {
         return add;
     }
@@ -216,7 +216,7 @@ export function subtract(a, b) {
  * @param {String} propName
  * @return {* | Function}
  */
-export function prop(obj, propName) {
+export function prop<T,k extends keyof T>(obj:T, propName:k):T[k]|Function{
     if (arguments.length === 0) {
         return prop;
     }
@@ -252,7 +252,7 @@ export function prop(obj, propName) {
  * @param {Function[]} functions
  * @return {*}
  */
-export function pipe(...functions) {
+export function pipe(...functions:Function[]):Function {
     if (arguments.length === 0) {
         return pipe;
     }
