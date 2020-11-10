@@ -71,9 +71,26 @@ export type ApiResponse<T> = (
         error: string;
     }
 );
+type CallbackMethod<T> = (callback: (response: ApiResponse<T>) => void) => void;
+type PromiseMethod<T> = () => Promise<T>;
+export function promisify<T>(arg: CallbackMethod<T>): PromiseMethod<T> {
+    return () => new Promise<T>((resolve, reject) => {
+        arg((response) => {
+            if (response.status == "success") {
+                resolve(response.data);
+            } else {
+                reject(new Error(response.error));
+            }
+        });
+    });
+}
 
-export function promisify(arg: unknown): unknown {
-    return null;
+export function promisifyAll(oldApi) {
+    let promisifiedApi = {};
+    Object.keys(oldApi).forEach(key => {
+        promisifiedApi[key] = promisify(oldApi[key]);
+    });
+    return promisifiedApi;
 }
 
 const oldApi = {
@@ -103,6 +120,7 @@ const oldApi = {
     }
 };
 
+export const apiAll = promisifyAll(oldApi);
 export const api = {
     requestAdmins: promisify(oldApi.requestAdmins),
     requestUsers: promisify(oldApi.requestUsers),
