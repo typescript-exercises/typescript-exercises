@@ -17,7 +17,8 @@ import {checkTypeScriptProject} from 'operators/check-type-script-project';
 const lastExerciseNumber = Number(Object.keys(exerciseStructures).pop());
 
 const ExerciseWrapper = styled.div`
-    height: 100%;
+    flex: 1 0 100%;
+    align-self: stretch;
     display: flex;
     flex-direction: row;
 `;
