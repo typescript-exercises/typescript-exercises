@@ -1,7 +1,9 @@
 {
-  "name": "interactive",
+  "name": "typescript-exercises",
   "version": "0.1.0",
   "private": true,
+  "author": "Marat Dulin",
+  "license": "MIT",
   "dependencies": {
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
