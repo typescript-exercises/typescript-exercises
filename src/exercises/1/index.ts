@@ -76,7 +76,7 @@ Exercise:
 
 */
 
-export type User = unknown;
+export interface User
 
 export const users: unknown[] = [
     {
