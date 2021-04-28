@@ -85,4 +85,4 @@ console.log('Admins of age 23:');
 adminsOfAge23.forEach(logPerson);
 
 // In case if you are stuck:
-// https://www.typescriptlang.org/docs/handbook/functions.html#overloads
+// https://www.typescriptlang.org/docs/handbook/2/functions.html#function-overloads
