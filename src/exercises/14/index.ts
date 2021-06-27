@@ -76,7 +76,7 @@ export function map(mapper, input) {
  */
 export function filter(filterer, input) {
     if (arguments.length === 0) {
-        return map;
+        return filter;
     }
     if (arguments.length === 1) {
         return function subFunction(subInput) {
