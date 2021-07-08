@@ -136,12 +136,10 @@ export class InMemoryFileSystem implements ts.System {
         }
     );
 
-    watchFile = resolvePathWrapper(
-        (path: string, callback: ts.FileWatcherCallback): ts.FileWatcher => {
-            this.fileWatchers[path] = callback;
-            return {close: () => delete this.fileWatchers[path]};
-        }
-    );
+    watchFile = resolvePathWrapper((path: string, callback: ts.FileWatcherCallback): ts.FileWatcher => {
+        this.fileWatchers[path] = callback;
+        return {close: () => delete this.fileWatchers[path]};
+    });
 
     write = () => null;
     writeFile = () => null;

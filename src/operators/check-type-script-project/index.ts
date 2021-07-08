@@ -9,7 +9,7 @@ interface TypeScriptService extends Worker {
     getErrors(): Promise<ValidationError[]>;
 }
 
-// eslint-disable-next-line import/no-webpack-loader-syntax
+// eslint-disable-next-line import/no-webpack-loader-syntax, @typescript-eslint/no-var-requires
 const createService = require('workerize-loader!./service.ts') as () => TypeScriptService;
 
 function fileTreeToFileContents(tree: FileTree): FileContents {

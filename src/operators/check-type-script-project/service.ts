@@ -44,6 +44,6 @@ export function getErrors(): ValidationError[] {
         messageText: ts.formatDiagnostic(error, formatDiagnosticsHost),
         length: error.length!,
         start: error.start!,
-        file: error.file ? ((error.file as unknown) as {resolvedPath: string}).resolvedPath : null
+        file: error.file ? (error.file as unknown as {resolvedPath: string}).resolvedPath : null
     }));
 }
