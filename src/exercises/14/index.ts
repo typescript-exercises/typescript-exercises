@@ -131,9 +131,10 @@ export function reduce(reducer, initialValue, input) {
                     if (arguments.length === 0) {
                         return subSubFunction;
                     }
-                    return input.reduce(reducer, subInitialValue);
+                    return subSubInput.reduce(reducer, subInitialValue);
                 };
             }
+            return subInput.reduce(reducer,subInitialValue);
         }
     }
     if (arguments.length === 2) {
@@ -141,7 +142,7 @@ export function reduce(reducer, initialValue, input) {
             if (arguments.length === 0) {
                 return subFunction;
             }
-            return input.reduce(reducer, initialValue, subInput);
+            return subInput.reduce(reducer, initialValue);
         };
     }
     return input.reduce(reducer, initialValue);
