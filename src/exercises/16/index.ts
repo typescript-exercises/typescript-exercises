@@ -34,7 +34,7 @@
         2. Most of the important updates are listed here:
             https://www.typescriptlang.org/docs/handbook/release-notes/overview.html
 
-        3. Check out Efficient TypeScript book:
+        3. Check out Effective TypeScript book:
             https://effectivetypescript.com/
 
     Credits:
