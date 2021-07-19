@@ -27,7 +27,6 @@ Exercise:
 
 */
 
-Object
 export class ObjectManipulator {
 
     constructor(protected obj) {}
