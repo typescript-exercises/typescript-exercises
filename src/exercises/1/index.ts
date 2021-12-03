@@ -66,7 +66,7 @@ Intro:
     reasons we have decided to store all users right in the code.
     This way we can provide our developers with more
     user-interaction opportunities. With user-related data, at least.
-    All the GDPR-related issues we will solved some other day.
+    All the GDPR-related issues will be solved some other day.
     This would be the base for our future experiments during
     these exercises.
 
