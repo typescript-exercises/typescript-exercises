@@ -62,7 +62,7 @@ Brief UI guide:
 
 Intro:
 
-    We are starting a small community of users. For perfomance
+    We are starting a small community of users. For performance
     reasons we have decided to store all users right in the code.
     This way we can provide our developers with more
     user-interaction opportunities. With user-related data, at least.
