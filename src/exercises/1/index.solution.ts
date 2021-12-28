@@ -105,5 +105,5 @@ users.forEach(logPerson);
 
 /* In case if you are stuck:
 
-// https://www.typescriptlang.org/docs/handbook/interfaces.html#introduction
+// https://www.typescriptlang.org/docs/handbook/2/objects.html
 */
