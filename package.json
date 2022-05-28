@@ -1,35 +1,75 @@
 {
   "name": "typescript-exercises",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
+  "version": "0.1.0",
   "private": true,
+  "author": "Marat Dulin",
+  "license": "MIT",
   "dependencies": {
-    "@types/chai": "^4.2.0",
-    "@types/mz": "^0.0.32",
-    "@types/node": "^12.6.8",
-    "chai": "^4.2.0",
-    "chalk": "^2.4.2",
-    "mz": "^2.7.0",
-    "ts-node": "^8.3.0",
-    "typescript": "^3.5.3"
+    "@emotion/core": "^10.0.28",
+    "@emotion/styled": "^10.0.27",
+    "@types/debounce": "^1.2.0",
+    "@types/jest": "^24.0.0",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.9.0",
+    "@types/react-dom": "^16.9.0",
+    "@types/react-redux": "^7.1.9",
+    "@types/redux": "^3.6.0",
+    "@typescript-eslint/eslint-plugin": "^4.28.2",
+    "@typescript-eslint/parser": "^4.28.2",
+    "babel-eslint": "^10.1.0",
+    "debounce": "^1.2.0",
+    "eslint": "^7.11.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-react": "^1.1.7",
+    "eslint-config-react-app": "^6.0.0",
+    "eslint-plugin-flowtype": "^5.8.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-react-app": "^6.2.2",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "husky": "^4.2.5",
+    "monaco": "^1.201704190613.0",
+    "monaco-editor": "^0.20.0",
+    "monaco-editor-webpack-plugin": "^1.9.0",
+    "prettier": "^2.3.2",
+    "raw-loader": "^4.0.2",
+    "react": "^16.13.1",
+    "react-app-rewired": "^2.1.8",
+    "react-dom": "^16.13.1",
+    "react-scripts": "^4.0.3",
+    "react-spinners": "^0.9.0",
+    "rxjs": "^6.5.5",
+    "typescript": "~3.7.2",
+    "workerize-loader": "^1.3.0"
   },
   "scripts": {
-    "0": "ts-node exercises/exercise-00/index.ts",
-    "1": "ts-node exercises/exercise-01/index.ts",
-    "2": "ts-node exercises/exercise-02/index.ts",
-    "3": "ts-node exercises/exercise-03/index.ts",
-    "4": "ts-node exercises/exercise-04/index.ts",
-    "5": "ts-node exercises/exercise-05/index.ts",
-    "6": "ts-node exercises/exercise-06/index.ts",
-    "7": "ts-node exercises/exercise-07/index.ts",
-    "8": "ts-node exercises/exercise-08/index.ts",
-    "9": "ts-node exercises/exercise-09/index.ts",
-    "10": "ts-node exercises/exercise-10/index.ts",
-    "11": "ts-node exercises/exercise-11/index.ts",
-    "12": "ts-node exercises/exercise-12/index.ts",
-    "13": "ts-node exercises/exercise-13/index.ts",
-    "14": "ts-node exercises/exercise-14/index.ts",
-    "15": "ts-node exercises/exercise-15/index.ts"
+    "start": "EXTEND_ESLINT=true react-app-rewired start",
+    "build": "EXTEND_ESLINT=true react-app-rewired build",
+    "lint": "eslint 'src/**/*.ts{,x}'",
+    "lint-fix": "eslint --fix 'src/**/*.ts{,x}'",
+    "eject": "react-app-rewired eject",
+    "release": "yarn build && rm -Rf release && git clone git@github.com:typescript-exercises/typescript-exercises.github.io.git release && cd release && git checkout gh-pages && rm -Rf * && cp -r ../build/* . && git add -A && git commit -m 'Update website.' && git push"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint"
+    }
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

@@ -1,5 +1,7 @@
 # TypeScript exercises
 
+Start your journey here: https://typescript-exercises.github.io/
+
 The goal: Let everyone play with many different TypeScript features
 and get an overview of TypeScript capabilities and principles.
 
@@ -16,26 +18,19 @@ and get an overview of TypeScript capabilities and principles.
 
 ## Rules and principles
 
- 1. Avoid using `any` type at all costs.
+ 1. Avoid using `any` type at all cost.
 
  2. Difficulty quickly grows one exercise after another.
 
- 3. Don't open next exercises before finishing previous ones.
-    Next exercises may contain spoilers and will prevent you
-    from enjoying the delightful process of TypeScript debugging.
+ 3. Feel free to send pull-requests if you've come up
+    with improvements!
 
- 4. Feel free to send a pull-request with your solutions if you
-    need some additional feedback.
+ 4. Provide feedback to the creator of these exercises.
 
- 5. Provide feedback to the creator of these exercises.
+ 5. Enjoy.
 
- 6. Enjoy.
+## Contributing
 
-## Installation and usage
+ 1. Your contributions are welcome.
 
- 1. Make sure you have `node.js` (and `yarn` if you prefer it over `npm`)
-    installed on your machine.
-
- 2. Start by opening `exercises/exercise-00/index.ts`.
-
- 3. Once done with the exercise, proceed to the next one.
+ 2. `yarn start` starts the development server.
