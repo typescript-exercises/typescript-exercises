@@ -78,7 +78,7 @@ export function requestCurrentServerTime(callback: (response: ApiResponse<number
     });
 }
 
-export function requestCoffeeMachineQueueLength(callback: (response: ApiResponse<number>) => void) {
+export function requestCoffeeMachineQueueLength(callback: (response: ApiResponse<never>) => void) {
     callback({
         status: 'error',
         error: 'Numeric value has exceeded Number.MAX_SAFE_INTEGER.'
