@@ -1,3 +1,5 @@
+import {useTheme} from '@emotion/react';
+import styled from '@emotion/styled';
 import React, {useLayoutEffect, useMemo, useState} from 'react';
 import PulseLoader from 'react-spinners/PulseLoader';
 import {Observable, Subscription} from 'rxjs';
@@ -32,11 +34,24 @@ function useObservable<T>(observable: Observable<T>): T | undefined {
     return value;
 }
 
+const LoadingDiv = styled.div<{backgroundColor: string}>`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: ${(props) => props.backgroundColor};
+`;
+
 function LoadingContainer<T>({observable, render}: {observable: Observable<T>; render: RenderCallback<T>}) {
     const update = useObservable(observable);
+    const theme = useTheme();
 
     if (update === undefined) {
-        return <Loading />;
+        return (
+            <LoadingDiv backgroundColor={theme.background}>
+                <Loading />
+            </LoadingDiv>
+        );
     }
 
     return <>{render(update)}</>;

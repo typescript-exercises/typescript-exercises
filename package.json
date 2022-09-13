@@ -6,6 +6,7 @@
   "license": "MIT",
   "dependencies": {
     "@emotion/core": "^10.0.28",
+    "@emotion/react": "^11.10.4",
     "@emotion/styled": "^10.0.27",
     "@types/debounce": "^1.2.0",
     "@types/jest": "^24.0.0",

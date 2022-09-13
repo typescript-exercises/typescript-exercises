@@ -1,3 +1,4 @@
+import {useTheme} from '@emotion/react';
 import styled from '@emotion/styled';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {CollapsiblePanel} from 'components/collapsible-panel';
@@ -47,20 +48,29 @@ const CompletedExerciseWrapper = styled.div`
     text-align: center;
 `;
 
-const CompletedExerciseLabel = styled.div`
+const CompletedExerciseLabel = styled.div<{color: string}>`
     margin: 20px 0 0;
+    color: ${(props) => props.color};
 `;
 
-const ButtonsWrapper = styled.div`
+const ButtonsWrapper = styled.div<{color: string; backgroundColor: string}>`
     text-align: center;
     margin: 20px 0;
-`;
+    color: ${(props) => props.color};
 
-const ExerciseButton = styled.button`
-    font-size: 16px;
-    text-align: center;
-    & + & {
-        margin-left: 10px;
+    button {
+        border: 1px solid ${(props) => props.color};
+        color: ${(props) => props.color};
+        border-radius: 4px;
+        font-size: 16px;
+        text-align: center;
+        margin: 0 10px;
+        color: ${(props) => props.color};
+        background-color: ${(props) => props.backgroundColor};
+
+        :hover {
+            filter: ${(props) => (props.backgroundColor === '#1e1e1e' ? 'brightness(1.3)' : 'brightness(0.9)')};
+        }
     }
 `;
 
@@ -81,6 +91,8 @@ export function Exercise({exerciseNumber}: {exerciseNumber: number}) {
     const [solutionsVisible, setSolutionsVisible] = useState(false);
     const validationErrors$ = useMemo(() => exercise.observable$.pipe(checkTypeScriptProject()), [exercise]);
     const [selectedFilename, setSelectedFilename] = useState('/index.ts');
+    const theme = useTheme();
+
     useEffect(() => {
         const subscription = urlParams.observable$.subscribe((params) => {
             setSelectedFilename(String(params.file));
@@ -130,7 +142,7 @@ export function Exercise({exerciseNumber}: {exerciseNumber: number}) {
                         selectedFilename={selectedFilename}
                         values={fileTree}
                         onChange={onChange}
-                        theme='vs-light'
+                        theme={theme.style === 'light' ? 'vs' : 'vs-dark'}
                         position={position}
                         onNavigate={() => null}
                         options={{
@@ -151,19 +163,16 @@ export function Exercise({exerciseNumber}: {exerciseNumber: number}) {
                             {errors.length > 0 && (
                                 <>
                                     <ValidationErrors errors={errors} onClick={onErrorClick} />
-                                    <ButtonsWrapper>
+                                    <ButtonsWrapper color={theme.color} backgroundColor={theme.background}>
                                         {'I give up, '}
-                                        <ExerciseButton onClick={showSolutions}>
-                                            show a possible solution
-                                        </ExerciseButton>{' '}
-                                        &nbsp; or
-                                        <ExerciseButton onClick={exercisesProgress.skipExercise}>skip</ExerciseButton>
+                                        <button onClick={showSolutions}>show a possible solution</button> or
+                                        <button onClick={exercisesProgress.skipExercise}>skip</button>
                                     </ButtonsWrapper>
                                 </>
                             )}
                             {errors.length === 0 && (
                                 <CompletedExerciseWrapper>
-                                    <CompletedExerciseLabel>
+                                    <CompletedExerciseLabel color={theme.color}>
                                         {exerciseNumber === lastExerciseNumber ? (
                                             <>Congratulations! That was the last exercise.</>
                                         ) : (
@@ -171,11 +180,9 @@ export function Exercise({exerciseNumber}: {exerciseNumber: number}) {
                                         )}
                                     </CompletedExerciseLabel>
                                     {exerciseNumber !== lastExerciseNumber && (
-                                        <ButtonsWrapper>
-                                            <ExerciseButton onClick={exercisesProgress.completeExercise}>
-                                                Next exercise
-                                            </ExerciseButton>
-                                            <ExerciseButton onClick={showSolutions}>Compare my solution</ExerciseButton>
+                                        <ButtonsWrapper color={theme.color} backgroundColor={theme.background}>
+                                            <button onClick={exercisesProgress.completeExercise}>Next exercise</button>
+                                            <button onClick={showSolutions}>Compare my solution</button>
                                         </ButtonsWrapper>
                                     )}
                                 </CompletedExerciseWrapper>

@@ -55,6 +55,7 @@ export const MonacoEditor = decorateWithAutoResize(
         constructor(props: MonacoEditorProps) {
             super(props);
             this.state = {};
+            editor.setTheme(props.theme || 'vs');
         }
 
         public componentDidMount() {
@@ -106,6 +107,7 @@ export const MonacoEditor = decorateWithAutoResize(
             if (!this.instance) {
                 return;
             }
+
             const newSelectedFilename = this.props.selectedFilename;
             if (newSelectedFilename !== prevProps.selectedFilename) {
                 const model = this.models[newSelectedFilename];
@@ -120,6 +122,9 @@ export const MonacoEditor = decorateWithAutoResize(
                     this.instance.restoreViewState(viewState);
                 }
                 this.instance.focus();
+            }
+            if (this.props.theme !== prevProps.theme) {
+                editor.setTheme(this.props.theme || 'vs');
             }
             if (this.props.position !== prevProps.position) {
                 if (this.props.position !== undefined) {

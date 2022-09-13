@@ -1,12 +1,16 @@
 import styled from '@emotion/styled';
 import React from 'react';
 import {TsLogo} from 'components/header/ts-logo';
+import {ThemeToggle} from 'components/theme-toggle';
 
 const HeaderWrapper = styled.header`
+    display: flex;
     flex: 0 0 auto;
     background: #294e80;
     padding: 10px 16px;
     z-index: 1;
+    justify-content: space-between;
+    align-items: center;
 `;
 
 const HeaderLogo = styled.h1`
@@ -34,7 +38,7 @@ const HeaderSubLogo = styled.span`
     opacity: 0.9;
 `;
 
-export function Header() {
+export function Header({toggleTheme}: {toggleTheme: () => void}) {
     return (
         <HeaderWrapper>
             <HeaderLogo>
@@ -42,6 +46,7 @@ export function Header() {
                 TypeScript
                 <HeaderSubLogo>exercises</HeaderSubLogo>
             </HeaderLogo>
+            <ThemeToggle toggleTheme={toggleTheme} />
         </HeaderWrapper>
     );
 }
