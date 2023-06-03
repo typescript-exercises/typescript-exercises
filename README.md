@@ -5,6 +5,8 @@ Start your journey here: https://typescript-exercises.github.io/
 The goal: Let everyone play with many different TypeScript features
 and get an overview of TypeScript capabilities and principles.
 
+Sponsor me: https://github.com/sponsors/mdevils
+
 ## Things to cover
 
  1. Basic typing.
@@ -18,11 +20,11 @@ and get an overview of TypeScript capabilities and principles.
 
 ## Rules and principles
 
- 1. Avoid using `any` type at all cost.
+ 1. Avoid using `any` type at all costs.
 
  2. Difficulty quickly grows one exercise after another.
 
- 3. Feel free to send pull-requests if you've come up
+ 3. Feel free to send pull requests if you've come up
     with improvements!
 
  4. Provide feedback to the creator of these exercises.
