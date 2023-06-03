@@ -1,12 +1,14 @@
+import {useTheme} from '@emotion/react';
 import styled from '@emotion/styled';
 import React from 'react';
 import {ValidationError} from 'lib/validation-error';
 
-const ValidationErrorsWrapper = styled.ol`
+const ValidationErrorsWrapper = styled.ol<{color: string}>`
     padding: 0;
     margin: 5px 0 5px 40px;
     list-style: none;
     counter-reset: errors;
+    color: ${(props) => props.color};
 `;
 
 const ValidationErrorsItem = styled.li`
@@ -39,8 +41,9 @@ export const ValidationErrors = React.memo(function ValidationErrors({
     errors: ValidationError[];
     onClick: (error: ValidationError) => void;
 }) {
+    const theme = useTheme();
     return (
-        <ValidationErrorsWrapper>
+        <ValidationErrorsWrapper color={theme.color}>
             {errors.map((error, index) => (
                 <ValidationErrorsItem key={index} onClick={() => onClick(error)}>
                     {error.messageText}

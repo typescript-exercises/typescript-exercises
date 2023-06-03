@@ -1,3 +1,4 @@
+import {useTheme} from '@emotion/react';
 import styled from '@emotion/styled';
 import {editor} from 'monaco-editor';
 import React, {useMemo} from 'react';
@@ -29,13 +30,14 @@ const EditorArea = styled.div`
     flex-direction: column;
 `;
 
-const EditorAreaCaption = styled.div`
+const EditorAreaCaption = styled.div<{backgroundColor: string; color: string}>`
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
     flex: 0 0 30px;
-    background: #f6f6f6;
+    background: ${(props) => props.backgroundColor};
+    color: ${(props) => props.color};
 `;
 
 const EditorAreaTitle = styled.div`
@@ -60,6 +62,7 @@ function createTreeFromFilenames(filenames: string[]): FileTree {
 export function DiffDialog(props: DiffDialogProps) {
     const {onClose, filenames, selectedFilename, onSelectFile, ...otherProps} = props;
     const fileTree = useMemo(() => createTreeFromFilenames(filenames), [filenames]);
+    const theme = useTheme();
     return (
         <Dialog onClose={onClose}>
             <Panes>
@@ -74,7 +77,7 @@ export function DiffDialog(props: DiffDialogProps) {
                 </CollapsiblePanel>
                 <EditorArea>
                     <FileTitle filename={selectedFilename} readOnly={false} />
-                    <EditorAreaCaption>
+                    <EditorAreaCaption backgroundColor={theme.background} color={theme.color}>
                         <EditorAreaTitle>Possible solution</EditorAreaTitle>
                         <EditorAreaTitle>Current version</EditorAreaTitle>
                     </EditorAreaCaption>

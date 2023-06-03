@@ -1,3 +1,4 @@
+import {useTheme} from '@emotion/react';
 import styled from '@emotion/styled';
 import React, {useMemo} from 'react';
 import {load} from 'components/loading-container';
@@ -19,7 +20,6 @@ const Header = styled.div<{collapsed: boolean; orientation: Orientation}>`
     transform: rotate(0) translateX(0);
     transform-origin: top left;
     cursor: pointer;
-    background: #eee;
     border-bottom: 1px #ddd solid;
     ${({collapsed, orientation}) =>
         collapsed && orientation === 'vertical'
@@ -32,12 +32,13 @@ const Header = styled.div<{collapsed: boolean; orientation: Orientation}>`
             : ''}
 `;
 
-const HeaderLabel = styled.div`
+const HeaderLabel = styled.div<{color: string}>`
     flex: 1 1 auto;
     font-weight: bold;
     color: rgba(0, 0, 0, 0.75);
     line-height: 30px;
     padding: 0 10px;
+    color: ${(props) => props.color};
 `;
 
 const Content = styled.div<{collapsed: boolean; orientation: Orientation}>`
@@ -70,9 +71,9 @@ const CollapseButton = styled.button`
     }
 `;
 
-const Wrapper = styled.div<{collapsed: boolean; orientation: Orientation}>`
+const Wrapper = styled.div<{collapsed: boolean; orientation: Orientation; background: string}>`
     position: relative;
-    background-color: ${({collapsed}) => (collapsed ? '#eee' : `#f6f6f6`)};
+    background-color: ${(props) => props.background};
     display: flex;
     flex-direction: column;
     flex: 0 0 ${({collapsed, orientation}) => (collapsed ? '30px' : `${orientation === 'vertical' ? width : height}px`)};
@@ -81,7 +82,7 @@ const Wrapper = styled.div<{collapsed: boolean; orientation: Orientation}>`
         ${({orientation}) => (orientation === 'vertical' ? 'border-right' : 'border-bottom')}: none;
         ${({orientation}) => (orientation === 'vertical' ? 'border-left' : 'border-top')}: 1px #ddd solid;
     }
-    transition: flex-basis 0.2s linear, background-color 0.2s linear;
+    transition: flex-basis 0.2s linear;
 `;
 
 export function CollapsiblePanel({
@@ -96,14 +97,15 @@ export function CollapsiblePanel({
     children: React.ReactNode;
 }) {
     const [collapse, expand] = useMemo(() => [() => ui.collapsePanel(id), () => ui.expandPanel(id)], [id]);
+    const theme = useTheme();
 
     return load(ui.observable$, ({panels}) => (
-        <Wrapper collapsed={panels[id].collapsed} orientation={orientation}>
+        <Wrapper collapsed={panels[id].collapsed} orientation={orientation} background={theme.background}>
             <Header
                 collapsed={panels[id].collapsed}
                 orientation={orientation}
                 onClick={panels[id].collapsed ? expand : collapse}>
-                <HeaderLabel>{header}</HeaderLabel>
+                <HeaderLabel color={theme.color}>{header}</HeaderLabel>
                 <CollapseButton />
             </Header>
             <Content collapsed={panels[id].collapsed} orientation={orientation}>

@@ -1,3 +1,4 @@
+import {useTheme} from '@emotion/react';
 import styled from '@emotion/styled';
 import React, {useCallback, useMemo} from 'react';
 import {FileTree} from 'lib/file-tree';
@@ -85,11 +86,17 @@ const FileTreeBranchRevert = styled.button`
     }
 `;
 
-const FileTreeBranchLabel = styled.div<{selected: boolean; selectable: boolean; readOnly: boolean}>`
+const FileTreeBranchLabel = styled.div<{
+    selected: boolean;
+    selectable: boolean;
+    readOnly: boolean;
+    mode: 'light' | 'dark';
+}>`
     display: block;
     cursor: ${({selectable}) => (selectable ? 'pointer' : 'default')};
     pointer-events: ${({selectable}) => (selectable ? 'all' : 'none')};
-    color: ${({selected, readOnly}) => (selected ? 'white' : readOnly ? '#555' : 'black')};
+    color: ${({selected, readOnly, mode}) =>
+        selected ? 'white' : readOnly ? '#555' : mode === 'light' ? 'black' : 'white'};
     height: 30px;
     line-height: 30px;
     font-size: 14px;
@@ -130,13 +137,15 @@ function FileTreeViewBranch({
     const selected = selectedFilename === branch.filename;
     const isDirectory = branch.children.length > 0;
     const revert = useCallback(() => revertFile(branch.filename), [branch, revertFile]);
+    const theme = useTheme();
     return (
         <FileTreeBranchWrapper>
             <FileTreeBranchLabel
                 onClick={onClick}
                 selectable={branch.children.length === 0}
                 selected={selected}
-                readOnly={branch.readOnly}>
+                readOnly={branch.readOnly}
+                mode={theme.style}>
                 <FileTreeBranchLabelText>
                     {isDirectory ? (
                         <DirectoryIcon color='gray' />
