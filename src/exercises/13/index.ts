@@ -101,6 +101,6 @@ console.log('Early birds:');
     .filter((person) => dateWizard.dateDetails(person.registered).hours < 10)
     .forEach(logPerson);
 
-// In case if you are stuck:
+// In case you are stuck:
 // https://www.typescriptlang.org/docs/handbook/modules.html#ambient-modules
 // https://www.typescriptlang.org/docs/handbook/declaration-merging.html

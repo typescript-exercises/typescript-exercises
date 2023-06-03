@@ -17,7 +17,7 @@ Exercise:
 
 Higher difficulty bonus exercise:
 
-    Exclude "type" from filter criterias.
+    Exclude "type" from filter criteria.
 
 */
 
@@ -103,6 +103,6 @@ filterUsers(
     }
 ).forEach(logPerson);
 
-// In case if you are stuck:
+// In case you are stuck:
 // https://www.typescriptlang.org/docs/handbook/utility-types.html
 // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-8.html#predefined-conditional-types

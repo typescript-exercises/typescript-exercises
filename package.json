@@ -4,7 +4,18 @@
   "private": true,
   "author": "Marat Dulin",
   "license": "MIT",
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/mdevils"
+    },
+    {
+      "type": "patreon",
+      "url": "https://www.patreon.com/mdevils"
+    }
+  ],
   "dependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.10",
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
     "@types/debounce": "^1.2.0",
@@ -38,7 +49,7 @@
     "react": "^16.13.1",
     "react-app-rewired": "^2.1.8",
     "react-dom": "^16.13.1",
-    "react-scripts": "^4.0.3",
+    "react-scripts": "^5.0.1",
     "react-spinners": "^0.9.0",
     "rxjs": "^6.5.5",
     "typescript": "~3.7.2",
@@ -49,12 +60,11 @@
     "build": "EXTEND_ESLINT=true react-app-rewired build",
     "lint": "eslint 'src/**/*.ts{,x}'",
     "lint-fix": "eslint --fix 'src/**/*.ts{,x}'",
-    "eject": "react-app-rewired eject",
-    "release": "yarn build && rm -Rf release && git clone git@github.com:typescript-exercises/typescript-exercises.github.io.git release && cd release && git checkout gh-pages && rm -Rf * && cp -r ../build/* . && git add -A && git commit -m 'Update website.' && git push"
+    "eject": "react-app-rewired eject"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn lint"
+      "pre-commit": "npm run lint"
     }
   },
   "eslintConfig": {

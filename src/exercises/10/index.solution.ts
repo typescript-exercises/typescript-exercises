@@ -159,5 +159,5 @@ startTheApp().then(
     }
 );
 
-// In case if you are stuck:
-// https://www.typescriptlang.org/docs/handbook/generics.html
+// In case you are stuck:
+// https://www.typescriptlang.org/docs/handbook/2/generics.html
