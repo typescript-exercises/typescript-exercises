@@ -52,7 +52,7 @@
     "react": "^16.13.1",
     "react-app-rewired": "^2.1.8",
     "react-dom": "^16.13.1",
-    "react-scripts": "^5.0.1",
+    "react-scripts": "^4.0.3",
     "react-spinners": "^0.9.0",
     "rxjs": "^6.5.5",
     "typescript": "~3.7.2",
