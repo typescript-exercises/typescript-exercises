@@ -34,7 +34,7 @@ Welcome to:
 
         1. Avoid using "any" type at all costs.
         2. Difficulty quickly grows one exercise after another.
-        3. Feel free to send pull-requests if you've came up
+        3. Feel free to send pull-requests if you've come up
            with improvements!
         4. Provide feedback to the creator of these exercises.
         5. Enjoy.
@@ -66,7 +66,7 @@ Intro:
     reasons we have decided to store all users right in the code.
     This way we can provide our developers with more
     user-interaction opportunities. With user-related data, at least.
-    All the GDPR-related issues we will solved some other day.
+    All the GDPR-related issues will be solved some other day.
     This would be the base for our future experiments during
     these exercises.
 
