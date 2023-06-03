@@ -26,5 +26,6 @@ jobs:
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
+          token: ${{ secrets.PAGES_UPDATE_TOKEN }}
           folder: build
           repository-name: typescript-exercises/typescript-exercises.github.io
