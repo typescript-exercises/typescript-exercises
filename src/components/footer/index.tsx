@@ -24,7 +24,7 @@ export function Footer() {
         <FooterWrapper>
             &copy; {currentYear} <a href='https://github.com/mdevils'>Marat Dulin</a>,{' '}
             <a href='https://github.com/typescript-exercises/typescript-exercises'>contribute</a>,{' '}
-            <a href='https://www.patreon.com/mdevils'>support this project</a>
+            <a href='https://github.com/sponsors/mdevils'>support this project</a>
         </FooterWrapper>
     );
 }

@@ -6,7 +6,7 @@ Intro:
     forward and introduce some order. We are in Germany after all.
     Let's add a couple of admins.
 
-    Initially we only had users in the in-memory database. After
+    Initially, we only had users in the in-memory database. After
     introducing Admins, we need to fix the types so that
     everything works well together.
 
@@ -62,4 +62,4 @@ export function logPerson(user: User) {
 persons.forEach(logPerson);
 
 // In case if you are stuck:
-// https://www.typescriptlang.org/docs/handbook/2/types-from-types.html
+// https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types

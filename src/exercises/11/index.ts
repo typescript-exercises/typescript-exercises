@@ -94,5 +94,5 @@ function logPerson(person: Person) {
     .concat(users, admins)
     .forEach(logPerson);
 
-// In case if you are stuck:
+// In case you are stuck:
 // https://www.typescriptlang.org/docs/handbook/modules.html#ambient-modules
