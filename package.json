@@ -5,6 +5,7 @@
   "author": "Marat Dulin",
   "license": "MIT",
   "dependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.10",
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
     "@types/debounce": "^1.2.0",
