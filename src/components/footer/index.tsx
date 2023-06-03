@@ -4,13 +4,12 @@ import React from 'react';
 
 const FooterWrapper = styled.footer<{backgroundColor: string}>`
     flex: 0 0 auto;
-    border-top: 1px solid #294e80;
+    border-top: 1px solid #dddddd;
     padding: 5px 0;
     text-align: center;
     color: gray;
     font-size: 12px;
     background-color: ${(props) => props.backgroundColor};
-    border-color: #dddddd; #faf9f8;
     a,
     a:hover,
     a:visited,

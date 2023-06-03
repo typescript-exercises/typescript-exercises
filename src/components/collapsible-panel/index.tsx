@@ -35,7 +35,6 @@ const Header = styled.div<{collapsed: boolean; orientation: Orientation}>`
 const HeaderLabel = styled.div<{color: string}>`
     flex: 1 1 auto;
     font-weight: bold;
-    color: rgba(0, 0, 0, 0.75);
     line-height: 30px;
     padding: 0 10px;
     color: ${(props) => props.color};
@@ -101,6 +100,9 @@ export function CollapsiblePanel({
 
     return load(ui.observable$, ({panels}) => (
         <Wrapper collapsed={panels[id].collapsed} orientation={orientation} background={theme.background}>
+            <Content collapsed={panels[id].collapsed} orientation={orientation}>
+                {children}
+            </Content>
             <Header
                 collapsed={panels[id].collapsed}
                 orientation={orientation}
@@ -108,9 +110,6 @@ export function CollapsiblePanel({
                 <HeaderLabel color={theme.color}>{header}</HeaderLabel>
                 <CollapseButton />
             </Header>
-            <Content collapsed={panels[id].collapsed} orientation={orientation}>
-                {children}
-            </Content>
         </Wrapper>
     ));
 }
