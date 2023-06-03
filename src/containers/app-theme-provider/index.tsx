@@ -19,8 +19,12 @@ export function AppThemeProvider({children}: {children: ReactNode}) {
         if (localStorage.getItem('theme')) {
             return localStorage.getItem('theme') === 'light' ? 'light' : 'dark';
         }
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            return 'dark';
+        try {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                return 'dark';
+            }
+        } catch (e) {
+            // ok
         }
         return 'light';
     });
