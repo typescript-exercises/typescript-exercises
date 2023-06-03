@@ -119,6 +119,6 @@ function test5() {
 
 [test1, test2, test3, test4, test5].forEach((test) => test());
 
-// In case if you are stuck:
-// https://www.typescriptlang.org/docs/handbook/2/everyday-types.html
+// In case you are stuck:
+// https://www.typescriptlang.org/docs/handbook/2/objects.html#tuple-types
 // https://www.typescriptlang.org/docs/handbook/2/generics.html
