@@ -34,7 +34,7 @@ Welcome to:
 
         1. Avoid using "any" type at all costs.
         2. Difficulty quickly grows one exercise after another.
-        3. Feel free to send pull-requests if you've come up
+        3. Feel free to send pull requests if you've come up
            with improvements!
         4. Provide feedback to the creator of these exercises.
         5. Enjoy.
@@ -67,7 +67,7 @@ Intro:
     This way we can provide our developers with more
     user-interaction opportunities. With user-related data, at least.
     All the GDPR-related issues will be solved some other day.
-    This would be the base for our future experiments during
+    This would be the basis for our future experiments during
     these exercises.
 
 Exercise:
@@ -99,7 +99,5 @@ console.log('Users:');
 users.forEach(logPerson);
 
 
-/* In case if you are stuck:
-
+// In case you are stuck:
 // https://www.typescriptlang.org/docs/handbook/2/objects.html
-*/
