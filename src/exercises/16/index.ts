@@ -41,6 +41,9 @@
 
         Marat Dulin, https://mdevils.com
 
-        Support my new ideas on Patreon:
+        Support me on GitHub Sponsors:
+            https://github.com/sponsors/mdevils
+
+        Support me on Patreon:
             https://www.patreon.com/mdevils
 */

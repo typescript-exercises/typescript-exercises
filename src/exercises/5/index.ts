@@ -17,7 +17,7 @@ Exercise:
 
 Higher difficulty bonus exercise:
 
-    Exclude "type" from filter criterias.
+    Exclude "type" from filter criteria.
 
 */
 
