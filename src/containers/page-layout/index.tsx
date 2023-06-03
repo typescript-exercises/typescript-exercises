@@ -17,10 +17,10 @@ const PageLayoutMain = styled.main`
     position: relative;
 `;
 
-export function PageLayout({children, toggleTheme}: {children: React.ReactNode; toggleTheme: () => void}) {
+export function PageLayout({children}: {children: React.ReactNode}) {
     return (
         <PageLayoutWrapper>
-            <Header toggleTheme={toggleTheme} />
+            <Header />
             <Navigation />
             <PageLayoutMain>{children}</PageLayoutMain>
             <Footer />

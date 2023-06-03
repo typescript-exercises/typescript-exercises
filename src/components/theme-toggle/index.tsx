@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
-import React from 'react';
+import React, {useCallback} from 'react';
+import {useAppTheme} from 'containers/app-theme-provider';
 import {MoonLogo} from './icons/MoonLogo';
 import {SunLogo} from './icons/SunLogo';
 
@@ -10,13 +11,11 @@ interface ToggleProps {
 const Toggle = styled.div<ToggleProps>`
     width: 50px;
     max-height: 30px;
-    display: flex;
     padding: 5px;
-    background-color: #1a202c;
     display: block;
     border-radius: 1000px;
     cursor: pointer;
-    box-shadow: 0px 5px 20px -10px #000000;
+    box-shadow: 0 5px 20px -10px #000000;
     transition: background-color 0.2s ease-in;
     background-color: #ddd;
 
@@ -25,7 +24,6 @@ const Toggle = styled.div<ToggleProps>`
         align-items: center;
         width: 20px;
         height: 20px;
-        background-color: white;
         border-radius: 1000px;
         transition: margin-left 0.2s ease-in, background-color 0.2s ease-in;
         margin-left: ${(props) => (props.isDark ? '30px' : '0')};
@@ -33,18 +31,15 @@ const Toggle = styled.div<ToggleProps>`
     }
 `;
 
-export function ThemeToggle({toggleTheme}: {toggleTheme: () => void}) {
-    const [darkMode, setDarkMode] = React.useState(localStorage.getItem('theme') === 'dark');
-
-    const click = () => {
-        toggleTheme();
-        setDarkMode((current) => !current);
-        localStorage.setItem('theme', darkMode ? 'light' : 'dark');
-    };
+export function ThemeToggle() {
+    const {theme, setTheme} = useAppTheme();
+    const toggleTheme = useCallback(() => {
+        setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+    }, [setTheme]);
 
     return (
-        <Toggle isDark={darkMode} id='toggle' onClick={() => click()}>
-            <div className='toggle-inner'>{darkMode ? <SunLogo /> : <MoonLogo />} </div>
+        <Toggle isDark={theme === 'dark'} id='toggle' onClick={toggleTheme}>
+            <div className='toggle-inner'>{theme === 'dark' ? <SunLogo /> : <MoonLogo />} </div>
         </Toggle>
     );
 }

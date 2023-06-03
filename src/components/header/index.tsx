@@ -38,7 +38,7 @@ const HeaderSubLogo = styled.span`
     opacity: 0.9;
 `;
 
-export function Header({toggleTheme}: {toggleTheme: () => void}) {
+export function Header() {
     return (
         <HeaderWrapper>
             <HeaderLogo>
@@ -46,7 +46,7 @@ export function Header({toggleTheme}: {toggleTheme: () => void}) {
                 TypeScript
                 <HeaderSubLogo>exercises</HeaderSubLogo>
             </HeaderLogo>
-            <ThemeToggle toggleTheme={toggleTheme} />
+            <ThemeToggle />
         </HeaderWrapper>
     );
 }

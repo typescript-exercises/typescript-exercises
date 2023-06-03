@@ -1,8 +1,7 @@
 import {Global, css} from '@emotion/core';
-import {ThemeProvider} from '@emotion/react';
-import React, {useState} from 'react';
-import {darkTheme, lightTheme} from 'styles/themes';
+import React from 'react';
 import {load} from 'components/loading-container';
+import {useAppTheme} from 'containers/app-theme-provider';
 import {Exercise} from 'containers/exercise';
 import {PageLayout} from 'containers/page-layout';
 import {urlParams} from 'observables/url-params';
@@ -39,24 +38,16 @@ const globalStylesDark = css`
 `;
 
 export function App() {
-    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
-
-    const toggleTheme = () => {
-        if (theme === 'light') {
-            setTheme('dark');
-        } else {
-            setTheme('light');
-        }
-    };
+    const {theme} = useAppTheme();
 
     return (
-        <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
+        <>
             <Global styles={theme === 'light' ? globalStylesLight : globalStylesDark} />
-            <PageLayout toggleTheme={toggleTheme}>
+            <PageLayout>
                 {load(urlParams.observable$, (params) => (
                     <Exercise key={params.exercise} exerciseNumber={Number(params.exercise)} />
                 ))}
             </PageLayout>
-        </ThemeProvider>
+        </>
     );
 }
