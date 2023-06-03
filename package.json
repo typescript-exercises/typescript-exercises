@@ -45,6 +45,7 @@
     "monaco": "^1.201704190613.0",
     "monaco-editor": "^0.20.0",
     "monaco-editor-webpack-plugin": "^1.9.0",
+    "path": "^0.12.7",
     "prettier": "^2.3.2",
     "qs": "^6.11.2",
     "raw-loader": "^4.0.2",
