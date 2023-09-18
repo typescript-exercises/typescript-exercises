@@ -26,7 +26,7 @@ Exercise:
     node_modules/date-wizard/index.d.ts
 
     Extend type declaration of that module in:
-    module-augmentations/date-wizard/index.ts
+    module-augmentations/date-wizard/index.d.ts
 
 */
 
