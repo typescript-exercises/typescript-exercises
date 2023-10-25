@@ -29,4 +29,5 @@ Sponsor me: https://github.com/sponsors/mdevils
 ## Contributing
 
  1. Your contributions are welcome.
- 2. `yarn start` starts the development server.
+ 2. Use node 12
+ 3. `yarn start` starts the development server.
