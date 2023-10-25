@@ -21,18 +21,12 @@ Sponsor me: https://github.com/sponsors/mdevils
 ## Rules and principles
 
  1. Avoid using `any` type at all costs.
-
  2. Difficulty quickly grows one exercise after another.
-
- 3. Feel free to send pull requests if you've come up
-    with improvements!
-
+ 3. Feel free to send pull requests if you've come up with improvements!
  4. Provide feedback to the creator of these exercises.
-
  5. Enjoy.
 
 ## Contributing
 
  1. Your contributions are welcome.
-
  2. `yarn start` starts the development server.
