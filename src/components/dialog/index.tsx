@@ -39,7 +39,7 @@ export function Dialog({children, onClose}: {children: React.ReactNode; onClose:
     const theme = useTheme();
 
     useEffect(() => {
-        const handleDialogClose = (e) => {
+        const handleDialogClose = (e: KeyboardEvent) => {
             if (e.key === 'Escape') {
                 onClose();
             }
@@ -50,7 +50,7 @@ export function Dialog({children, onClose}: {children: React.ReactNode; onClose:
         return () => {
             window.removeEventListener('keydown', handleDialogClose);
         };
-    }, []);
+    }, [onClose]);
 
     return (
         <DialogBackground onClick={onClose}>
