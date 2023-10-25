@@ -67,6 +67,7 @@ const ButtonsWrapper = styled.div<{color: string; backgroundColor: string}>`
         margin: 0 10px;
         color: ${(props) => props.color};
         background-color: ${(props) => props.backgroundColor};
+        cursor: pointer;
 
         :hover {
             filter: ${(props) => (props.backgroundColor === '#1e1e1e' ? 'brightness(1.3)' : 'brightness(0.9)')};
