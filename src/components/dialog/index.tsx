@@ -1,6 +1,6 @@
 import {useTheme} from '@emotion/react';
 import styled from '@emotion/styled';
-import React from 'react';
+import React, {useEffect} from 'react';
 
 const DialogBackground = styled.div`
     display: block;
@@ -37,6 +37,21 @@ const stopEventPropagation = (e: React.UIEvent) => e.stopPropagation();
 
 export function Dialog({children, onClose}: {children: React.ReactNode; onClose: () => void}) {
     const theme = useTheme();
+
+    useEffect(() => {
+        const handleDialogClose = (e) => {
+            if (e.key === 'Escape') {
+                onClose();
+            }
+        };
+
+        window.addEventListener('keydown', handleDialogClose);
+
+        return () => {
+            window.removeEventListener('keydown', handleDialogClose);
+        };
+    }, []);
+
     return (
         <DialogBackground onClick={onClose}>
             <DialogWrapper onClick={stopEventPropagation} backgroundColor={theme.background}>
