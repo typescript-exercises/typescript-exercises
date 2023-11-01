@@ -31,6 +31,7 @@ const CloseButton = styled.button`
     right: 10px;
     border: none;
     border-radius: 4px;
+    cursor: pointer;
 `;
 
 const stopEventPropagation = (e: React.UIEvent) => e.stopPropagation();
