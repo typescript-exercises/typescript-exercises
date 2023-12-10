@@ -17,7 +17,7 @@ Intro:
     1. DateDetails interface is missing
        time related fields such as hours, minutes and
        seconds.
-    2. Function "pad" is exported but not declared.
+    2. Method "pad" is exported but not declared.
 
 Exercise:
 
