@@ -37,10 +37,10 @@ typeAssert<IsTypeEqual<typeof subtractResult1, number>>();
 const subtractResult2 = subtract(2, 1);
 typeAssert<IsTypeEqual<typeof subtractResult2, number>>();
 
-const propResult1 = prop()('x')()({x: 1, y: 'Hello'});
+const propResult1 = prop()({x: 1, y: 'Hello'})()('x');
 typeAssert<IsTypeEqual<typeof propResult1, number>>();
 
-const propResult2 = prop('y', {x: 1, y: 'Hello'});
+const propResult2 = prop({x: 1, y: 'Hello'}, 'y');
 typeAssert<IsTypeEqual<typeof propResult2, string>>();
 
 const pipeResult1 = pipe(filter(Boolean), map(String), reduce((a: string, b: string) => a + b, ''))([0, 1, 2, 3]);
