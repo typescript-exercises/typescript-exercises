@@ -92,3 +92,4 @@ persons.filter(isPowerUser).forEach(logPerson);
 
 // In case you are stuck:
 // https://www.typescriptlang.org/docs/handbook/utility-types.html
+// https://www.typescriptlang.org/docs/handbook/2/objects.html#intersection-types
