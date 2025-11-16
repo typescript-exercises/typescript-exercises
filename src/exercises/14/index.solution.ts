@@ -10,7 +10,7 @@ Intro:
     invent and publish some npm packages. Following the
     new trend of functional programming in JS we
     decided to develop a functional utility library.
-    This will put us on the bleading edge since we are
+    This will put us on the bleeding edge since we are
     pretty much sure no one else did anything similar.
     We also provided some jsdoc along with the
     functions, but it might sometimes be inaccurate.
