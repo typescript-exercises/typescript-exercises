@@ -1,119 +1,111 @@
-import {IsTypeEqual, IsTypeAssignable, Not, typeAssert} from 'type-assertions';
+import {IsTypeEqual, typeAssert} from 'type-assertions';
 import {
-    ApiResponse,
-    requestAdmins,
-    requestUsers,
-    requestCoffeeMachineQueueLength,
-    requestCurrentServerTime
+    NotificationContact,
+    ResponseData,
+    UnwrapPromise,
+    IsAdmin,
+    sendNotification,
+    getResponse
 } from './index';
 
+interface User {
+    type: 'user';
+    name: string;
+    age: number;
+    occupation: string;
+}
+
+interface Admin {
+    type: 'admin';
+    name: string;
+    age: number;
+    role: string;
+}
+
+// Test NotificationContact
 typeAssert<
-    IsTypeAssignable<
-        ApiResponse<number>,
-        {status: 'success'; data: number}
-    >
->();
-typeAssert<
-    IsTypeAssignable<
-        ApiResponse<number>,
-        {status: 'error'; error: string}
-    >
->();
-typeAssert<
-    IsTypeAssignable<
-        ApiResponse<boolean>,
-        {status: 'success'; data: boolean}
-    >
->();
-typeAssert<
-    IsTypeAssignable<
-        ApiResponse<boolean>,
-        {status: 'error'; error: string}
-    >
->();
-typeAssert<
-    Not<
-        IsTypeEqual<
-            ApiResponse<number>,
-            unknown
-        >
+    IsTypeEqual<
+        NotificationContact<User>,
+        'email'
     >
 >();
 
 typeAssert<
     IsTypeEqual<
-        typeof requestAdmins,
-        (
-            callback: (
-                response: {
-                    status: 'success';
-                    data: {
-                            type: 'admin';
-                            name: string;
-                            age: number;
-                            role: string;
-                    }[]
-                } | {
-                    status: 'error';
-                    error: string;
-                }
-            ) => void
-        ) => void
+        NotificationContact<Admin>,
+        'sms'
+    >
+>();
+
+// Test ResponseData
+typeAssert<
+    IsTypeEqual<
+        ResponseData<string>,
+        string
     >
 >();
 
 typeAssert<
     IsTypeEqual<
-        typeof requestUsers,
-        (
-            callback: (
-                response: {
-                    status: 'success';
-                    data: {
-                            type: 'user';
-                            name: string;
-                            age: number;
-                            occupation: string;
-                    }[]
-                } | {
-                    status: 'error';
-                    error: string;
-                }
-            ) => void
-        ) => void
+        ResponseData<null>,
+        'No data available'
     >
 >();
 
 typeAssert<
     IsTypeEqual<
-        typeof requestCurrentServerTime,
-        (
-            callback: (
-                response: {
-                    status: 'success';
-                    data: number;
-                } | {
-                    status: 'error';
-                    error: string;
-                }
-            ) => void
-        ) => void
+        ResponseData<undefined>,
+        'No data available'
     >
 >();
 
 typeAssert<
     IsTypeEqual<
-        typeof requestCoffeeMachineQueueLength,
-        (
-            callback: (
-                response: {
-                    status: 'success';
-                    data: number;
-                } | {
-                    status: 'error';
-                    error: string;
-                }
-            ) => void
-        ) => void
+        ResponseData<number>,
+        number
+    >
+>();
+
+// Test UnwrapPromise
+typeAssert<
+    IsTypeEqual<
+        UnwrapPromise<Promise<string>>,
+        string
+    >
+>();
+
+typeAssert<
+    IsTypeEqual<
+        UnwrapPromise<Promise<number>>,
+        number
+    >
+>();
+
+typeAssert<
+    IsTypeEqual<
+        UnwrapPromise<string>,
+        string
+    >
+>();
+
+typeAssert<
+    IsTypeEqual<
+        UnwrapPromise<boolean>,
+        boolean
+    >
+>();
+
+// Test IsAdmin
+typeAssert<
+    IsTypeEqual<
+        IsAdmin<Admin>,
+        true
+    >
+>();
+
+typeAssert<
+    IsTypeEqual<
+        IsAdmin<User>,
+        false
     >
 >();

@@ -1,70 +1,42 @@
-import {IsTypeEqual, IsTypeAssignable, FirstArgument, typeAssert} from 'type-assertions';
-import {api, promisify, ApiResponse} from './index';
+import {IsTypeEqual, FirstArgument, typeAssert} from 'type-assertions';
+import {logPerson, Person, persons} from './index';
 
 typeAssert<
-    IsTypeAssignable<
-        FirstArgument<typeof promisify>,
-        (callback: (response: ApiResponse<number>) => void) => void
-    >
->();
-typeAssert<
-    IsTypeAssignable<
-        FirstArgument<typeof promisify>,
-        (callback: (response: ApiResponse<string>) => void) => void
-    >
->();
-typeAssert<
-    IsTypeAssignable<
-        ReturnType<typeof promisify>,
-        () => Promise<number>
-    >
->();
-typeAssert<
-    IsTypeAssignable<
-        ReturnType<typeof promisify>,
-        () => Promise<boolean>
+    IsTypeEqual<
+        Person,
+        {name: string; age: number} & (
+            | {type: 'user'; occupation: string}
+            | {type: 'admin'; role: string}
+            | {type: 'powerUser'; occupation: string; role: string}
+        )
     >
 >();
 
 typeAssert<
     IsTypeEqual<
-        typeof api.requestAdmins,
-        () => Promise<
-            {
-                type: 'admin';
-                name: string;
-                age: number;
-                role: string;
-            }[]
-        >
+        typeof persons,
+        ({name: string; age: number} & (
+            | {type: 'user'; occupation: string}
+            | {type: 'admin'; role: string}
+            | {type: 'powerUser'; occupation: string; role: string}
+        ))[]
     >
 >();
 
 typeAssert<
     IsTypeEqual<
-        typeof api.requestUsers,
-        () => Promise<
-            {
-                type: 'user';
-                name: string;
-                age: number;
-                occupation: string;
-            }[]
-        >
+        FirstArgument<typeof logPerson>,
+        {name: string; age: number} & (
+            | {type: 'user'; occupation: string}
+            | {type: 'admin'; role: string}
+            | {type: 'powerUser'; occupation: string; role: string}
+        )
     >
 >();
 
 typeAssert<
     IsTypeEqual<
-        typeof api.requestCurrentServerTime,
-        () => Promise<number>
+        ReturnType<typeof logPerson>,
+        void
     >
 >();
-
-typeAssert<
-    IsTypeEqual<
-        typeof api.requestCoffeeMachineQueueLength,
-        () => Promise<number>
-    >
->();
-

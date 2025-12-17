@@ -1,59 +1,119 @@
-import {IsTypeEqual, typeAssert} from 'type-assertions';
+import {IsTypeEqual, IsTypeAssignable, Not, typeAssert} from 'type-assertions';
 import {
-    getMaxIndex,
-    getMaxElement,
-    getMinIndex,
-    getMinElement,
-    getMedianIndex,
-    getMedianElement,
-    getAverageValue
+    ApiResponse,
+    requestAdmins,
+    requestUsers,
+    requestCoffeeMachineQueueLength,
+    requestCurrentServerTime
 } from './index';
 
 typeAssert<
-    IsTypeEqual<
-        typeof getMaxIndex,
-        <T>(input: T[], comparator: (a: T, b: T) => number) => number
+    IsTypeAssignable<
+        ApiResponse<number>,
+        {status: 'success'; data: number}
+    >
+>();
+typeAssert<
+    IsTypeAssignable<
+        ApiResponse<number>,
+        {status: 'error'; error: string}
+    >
+>();
+typeAssert<
+    IsTypeAssignable<
+        ApiResponse<boolean>,
+        {status: 'success'; data: boolean}
+    >
+>();
+typeAssert<
+    IsTypeAssignable<
+        ApiResponse<boolean>,
+        {status: 'error'; error: string}
+    >
+>();
+typeAssert<
+    Not<
+        IsTypeEqual<
+            ApiResponse<number>,
+            unknown
+        >
     >
 >();
 
 typeAssert<
     IsTypeEqual<
-        typeof getMinIndex,
-        <T>(input: T[], comparator: (a: T, b: T) => number) => number
+        typeof requestAdmins,
+        (
+            callback: (
+                response: {
+                    status: 'success';
+                    data: {
+                            type: 'admin';
+                            name: string;
+                            age: number;
+                            role: string;
+                    }[]
+                } | {
+                    status: 'error';
+                    error: string;
+                }
+            ) => void
+        ) => void
     >
 >();
 
 typeAssert<
     IsTypeEqual<
-        typeof getMedianIndex,
-        <T>(input: T[], comparator: (a: T, b: T) => number) => number
+        typeof requestUsers,
+        (
+            callback: (
+                response: {
+                    status: 'success';
+                    data: {
+                            type: 'user';
+                            name: string;
+                            age: number;
+                            occupation: string;
+                    }[]
+                } | {
+                    status: 'error';
+                    error: string;
+                }
+            ) => void
+        ) => void
     >
 >();
 
 typeAssert<
     IsTypeEqual<
-        typeof getMaxElement,
-        <T>(input: T[], comparator: (a: T, b: T) => number) => T | null
+        typeof requestCurrentServerTime,
+        (
+            callback: (
+                response: {
+                    status: 'success';
+                    data: number;
+                } | {
+                    status: 'error';
+                    error: string;
+                }
+            ) => void
+        ) => void
     >
 >();
 
 typeAssert<
     IsTypeEqual<
-        typeof getMinElement,
-        <T>(input: T[], comparator: (a: T, b: T) => number) => T | null
-    >
->();
-
-typeAssert<
-    IsTypeEqual<
-        typeof getMedianElement,
-        <T>(input: T[], comparator: (a: T, b: T) => number) => T | null
-    >
->();
-
-typeAssert<
-    IsTypeEqual<
-        typeof getAverageValue,
-        <T>(input: T[], getValue: (item: T) => number) => number | null
+        typeof requestCoffeeMachineQueueLength,
+        (
+            callback: (
+                response: {
+                    status: 'success';
+                    data: number;
+                } | {
+                    status: 'error';
+                    error: string;
+                }
+            ) => void
+        ) => void
     >
 >();

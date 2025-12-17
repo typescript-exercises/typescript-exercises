@@ -1,42 +1,26 @@
-import {IsTypeEqual, FirstArgument, typeAssert} from 'type-assertions';
-import {logPerson, Person, persons} from './index';
+import {IsTypeEqual, typeAssert} from 'type-assertions';
+import {swap} from './index';
 
+const pair1 = swap(123, 'hello');
 typeAssert<
     IsTypeEqual<
-        Person,
-        {name: string; age: number} & (
-            | {type: 'user'; occupation: string}
-            | {type: 'admin'; role: string}
-            | {type: 'powerUser'; occupation: string; role: string}
-        )
+        typeof pair1,
+        [string, number]
     >
 >();
 
+const pair2 = swap(true as const, false as const);
 typeAssert<
     IsTypeEqual<
-        typeof persons,
-        ({name: string; age: number} & (
-            | {type: 'user'; occupation: string}
-            | {type: 'admin'; role: string}
-            | {type: 'powerUser'; occupation: string; role: string}
-        ))[]
+        typeof pair2,
+        [false, true]
     >
 >();
 
+const pair3 = swap(null, undefined);
 typeAssert<
     IsTypeEqual<
-        FirstArgument<typeof logPerson>,
-        {name: string; age: number} & (
-            | {type: 'user'; occupation: string}
-            | {type: 'admin'; role: string}
-            | {type: 'powerUser'; occupation: string; role: string}
-        )
-    >
->();
-
-typeAssert<
-    IsTypeEqual<
-        ReturnType<typeof logPerson>,
-        void
+        typeof pair3,
+        [undefined, null]
     >
 >();

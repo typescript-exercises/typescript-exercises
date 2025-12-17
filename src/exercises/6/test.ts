@@ -1,69 +1,65 @@
-import {IsTypeEqual, FirstArgument, typeAssert} from 'type-assertions';
-import {logPerson, Person, persons, filterPersons} from './index';
+import {IsTypeEqual, typeAssert} from 'type-assertions';
+import {
+    PermissionMap,
+    UserStatistics,
+    BasicPersonInfo,
+    PersonType,
+    NonTypePersonKeys,
+    getBasicInfo,
+    logPersonType
+} from './index';
 
+// Test PermissionMap
 typeAssert<
     IsTypeEqual<
-        FirstArgument<typeof filterPersons>,
-        ({name: string; age: number} & ({type: 'user'; occupation: string} | {type: 'admin'; role: string}))[]
+        PermissionMap,
+        Record<string, boolean>
     >
 >();
 
-const filtered1 = filterPersons(persons, 'user', {});
+// Test UserStatistics
 typeAssert<
     IsTypeEqual<
-        typeof filtered1,
-        {type: 'user'; name: string; age: number; occupation: string}[]
+        UserStatistics,
+        Record<string, number>
     >
 >();
 
-const filtered2 = filterPersons(persons, 'user', {name: 'Max Mustermann', age: 25, occupation: 'Chimney sweep'});
+// Test BasicPersonInfo
 typeAssert<
     IsTypeEqual<
-        typeof filtered2,
-        {type: 'user'; name: string; age: number; occupation: string}[]
+        BasicPersonInfo,
+        {name: string; age: number}
     >
 >();
 
-const filtered3 = filterPersons(persons, 'admin', {});
+// Test PersonType
 typeAssert<
     IsTypeEqual<
-        typeof filtered3,
-        {type: 'admin'; name: string; age: number; role: string}[]
+        PersonType,
+        'user' | 'admin'
     >
 >();
 
-const filtered4 = filterPersons(persons, 'admin', {name: 'Jane Doe', age: 32, role: 'Administrator'});
+// Test NonTypePersonKeys
 typeAssert<
     IsTypeEqual<
-        typeof filtered4,
-        {type: 'admin'; name: string; age: number; role: string}[]
+        NonTypePersonKeys,
+        'name' | 'age'
     >
 >();
 
+// Test function signatures
 typeAssert<
     IsTypeEqual<
-        Person,
-        {name: string; age: number} & ({type: 'user'; occupation: string} | {type: 'admin'; role: string})
-    >
->();
-
-typeAssert<
-    IsTypeEqual<
-        typeof persons,
-        ({name: string; age: number} & ({type: 'user'; occupation: string} | {type: 'admin'; role: string}))[]
-    >
->();
-
-typeAssert<
-    IsTypeEqual<
-        FirstArgument<typeof logPerson>,
-        {name: string; age: number} & ({type: 'user'; occupation: string} | {type: 'admin'; role: string})
+        ReturnType<typeof getBasicInfo>,
+        {name: string; age: number}
     >
 >();
 
 typeAssert<
     IsTypeEqual<
-        ReturnType<typeof logPerson>,
-        void
+        Parameters<typeof logPersonType>[0],
+        'user' | 'admin'
     >
 >();

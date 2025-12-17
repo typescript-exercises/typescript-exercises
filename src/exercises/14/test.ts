@@ -1,50 +1,111 @@
-import {typeAssert, IsTypeEqual} from 'type-assertions/index';
-import {map, reduce, filter, add, subtract, prop, pipe} from './index';
+import {IsTypeEqual, typeAssert} from 'type-assertions';
+import {
+    ApiRoute,
+    ApiRouteWithId,
+    HttpMethod,
+    ApiEndpoint,
+    EntityEvent,
+    EntityType,
+    ActionType
+} from './index';
 
-const mapResult1 = map()(String)()([1, 2, 3]);
-typeAssert<IsTypeEqual<typeof mapResult1, string[]>>();
+// Test ApiRoute
+typeAssert<
+    IsTypeEqual<
+        ApiRoute<'users'>,
+        '/api/users'
+    >
+>();
 
-const mapResult2 = map(Boolean, [1, 0, 1]);
-typeAssert<IsTypeEqual<typeof mapResult2, boolean[]>>();
+typeAssert<
+    IsTypeEqual<
+        ApiRoute<'admins'>,
+        '/api/admins'
+    >
+>();
 
-const reduceResult1 = reduce()((a: number, b: number) => a + b)()(0)()([1, 2, 3]);
-typeAssert<IsTypeEqual<typeof reduceResult1, number>>();
+// Test ApiRouteWithId
+typeAssert<
+    IsTypeEqual<
+        ApiRouteWithId<'users'>,
+        '/api/users/:id'
+    >
+>();
 
-const reduceResult2 = reduce(add, 0, [1, 2, 3]);
-typeAssert<IsTypeEqual<typeof reduceResult2, number>>();
+typeAssert<
+    IsTypeEqual<
+        ApiRouteWithId<'admins'>,
+        '/api/admins/:id'
+    >
+>();
 
-const reduceResult3 = reduce(subtract, 0, [1, 2, 3]);
-typeAssert<IsTypeEqual<typeof reduceResult3, number>>();
+// Test HttpMethod
+typeAssert<
+    IsTypeEqual<
+        HttpMethod,
+        'GET' | 'POST' | 'PUT' | 'DELETE'
+    >
+>();
 
-const reduceResult4 = reduce((a: string, b: string) => a + b, '', ['1', '2', '3']);
-typeAssert<IsTypeEqual<typeof reduceResult4, string>>();
+// Test ApiEndpoint
+typeAssert<
+    IsTypeEqual<
+        ApiEndpoint<'GET', 'users'>,
+        'GET /api/users'
+    >
+>();
 
-const filterResult1 = filter()((n: number) => n !== 0)()([0, 1, 2]);
-typeAssert<IsTypeEqual<typeof filterResult1, number[]>>();
+typeAssert<
+    IsTypeEqual<
+        ApiEndpoint<'POST', 'admins'>,
+        'POST /api/admins'
+    >
+>();
 
-const filterResult2 = filter(Boolean, [0, 1, 2]);
-typeAssert<IsTypeEqual<typeof filterResult2, number[]>>();
+typeAssert<
+    IsTypeEqual<
+        ApiEndpoint<'DELETE', 'users'>,
+        'DELETE /api/users'
+    >
+>();
 
-const addResult1 = add()(1)()(2);
-typeAssert<IsTypeEqual<typeof addResult1, number>>();
+// Test EntityEvent
+typeAssert<
+    IsTypeEqual<
+        EntityEvent<'users', 'created'>,
+        'users:created'
+    >
+>();
 
-const addResult2 = add(1, 2);
-typeAssert<IsTypeEqual<typeof addResult2, number>>();
+typeAssert<
+    IsTypeEqual<
+        EntityEvent<'admins', 'updated'>,
+        'admins:updated'
+    >
+>();
 
-const subtractResult1 = subtract()(2)()(1);
-typeAssert<IsTypeEqual<typeof subtractResult1, number>>();
+typeAssert<
+    IsTypeEqual<
+        EntityEvent<'users', 'deleted'>,
+        'users:deleted'
+    >
+>();
 
-const subtractResult2 = subtract(2, 1);
-typeAssert<IsTypeEqual<typeof subtractResult2, number>>();
+// Test combined types
+typeAssert<
+    IsTypeEqual<
+        ApiEndpoint<HttpMethod, EntityType>,
+        'GET /api/users' | 'GET /api/admins' |
+        'POST /api/users' | 'POST /api/admins' |
+        'PUT /api/users' | 'PUT /api/admins' |
+        'DELETE /api/users' | 'DELETE /api/admins'
+    >
+>();
 
-const propResult1 = prop()('x')()({x: 1, y: 'Hello'});
-typeAssert<IsTypeEqual<typeof propResult1, number>>();
-
-const propResult2 = prop('y', {x: 1, y: 'Hello'});
-typeAssert<IsTypeEqual<typeof propResult2, string>>();
-
-const pipeResult1 = pipe(filter(Boolean), map(String), reduce((a: string, b: string) => a + b, ''))([0, 1, 2, 3]);
-typeAssert<IsTypeEqual<typeof pipeResult1, string>>();
-
-const pipeResult2 = pipe()()(filter(Boolean), map(String))([0, 1, 2, 3]);
-typeAssert<IsTypeEqual<typeof pipeResult2, string[]>>();
+typeAssert<
+    IsTypeEqual<
+        EntityEvent<EntityType, ActionType>,
+        'users:created' | 'users:updated' | 'users:deleted' |
+        'admins:created' | 'admins:updated' | 'admins:deleted'
+    >
+>();

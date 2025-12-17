@@ -2,36 +2,18 @@
 
 Intro:
 
-    We have asynchronous functions now, advanced technology.
-    This makes us a tech startup officially now.
-    But one of the consultants spoiled our dreams about
-    inevitable future IT leadership.
-    He said that callback-based asynchronicity is not
-    popular anymore and everyone should use Promises.
-    He promised that if we switch to Promises, this would
-    bring promising results.
+    Project grew and we ended up in a situation with
+    some users starting to have more influence.
+    Therefore, we decided to create a new person type
+    called PowerUser which is supposed to combine
+    everything User and Admin have.
 
 Exercise:
 
-    We don't want to reimplement all the data-requesting
-    functions. Let's decorate the old callback-based
-    functions with the new Promise-compatible result.
-    The final function should return a Promise which
-    would resolve with the final data directly
-    (i.e. users or admins) or would reject with an error
-    (or type Error).
-
-    The function should be named promisify.
-
-Higher difficulty bonus exercise:
-
-    Create a function promisifyAll which accepts an object
-    with functions and returns a new object where each of
-    the function is promisified.
-
-    Rewrite api creation accordingly:
-
-        const api = promisifyAll(oldApi);
+    Define type PowerUser which should have all fields
+    from both User and Admin (except for type),
+    and also have type 'powerUser' without duplicating
+    all the fields in the code.
 
 */
 
@@ -49,98 +31,63 @@ interface Admin {
     role: string;
 }
 
-type Person = User | Admin;
+type PowerUser = unknown;
 
-const admins: Admin[] = [
-    { type: 'admin', name: 'Jane Doe', age: 32, role: 'Administrator' },
-    { type: 'admin', name: 'Bruce Willis', age: 64, role: 'World saver' }
-];
+export type Person = User | Admin | PowerUser;
 
-const users: User[] = [
+export const persons: Person[] = [
     { type: 'user', name: 'Max Mustermann', age: 25, occupation: 'Chimney sweep' },
-    { type: 'user', name: 'Kate Müller', age: 23, occupation: 'Astronaut' }
+    { type: 'admin', name: 'Jane Doe', age: 32, role: 'Administrator' },
+    { type: 'user', name: 'Kate Müller', age: 23, occupation: 'Astronaut' },
+    { type: 'admin', name: 'Bruce Willis', age: 64, role: 'World saver' },
+    {
+        type: 'powerUser',
+        name: 'Nikki Stone',
+        age: 45,
+        role: 'Moderator',
+        occupation: 'Cat groomer'
+    }
 ];
 
-export type ApiResponse<T> = (
-    {
-        status: 'success';
-        data: T;
-    } |
-    {
-        status: 'error';
-        error: string;
-    }
-);
-
-export function promisify(arg: unknown): unknown {
-    return null;
+function isAdmin(person: Person): person is Admin {
+    return person.type === 'admin';
 }
 
-const oldApi = {
-    requestAdmins(callback: (response: ApiResponse<Admin[]>) => void) {
-        callback({
-            status: 'success',
-            data: admins
-        });
-    },
-    requestUsers(callback: (response: ApiResponse<User[]>) => void) {
-        callback({
-            status: 'success',
-            data: users
-        });
-    },
-    requestCurrentServerTime(callback: (response: ApiResponse<number>) => void) {
-        callback({
-            status: 'success',
-            data: Date.now()
-        });
-    },
-    requestCoffeeMachineQueueLength(callback: (response: ApiResponse<number>) => void) {
-        callback({
-            status: 'error',
-            error: 'Numeric value has exceeded Number.MAX_SAFE_INTEGER.'
-        });
-    }
-};
-
-export const api = {
-    requestAdmins: promisify(oldApi.requestAdmins),
-    requestUsers: promisify(oldApi.requestUsers),
-    requestCurrentServerTime: promisify(oldApi.requestCurrentServerTime),
-    requestCoffeeMachineQueueLength: promisify(oldApi.requestCoffeeMachineQueueLength)
-};
-
-function logPerson(person: Person) {
-    console.log(
-        ` - ${person.name}, ${person.age}, ${person.type === 'admin' ? person.role : person.occupation}`
-    );
+function isUser(person: Person): person is User {
+    return person.type === 'user';
 }
 
-async function startTheApp() {
-    console.log('Admins:');
-    (await api.requestAdmins()).forEach(logPerson);
-    console.log();
-
-    console.log('Users:');
-    (await api.requestUsers()).forEach(logPerson);
-    console.log();
-
-    console.log('Server time:');
-    console.log(`   ${new Date(await api.requestCurrentServerTime()).toLocaleString()}`);
-    console.log();
-
-    console.log('Coffee machine queue length:');
-    console.log(`   ${await api.requestCoffeeMachineQueueLength()}`);
+function isPowerUser(person: Person): person is PowerUser {
+    return person.type === 'powerUser';
 }
 
-startTheApp().then(
-    () => {
-        console.log('Success!');
-    },
-    (e: Error) => {
-        console.log(`Error: "${e.message}", but it's fine, sometimes errors are inevitable.`);
+export function logPerson(person: Person) {
+    let additionalInformation: string = '';
+    if (isAdmin(person)) {
+        additionalInformation = person.role;
     }
-);
+    if (isUser(person)) {
+        additionalInformation = person.occupation;
+    }
+    if (isPowerUser(person)) {
+        additionalInformation = `${person.role}, ${person.occupation}`;
+    }
+    console.log(`${person.name}, ${person.age}, ${additionalInformation}`);
+}
+
+console.log('Admins:');
+persons.filter(isAdmin).forEach(logPerson);
+
+console.log();
+
+console.log('Users:');
+persons.filter(isUser).forEach(logPerson);
+
+console.log();
+
+console.log('Power users:');
+persons.filter(isPowerUser).forEach(logPerson);
 
 // In case you are stuck:
-// https://www.typescriptlang.org/docs/handbook/2/generics.html
+// https://www.typescriptlang.org/docs/handbook/utility-types.html
+// https://www.typescriptlang.org/docs/handbook/2/objects.html#intersection-types

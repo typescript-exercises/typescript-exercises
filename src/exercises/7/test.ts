@@ -1,26 +1,69 @@
-import {IsTypeEqual, typeAssert} from 'type-assertions';
-import {swap} from './index';
+import {IsTypeEqual, FirstArgument, typeAssert} from 'type-assertions';
+import {logPerson, Person, persons, filterPersons} from './index';
 
-const pair1 = swap(123, 'hello');
 typeAssert<
     IsTypeEqual<
-        typeof pair1,
-        [string, number]
+        FirstArgument<typeof filterPersons>,
+        ({name: string; age: number} & ({type: 'user'; occupation: string} | {type: 'admin'; role: string}))[]
     >
 >();
 
-const pair2 = swap(true as const, false as const);
+const filtered1 = filterPersons(persons, 'user', {});
 typeAssert<
     IsTypeEqual<
-        typeof pair2,
-        [false, true]
+        typeof filtered1,
+        {type: 'user'; name: string; age: number; occupation: string}[]
     >
 >();
 
-const pair3 = swap(null, undefined);
+const filtered2 = filterPersons(persons, 'user', {name: 'Max Mustermann', age: 25, occupation: 'Chimney sweep'});
 typeAssert<
     IsTypeEqual<
-        typeof pair3,
-        [undefined, null]
+        typeof filtered2,
+        {type: 'user'; name: string; age: number; occupation: string}[]
+    >
+>();
+
+const filtered3 = filterPersons(persons, 'admin', {});
+typeAssert<
+    IsTypeEqual<
+        typeof filtered3,
+        {type: 'admin'; name: string; age: number; role: string}[]
+    >
+>();
+
+const filtered4 = filterPersons(persons, 'admin', {name: 'Jane Doe', age: 32, role: 'Administrator'});
+typeAssert<
+    IsTypeEqual<
+        typeof filtered4,
+        {type: 'admin'; name: string; age: number; role: string}[]
+    >
+>();
+
+typeAssert<
+    IsTypeEqual<
+        Person,
+        {name: string; age: number} & ({type: 'user'; occupation: string} | {type: 'admin'; role: string})
+    >
+>();
+
+typeAssert<
+    IsTypeEqual<
+        typeof persons,
+        ({name: string; age: number} & ({type: 'user'; occupation: string} | {type: 'admin'; role: string}))[]
+    >
+>();
+
+typeAssert<
+    IsTypeEqual<
+        FirstArgument<typeof logPerson>,
+        {name: string; age: number} & ({type: 'user'; occupation: string} | {type: 'admin'; role: string})
+    >
+>();
+
+typeAssert<
+    IsTypeEqual<
+        ReturnType<typeof logPerson>,
+        void
     >
 >();

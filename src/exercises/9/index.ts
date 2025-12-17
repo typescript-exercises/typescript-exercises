@@ -2,28 +2,43 @@
 
 Intro:
 
-    PowerUsers idea was bad. Once those users got
-    extended permissions, they started bullying others
-    and we lost a lot of great users.
-    As a response we spent all the remaining money
-    on the marketing and got even more users.
-    We need to start preparing to move everything to a
-    real database. For now we just do some mocks.
+    The name-swapping experiment was a huge success!
+    It confused everyone so much that they invited
+    more friends just to see the chaos. We're growing!
+    (For the wrong reasons, but still!)
 
-    The server API format was decided to be the following:
+    Now marketing (which is just Karen, who also handles
+    HR and orders coffee) decreed that "push notifications
+    are dead" and "email is the new blockchain." This
+    conclusion came from a podcast she listened to at
+    1.5x speed during her commute.
 
-    In case of success: { status: 'success', data: RESPONSE_DATA }
-    In case of error: { status: 'error', error: ERROR_MESSAGE }
+    The plan: Admins get SMS, users get email. Why?
+    Karen tried both and SMS "felt more urgent." When
+    we asked for data to support this decision, she said
+    "data is a lagging indicator of intuition." We're
+    still parsing what that means.
 
-    The API engineer started creating types for this API and
-    quickly figured out that the amount of types needed to be
-    created is too big.
+    Our senior dev implemented this with 50+ function
+    overloads because he "doesn't trust generics." The
+    CTO suggested we "just use any." This is the same
+    person who stores passwords in definitely-not-passwords.txt.
 
 Exercise:
 
-    Remove UsersApiResponse and AdminsApiResponse types
-    and use generic type ApiResponse in order to specify API
-    response formats for each of the functions.
+    Create types that behave differently based on their input type:
+
+    1. NotificationContact<T> - a type that represents the correct
+       notification method: Admins use 'sms', Users use 'email'
+
+    2. ResponseData<T> - a type that handles API responses: if the
+       data exists, keep its type; if null/undefined, represent
+       'No data available' instead
+
+    3. UnwrapPromise<T> - a type that extracts the value type from
+       a Promise, or keeps the type unchanged if it's not a Promise
+
+    4. IsAdmin<T> - a type-level boolean: true for Admin, false for User
 
 */
 
@@ -41,130 +56,58 @@ interface Admin {
     role: string;
 }
 
-type Person = User | Admin;
+export type Person = User | Admin;
 
-const admins: Admin[] = [
+export const admins: Admin[] = [
     { type: 'admin', name: 'Jane Doe', age: 32, role: 'Administrator' },
     { type: 'admin', name: 'Bruce Willis', age: 64, role: 'World saver' }
 ];
 
-const users: User[] = [
+export const users: User[] = [
     { type: 'user', name: 'Max Mustermann', age: 25, occupation: 'Chimney sweep' },
     { type: 'user', name: 'Kate Müller', age: 23, occupation: 'Astronaut' }
 ];
 
-export type ApiResponse<T> = unknown;
+// Define these conditional types:
 
-type AdminsApiResponse = (
-    {
-        status: 'success';
-        data: Admin[];
-    } |
-    {
-        status: 'error';
-        error: string;
+export type NotificationContact<T> = unknown;
+
+export type ResponseData<T> = unknown;
+
+export type UnwrapPromise<T> = unknown;
+
+export type IsAdmin<T> = unknown;
+
+// Usage examples:
+
+export function sendNotification<T extends Person>(
+    person: T,
+    message: string,
+    via: NotificationContact<T>
+) {
+    console.log(`Sending notification to ${person.name} via ${via}: ${message}`);
+}
+
+export function getResponse<T>(data: T): ResponseData<T> {
+    if (data === null || data === undefined) {
+        return 'No data available' as ResponseData<T>;
     }
-);
-
-export function requestAdmins(callback: (response: AdminsApiResponse) => void) {
-    callback({
-        status: 'success',
-        data: admins
-    });
+    return data as ResponseData<T>;
 }
 
-type UsersApiResponse = (
-    {
-        status: 'success';
-        data: User[];
-    } |
-    {
-        status: 'error';
-        error: string;
+export async function processValue<T>(value: T): Promise<UnwrapPromise<T>> {
+    if (value instanceof Promise) {
+        return await value as UnwrapPromise<T>;
     }
-);
-
-export function requestUsers(callback: (response: UsersApiResponse) => void) {
-    callback({
-        status: 'success',
-        data: users
-    });
+    return value as UnwrapPromise<T>;
 }
 
-export function requestCurrentServerTime(callback: (response: unknown) => void) {
-    callback({
-        status: 'success',
-        data: Date.now()
-    });
-}
+// Test the notification system
+sendNotification(admins[0], 'Server is down!', 'sms');
+sendNotification(users[0], 'Welcome to our platform', 'email');
 
-export function requestCoffeeMachineQueueLength(callback: (response: unknown) => void) {
-    callback({
-        status: 'error',
-        error: 'Numeric value has exceeded Number.MAX_SAFE_INTEGER.'
-    });
-}
-
-function logPerson(person: Person) {
-    console.log(
-        ` - ${person.name}, ${person.age}, ${person.type === 'admin' ? person.role : person.occupation}`
-    );
-}
-
-function startTheApp(callback: (error: Error | null) => void) {
-    requestAdmins((adminsResponse) => {
-        console.log('Admins:');
-        if (adminsResponse.status === 'success') {
-            adminsResponse.data.forEach(logPerson);
-        } else {
-            return callback(new Error(adminsResponse.error));
-        }
-
-        console.log();
-
-        requestUsers((usersResponse) => {
-            console.log('Users:');
-            if (usersResponse.status === 'success') {
-                usersResponse.data.forEach(logPerson);
-            } else {
-                return callback(new Error(usersResponse.error));
-            }
-
-            console.log();
-
-            requestCurrentServerTime((serverTimeResponse) => {
-                console.log('Server time:');
-                if (serverTimeResponse.status === 'success') {
-                    console.log(`   ${new Date(serverTimeResponse.data).toLocaleString()}`);
-                } else {
-                    return callback(new Error(serverTimeResponse.error));
-                }
-
-                console.log();
-
-                requestCoffeeMachineQueueLength((coffeeMachineQueueLengthResponse) => {
-                    console.log('Coffee machine queue length:');
-                    if (coffeeMachineQueueLengthResponse.status === 'success') {
-                        console.log(`   ${coffeeMachineQueueLengthResponse.data}`);
-                    } else {
-                        return callback(new Error(coffeeMachineQueueLengthResponse.error));
-                    }
-
-                    callback(null);
-                });
-            });
-        });
-    });
-}
-
-startTheApp((e: Error | null) => {
-    console.log();
-    if (e) {
-        console.log(`Error: "${e.message}", but it's fine, sometimes errors are inevitable.`)
-    } else {
-        console.log('Success!');
-    }
-});
+console.log(getResponse('Hello')); // Should return 'Hello'
+console.log(getResponse(null)); // Should return 'No data available'
 
 // In case you are stuck:
-// https://www.typescriptlang.org/docs/handbook/2/generics.html
+// https://www.typescriptlang.org/docs/handbook/2/conditional-types.html

@@ -13,10 +13,16 @@ Sponsor me: https://github.com/sponsors/mdevils
  2. Refining types.
  3. Union types.
  4. Merged types.
- 5. Generics.
- 6. Type declarations.
- 7. Module augmentation.
- 8. Advanced type mapping.
+ 5. Utility types.
+ 6. Generics.
+ 7. Conditional types.
+ 8. Const assertions and type inference.
+ 9. Template literal types.
+ 10. Type declarations.
+ 11. Module augmentation.
+ 12. Exhaustiveness checking.
+ 13. Immutability patterns.
+ 14. Advanced type mapping.
 
 ## Rules and principles
 

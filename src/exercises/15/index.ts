@@ -1,51 +1,98 @@
+import {
+    strReverse,
+    strToLower,
+    strToUpper,
+    strRandomize,
+    strInvertCase
+} from 'str-utils';
+
 /*
 
 Intro:
 
-    Our attempt to Open Source didn't work quite as
-    expected. It turned out there were already many
-    existing functional JS libraries.
-
-    All the remaining developers left the company as
-    well. It seems that they are joining a very
-    ambitious startup which re-invented a juicer and
-    raised millions of dollars.
-    Too bad we cannot compete with this kind of
-    financing even though we believe our idea is
-    great.
-
-    It's time to shine for the last time and publish
-    our new invention: object-constructor as our CTO
-    named it. A small library which helps
-    manipulating an object.
+    In order to engage users in the communication with
+    each other we have decided to decorate usernames
+    in various ways. A brief search led us to a library
+    called "str-utils". Bad thing is that it lacks
+    TypeScript declarations.
 
 Exercise:
 
-    Here is a library which helps manipulating objects.
-    We tried to write type annotations and we failed.
-    Please help!
+    Check str-utils module implementation at:
+    node_modules/str-utils/index.js
+    node_modules/str-utils/README.md
+
+    Provide type declaration for that module in:
+    declarations/str-utils/index.d.ts
+
+    Try to avoid duplicates of type declarations,
+    use type aliases.
 
 */
 
-export class ObjectManipulator {
-
-    constructor(protected obj) {}
-
-    public set(key, value) {
-        return new ObjectManipulator({...this.obj, [key]: value});
-    }
-
-    public get(key) {
-        return this.obj[key];
-    }
-
-    public delete(key) {
-        const newObj = {...this.obj};
-        delete newObj[key];
-        return new ObjectManipulator(newObj);
-    }
-
-    public getObject() {
-        return this.obj;
-    }
+interface User {
+    type: 'user';
+    name: string;
+    age: number;
+    occupation: string;
 }
+
+interface Admin {
+    type: 'admin';
+    name: string;
+    age: number;
+    role: string;
+}
+
+type Person = User | Admin;
+
+const admins: Admin[] = [
+    { type: 'admin', name: 'Jane Doe', age: 32, role: 'Administrator' },
+    { type: 'admin', name: 'Bruce Willis', age: 64, role: 'World saver' },
+    { type: 'admin', name: 'Steve', age: 40, role: 'Steve' },
+    { type: 'admin', name: 'Will Bruces', age: 30, role: 'Overseer' },
+    { type: 'admin', name: 'Superwoman', age: 28, role: 'Customer support' }
+];
+
+const users: User[] = [
+    { type: 'user', name: 'Max Mustermann', age: 25, occupation: 'Chimney sweep' },
+    { type: 'user', name: 'Kate Müller', age: 23, occupation: 'Astronaut' },
+    { type: 'user', name: 'Moses', age: 70, occupation: 'Desert guide' },
+    { type: 'user', name: 'Superman', age: 28, occupation: 'Ordinary person' },
+    { type: 'user', name: 'Inspector Gadget', age: 31, occupation: 'Undercover' }
+];
+
+const isAdmin = (person: Person): person is Admin => person.type === 'admin';
+const isUser = (person: Person): person is User => person.type === 'user';
+
+export const nameDecorators = [
+    strReverse,
+    strToLower,
+    strToUpper,
+    strRandomize,
+    strInvertCase
+];
+
+function logPerson(person: Person) {
+    let additionalInformation: string = '';
+    if (isAdmin(person)) {
+        additionalInformation = person.role;
+    }
+    if (isUser(person)) {
+        additionalInformation = person.occupation;
+    }
+    const randomNameDecorator = nameDecorators[
+        Math.round(Math.random() * (nameDecorators.length - 1))
+    ];
+    const name = randomNameDecorator(person.name);
+    console.log(
+        ` - ${name}, ${person.age}, ${additionalInformation}`
+    );
+}
+
+([] as Person[])
+    .concat(users, admins)
+    .forEach(logPerson);
+
+// In case you are stuck:
+// https://www.typescriptlang.org/docs/handbook/modules.html#ambient-modules

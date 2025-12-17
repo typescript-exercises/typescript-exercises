@@ -2,25 +2,28 @@
 
 Intro:
 
-    Filtering was completely removed from the project.
-    It turned out that this feature was just not needed
-    for the end-user and we spent a lot of time just because
-    our office manager told us to do so. Next time we should
-    instead listen to the product management.
-
-    Anyway we have a new plan. CEO's friend Nick told us
-    that if we randomly swap user names from time to time
-    in the community, it would be very funny and the project
-    would definitely succeed!
+    Filtering requirements have grown. We need to be
+    able to filter any kind of Persons.
 
 Exercise:
 
-    Implement swap which receives 2 persons and returns them in
-    the reverse order. The function itself is already
-    there, actually. We just need to provide it with proper types.
-    Also this function shouldn't necessarily be limited to just
-    Person types, lets type it so that it works with any two types
-    specified.
+    Fix typing for the filterPersons so that it can filter users
+    and return User[] when personType='user' and return Admin[]
+    when personType='admin'. Also filterPersons should accept
+    partial User/Admin type according to the personType.
+    `criteria` argument should behave according to the
+    `personType` argument value. `type` field is not allowed in
+    the `criteria` field.
+
+Higher difficulty bonus exercise:
+
+    Implement a function `getObjectKeys()` which returns more
+    convenient result for any argument given, so that you don't
+    need to cast it.
+
+    let criteriaKeys = Object.keys(criteria) as (keyof User)[];
+    -->
+    let criteriaKeys = getObjectKeys(criteria);
 
 */
 
@@ -38,87 +41,44 @@ interface Admin {
     role: string;
 }
 
-function logUser(user: User) {
-    const pos = users.indexOf(user) + 1;
-    console.log(` - #${pos} User: ${user.name}, ${user.age}, ${user.occupation}`);
-}
+export type Person = User | Admin;
 
-function logAdmin(admin: Admin) {
-    const pos = admins.indexOf(admin) + 1;
-    console.log(` - #${pos} Admin: ${admin.name}, ${admin.age}, ${admin.role}`);
-}
-
-const admins: Admin[] = [
-    {
-        type: 'admin',
-        name: 'Will Bruces',
-        age: 30,
-        role: 'Overseer'
-    },
-    {
-        type: 'admin',
-        name: 'Steve',
-        age: 40,
-        role: 'Steve'
-    }
+export const persons: Person[] = [
+    { type: 'user', name: 'Max Mustermann', age: 25, occupation: 'Chimney sweep' },
+    { type: 'admin', name: 'Jane Doe', age: 32, role: 'Administrator' },
+    { type: 'user', name: 'Kate Müller', age: 23, occupation: 'Astronaut' },
+    { type: 'admin', name: 'Bruce Willis', age: 64, role: 'World saver' },
+    { type: 'user', name: 'Wilson', age: 23, occupation: 'Ball' },
+    { type: 'admin', name: 'Agent Smith', age: 23, role: 'Anti-virus engineer' }
 ];
 
-const users: User[] = [
-    {
-        type: 'user',
-        name: 'Moses',
-        age: 70,
-        occupation: 'Desert guide'
-    },
-    {
-        type: 'user',
-        name: 'Superman',
-        age: 28,
-        occupation: 'Ordinary person'
-    }
-];
-
-export function swap(v1, v2) {
-    return [v2, v1];
+export function logPerson(person: Person) {
+    console.log(
+        ` - ${person.name}, ${person.age}, ${person.type === 'admin' ? person.role : person.occupation}`
+    );
 }
 
-function test1() {
-    console.log('test1:');
-    const [secondUser, firstAdmin] = swap(admins[0], users[1]);
-    logUser(secondUser);
-    logAdmin(firstAdmin);
+export function filterPersons(persons: Person[], personType: string, criteria: unknown): unknown[] {
+    return persons
+        .filter((person) => person.type === personType)
+        .filter((person) => {
+            let criteriaKeys = Object.keys(criteria) as (keyof Person)[];
+            return criteriaKeys.every((fieldName) => {
+                return person[fieldName] === criteria[fieldName];
+            });
+        });
 }
 
-function test2() {
-    console.log('test2:');
-    const [secondAdmin, firstUser] = swap(users[0], admins[1]);
-    logAdmin(secondAdmin);
-    logUser(firstUser);
-}
+export const usersOfAge23 = filterPersons(persons, 'user', { age: 23 });
+export const adminsOfAge23 = filterPersons(persons, 'admin', { age: 23 });
 
-function test3() {
-    console.log('test3:');
-    const [secondUser, firstUser] = swap(users[0], users[1]);
-    logUser(secondUser);
-    logUser(firstUser);
-}
+console.log('Users of age 23:');
+usersOfAge23.forEach(logPerson);
 
-function test4() {
-    console.log('test4:');
-    const [firstAdmin, secondAdmin] = swap(admins[1], admins[0]);
-    logAdmin(firstAdmin);
-    logAdmin(secondAdmin);
-}
+console.log();
 
-function test5() {
-    console.log('test5:');
-    const [stringValue, numericValue] = swap(123, 'Hello World');
-    console.log(` - String: ${stringValue}`);
-    console.log(` - Numeric: ${numericValue}`);
-}
-
-[test1, test2, test3, test4, test5].forEach((test) => test());
+console.log('Admins of age 23:');
+adminsOfAge23.forEach(logPerson);
 
 // In case you are stuck:
-// https://www.typescriptlang.org/docs/handbook/2/objects.html#tuple-types
-// https://www.typescriptlang.org/docs/handbook/2/generics.html
+// https://www.typescriptlang.org/docs/handbook/2/functions.html#function-overloads

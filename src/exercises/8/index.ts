@@ -2,18 +2,25 @@
 
 Intro:
 
-    Project grew and we ended up in a situation with
-    some users starting to have more influence.
-    Therefore, we decided to create a new person type
-    called PowerUser which is supposed to combine
-    everything User and Admin have.
+    Filtering was completely removed from the project.
+    It turned out that this feature was just not needed
+    for the end-user and we spent a lot of time just because
+    our office manager told us to do so. Next time we should
+    instead listen to the product management.
+
+    Anyway we have a new plan. CEO's friend Nick told us
+    that if we randomly swap user names from time to time
+    in the community, it would be very funny and the project
+    would definitely succeed!
 
 Exercise:
 
-    Define type PowerUser which should have all fields
-    from both User and Admin (except for type),
-    and also have type 'powerUser' without duplicating
-    all the fields in the code.
+    Implement swap which receives 2 persons and returns them in
+    the reverse order. The function itself is already
+    there, actually. We just need to provide it with proper types.
+    Also this function shouldn't necessarily be limited to just
+    Person types, lets type it so that it works with any two types
+    specified.
 
 */
 
@@ -31,63 +38,87 @@ interface Admin {
     role: string;
 }
 
-type PowerUser = unknown;
+function logUser(user: User) {
+    const pos = users.indexOf(user) + 1;
+    console.log(` - #${pos} User: ${user.name}, ${user.age}, ${user.occupation}`);
+}
 
-export type Person = User | Admin | PowerUser;
+function logAdmin(admin: Admin) {
+    const pos = admins.indexOf(admin) + 1;
+    console.log(` - #${pos} Admin: ${admin.name}, ${admin.age}, ${admin.role}`);
+}
 
-export const persons: Person[] = [
-    { type: 'user', name: 'Max Mustermann', age: 25, occupation: 'Chimney sweep' },
-    { type: 'admin', name: 'Jane Doe', age: 32, role: 'Administrator' },
-    { type: 'user', name: 'Kate Müller', age: 23, occupation: 'Astronaut' },
-    { type: 'admin', name: 'Bruce Willis', age: 64, role: 'World saver' },
+const admins: Admin[] = [
     {
-        type: 'powerUser',
-        name: 'Nikki Stone',
-        age: 45,
-        role: 'Moderator',
-        occupation: 'Cat groomer'
+        type: 'admin',
+        name: 'Will Bruces',
+        age: 30,
+        role: 'Overseer'
+    },
+    {
+        type: 'admin',
+        name: 'Steve',
+        age: 40,
+        role: 'Steve'
     }
 ];
 
-function isAdmin(person: Person): person is Admin {
-    return person.type === 'admin';
-}
-
-function isUser(person: Person): person is User {
-    return person.type === 'user';
-}
-
-function isPowerUser(person: Person): person is PowerUser {
-    return person.type === 'powerUser';
-}
-
-export function logPerson(person: Person) {
-    let additionalInformation: string = '';
-    if (isAdmin(person)) {
-        additionalInformation = person.role;
+const users: User[] = [
+    {
+        type: 'user',
+        name: 'Moses',
+        age: 70,
+        occupation: 'Desert guide'
+    },
+    {
+        type: 'user',
+        name: 'Superman',
+        age: 28,
+        occupation: 'Ordinary person'
     }
-    if (isUser(person)) {
-        additionalInformation = person.occupation;
-    }
-    if (isPowerUser(person)) {
-        additionalInformation = `${person.role}, ${person.occupation}`;
-    }
-    console.log(`${person.name}, ${person.age}, ${additionalInformation}`);
+];
+
+export function swap(v1, v2) {
+    return [v2, v1];
 }
 
-console.log('Admins:');
-persons.filter(isAdmin).forEach(logPerson);
+function test1() {
+    console.log('test1:');
+    const [secondUser, firstAdmin] = swap(admins[0], users[1]);
+    logUser(secondUser);
+    logAdmin(firstAdmin);
+}
 
-console.log();
+function test2() {
+    console.log('test2:');
+    const [secondAdmin, firstUser] = swap(users[0], admins[1]);
+    logAdmin(secondAdmin);
+    logUser(firstUser);
+}
 
-console.log('Users:');
-persons.filter(isUser).forEach(logPerson);
+function test3() {
+    console.log('test3:');
+    const [secondUser, firstUser] = swap(users[0], users[1]);
+    logUser(secondUser);
+    logUser(firstUser);
+}
 
-console.log();
+function test4() {
+    console.log('test4:');
+    const [firstAdmin, secondAdmin] = swap(admins[1], admins[0]);
+    logAdmin(firstAdmin);
+    logAdmin(secondAdmin);
+}
 
-console.log('Power users:');
-persons.filter(isPowerUser).forEach(logPerson);
+function test5() {
+    console.log('test5:');
+    const [stringValue, numericValue] = swap(123, 'Hello World');
+    console.log(` - String: ${stringValue}`);
+    console.log(` - Numeric: ${numericValue}`);
+}
+
+[test1, test2, test3, test4, test5].forEach((test) => test());
 
 // In case you are stuck:
-// https://www.typescriptlang.org/docs/handbook/utility-types.html
-// https://www.typescriptlang.org/docs/handbook/2/objects.html#intersection-types
+// https://www.typescriptlang.org/docs/handbook/2/objects.html#tuple-types
+// https://www.typescriptlang.org/docs/handbook/2/generics.html
