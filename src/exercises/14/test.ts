@@ -5,6 +5,7 @@ import {
     HttpMethod,
     ApiEndpoint,
     EntityEvent,
+    AllEndpointsFor,
     EntityType,
     ActionType
 } from './index';
@@ -88,6 +89,21 @@ typeAssert<
     IsTypeEqual<
         EntityEvent<'users', 'deleted'>,
         'users:deleted'
+    >
+>();
+
+// Test AllEndpointsFor
+typeAssert<
+    IsTypeEqual<
+        AllEndpointsFor<'users'>,
+        'GET /api/users' | 'POST /api/users' | 'PUT /api/users' | 'DELETE /api/users'
+    >
+>();
+
+typeAssert<
+    IsTypeEqual<
+        AllEndpointsFor<'admins'>,
+        'GET /api/admins' | 'POST /api/admins' | 'PUT /api/admins' | 'DELETE /api/admins'
     >
 >();
 

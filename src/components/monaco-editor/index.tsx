@@ -93,7 +93,7 @@ export const MonacoEditor = decorateWithAutoResize(
                     solutionModelsRef.current[filename] = editor.createModel(
                         solution,
                         language,
-                        Uri.file(`${namespace}/solutions${filename.replace(/\/([^/]+)$/, '/solution.$1')}`)
+                        Uri.file(`solutions/${namespace}${filename}`)
                     );
                 }
             }

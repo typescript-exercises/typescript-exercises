@@ -48,6 +48,10 @@ Exercise:
     5. EntityEvent<Entity, Action> - constructs event names like
        'users:created', 'admins:updated', 'users:deleted'
 
+    6. AllEndpointsFor<T> - generates a union of ALL possible
+       HTTP method + route combinations for a given entity
+       (e.g., 'GET /api/users' | 'POST /api/users' | 'PUT /api/users' | 'DELETE /api/users')
+
 Higher difficulty bonus exercise:
 
     Create a type UppercaseEvent<T> that takes an EntityEvent
@@ -85,6 +89,8 @@ export type ApiEndpoint<M extends string, T extends string> = `${M} /api/${T}`;
 
 export type EntityEvent<Entity extends string, Action extends string> = `${Entity}:${Action}`;
 
+export type AllEndpointsFor<T extends string> = ApiEndpoint<HttpMethod, T>;
+
 // Bonus:
 export type UppercaseEvent<T extends string> = Uppercase<T>;
 
@@ -120,6 +126,16 @@ emitEvent('admins:updated');
 
 console.log(getRoute('users')); // '/api/users'
 console.log(getRouteWithId('admins', '123')); // '/api/admins/123'
+
+// Test AllEndpointsFor - should accept any valid method+route combination
+export function handleRequest(endpoint: AllEndpointsFor<'users'>) {
+    console.log(`Handling: ${endpoint}`);
+}
+
+handleRequest('GET /api/users');
+handleRequest('POST /api/users');
+handleRequest('PUT /api/users');
+handleRequest('DELETE /api/users');
 
 // In case you are stuck:
 // https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html
