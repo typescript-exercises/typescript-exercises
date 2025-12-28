@@ -1,4 +1,4 @@
-import {Global, css} from '@emotion/core';
+import {Global, css} from '@emotion/react';
 import React from 'react';
 import {load} from 'components/loading-container';
 import {useAppTheme} from 'containers/app-theme-provider';

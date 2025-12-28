@@ -34,7 +34,7 @@ const exercisesCache: {[key: number]: Exercise} = {};
 
 export function createExercise(exerciseNumber: number) {
     if (!exercisesCache[exerciseNumber]) {
-        const localStorageKey = `exercise.${exerciseNumber}`;
+        const localStorageKey = `v2.exercise.${exerciseNumber}`;
         const exerciseOriginalFiles = exerciseStructures[exerciseNumber];
 
         let files = localData.get(localStorageKey, {} as FileContents);

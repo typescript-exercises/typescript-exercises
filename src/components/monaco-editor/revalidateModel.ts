@@ -1,4 +1,4 @@
-import {editor, languages, MarkerSeverity} from 'monaco-editor';
+import {editor, typescript, MarkerSeverity} from 'monaco-editor';
 import {DiagnosticMessageChain} from 'typescript';
 
 export function flattenDiagnosticMessageText(
@@ -32,7 +32,7 @@ export function flattenDiagnosticMessageText(
 export async function revalidateModel(model: editor.IModel) {
     if (!model || model.isDisposed()) return;
 
-    const getWorker = await languages.typescript.getTypeScriptWorker();
+    const getWorker = await typescript.getTypeScriptWorker();
     const worker = await getWorker(model.uri);
     const diagnostics = (
         await Promise.all([

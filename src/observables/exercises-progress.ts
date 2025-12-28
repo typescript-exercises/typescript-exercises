@@ -19,7 +19,7 @@ function switchToExercise(exerciseNumber: number) {
 export const exercisesProgress = (() => {
     migrate();
 
-    const localStorageKey = 'exercisesProgress';
+    const localStorageKey = 'v2.exercisesProgress';
     const subject = new ReplaySubject<ExercisesProgress>(1);
 
     const exercisesCount = Object.keys(exerciseStructures).length;

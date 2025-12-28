@@ -1,17 +1,27 @@
 import {debounce} from 'debounce';
-import {editor, languages, Uri} from 'monaco-editor';
-import React from 'react';
+import {editor, Uri, typescript} from 'monaco-editor';
+import React, {
+    ForwardedRef,
+    forwardRef,
+    useCallback,
+    useEffect,
+    useImperativeHandle,
+    useLayoutEffect,
+    useRef,
+    useState
+} from 'react';
 import {decorateWithAutoResize} from 'components/auto-resizer';
 import {DiffDialog} from 'components/monaco-editor/diff-dialog';
 import {FileTree} from 'lib/file-tree';
-import {revalidateModel} from './revalidate-model';
+import {revalidateModel} from './revalidateModel';
 
-languages.typescript.typescriptDefaults.setCompilerOptions({
+typescript.typescriptDefaults.setCompilerOptions({
     strict: true,
-    target: languages.typescript.ScriptTarget.ES2018,
-    moduleResolution: languages.typescript.ModuleResolutionKind.NodeJs,
+    target: typescript.ScriptTarget.ES2018,
+    moduleResolution: typescript.ModuleResolutionKind.NodeJs,
     typeRoots: ['declarations']
 });
+typescript.typescriptDefaults.setEagerModelSync(true);
 
 export interface MonacoEditorProps {
     width?: string | number;
@@ -22,10 +32,9 @@ export interface MonacoEditorProps {
     values: FileTree;
     selectedFilename: string;
     onChange: (filename: string, content: string) => void;
-    onNavigate: (filename: string) => void;
-    position: number | undefined;
     showSolutions: boolean;
     onSolutionsClose: () => void;
+    onNavigated?: (filename: string) => void;
 }
 
 const extensionsToLanguages: {[ext: string]: string} = {
@@ -37,145 +46,243 @@ interface Models {
     [key: string]: editor.IModel;
 }
 
-interface MonacoEditorState {
-    solutionsSelectedFilename?: string;
-    initialized?: boolean;
+export interface MonacoEditorRef {
+    setFilenameAndPosition: (filename: string, position: number) => void;
 }
 
 export const MonacoEditor = decorateWithAutoResize(
-    class extends React.Component<MonacoEditorProps, MonacoEditorState> {
-        protected instance: editor.IStandaloneCodeEditor | null = null;
-        protected instanceDiv: HTMLElement | null = null;
-        protected models: Models = {};
-        protected solutionsModels: Models = {};
-        protected solutionsFilenames: string[] = [];
-        protected viewStates: {[filename: string]: editor.ICodeEditorViewState} = {};
-        protected lastUpdates: {[filename: string]: string} = {};
+    forwardRef(function MonacoEditor(
+        {
+            width,
+            height,
+            theme,
+            options,
+            namespace,
+            values,
+            selectedFilename,
+            onChange,
+            showSolutions,
+            onSolutionsClose,
+            onNavigated
+        }: MonacoEditorProps,
+        forwardedRef: ForwardedRef<MonacoEditorRef>
+    ) {
+        const lastUpdatesRef = useRef<{[filename: string]: string}>({});
 
-        constructor(props: MonacoEditorProps) {
-            super(props);
-            this.state = {};
-            editor.setTheme(props.theme || 'vs');
-        }
+        const lastValuesRef = useRef(values);
+        lastValuesRef.current = values;
 
-        public componentDidMount() {
-            const {props} = this;
+        const modelsRef = useRef<Models | undefined>();
+        const solutionModelsRef = useRef<Models | undefined>();
+        const isReadOnlyRef = useRef<Map<editor.IModel, boolean>>(new Map());
 
-            for (const [filename, {content, solution}] of Object.entries(props.values)) {
-                this.lastUpdates[filename] = content;
+        const [selectedSolutionFilename, setSelectedSolutionFilename] = useState<string | undefined>();
+
+        useEffect(() => {
+            modelsRef.current = {};
+            solutionModelsRef.current = {};
+            isReadOnlyRef.current = new Map();
+
+            for (const [filename, {content, solution, readOnly}] of Object.entries(lastValuesRef.current)) {
+                lastUpdatesRef.current[filename] = content;
                 const language = extensionsToLanguages[filename.split('.').pop()!];
-                const model = editor.createModel(content, language, Uri.file(`${props.namespace}/${filename}`));
-                model.onDidChangeContent(
-                    debounce(() => {
-                        const newValue = model.getValue();
-                        this.lastUpdates[filename] = newValue;
-                        this.props.onChange(filename, newValue);
-                    }, 200)
-                );
-                this.models[filename] = model;
+                const model = editor.createModel(content, language, Uri.file(`${namespace}${filename}`));
+                modelsRef.current[filename] = model;
+                isReadOnlyRef.current.set(model, Boolean(readOnly));
                 if (solution !== undefined) {
-                    this.solutionsModels[filename] = editor.createModel(solution, language);
+                    solutionModelsRef.current[filename] = editor.createModel(
+                        solution,
+                        language,
+                        Uri.file(`${namespace}/solutions${filename.replace(/\/([^/]+)$/, '/solution.$1')}`)
+                    );
                 }
             }
-            this.solutionsFilenames = Object.keys(this.solutionsModels);
 
-            this.instance = editor.create(this.instanceDiv!, {
-                ...this.props.options,
-                model: this.models[props.selectedFilename],
-                readOnly: Boolean(props.values[props.selectedFilename].readOnly),
-                renderValidationDecorations: 'on'
-            });
+            setSelectedSolutionFilename(
+                solutionModelsRef.current ? Object.keys(solutionModelsRef.current)[0] : undefined
+            );
 
-            this.instance.layout();
+            return () => {
+                for (const model of Object.values(modelsRef.current!).concat(
+                    Object.values(solutionModelsRef.current!)
+                )) {
+                    model.dispose();
+                }
+            };
+        }, [namespace]);
 
-            this.setState({initialized: true});
-        }
-
-        public componentWillUnmount() {
-            for (const filename of Object.keys(this.models)) {
-                this.models[filename].dispose();
-            }
-            for (const filename of Object.keys(this.solutionsModels)) {
-                this.solutionsModels[filename].dispose();
-            }
-            if (this.instance) {
-                this.instance.dispose();
-            }
-        }
-
-        public componentDidUpdate(prevProps: Readonly<MonacoEditorProps>): void {
-            if (!this.instance) {
+        useEffect(() => {
+            if (!modelsRef.current) {
                 return;
             }
 
-            const newSelectedFilename = this.props.selectedFilename;
-            if (newSelectedFilename !== prevProps.selectedFilename) {
-                const model = this.models[newSelectedFilename];
-                this.viewStates[prevProps.selectedFilename] = this.instance.saveViewState()!;
-                this.instance.setModel(model);
-                this.instance.updateOptions({
-                    readOnly: Boolean(this.props.values[newSelectedFilename].readOnly)
-                });
-                revalidateModel(model);
-                const viewState = this.viewStates[newSelectedFilename];
-                if (viewState) {
-                    this.instance.restoreViewState(viewState);
-                }
-                this.instance.focus();
-            }
-            if (this.props.theme !== prevProps.theme) {
-                editor.setTheme(this.props.theme || 'vs');
-            }
-            if (this.props.position !== prevProps.position) {
-                if (this.props.position !== undefined) {
-                    const model = this.models[this.props.selectedFilename];
-                    const position = model.getPositionAt(this.props.position);
-                    this.instance.setPosition(position);
-                    this.instance.revealLine(position.lineNumber);
-                    this.instance.focus();
+            for (const [filename, value] of Object.entries(values)) {
+                if (value.content !== lastUpdatesRef.current[filename]) {
+                    lastUpdatesRef.current[filename] = value.content;
+                    modelsRef.current[filename].setValue(value.content);
                 }
             }
-            if (this.props.width !== prevProps.width || this.props.height !== prevProps.height) {
-                this.instance.layout();
-            }
-            if (this.props.values !== prevProps.values) {
-                for (const [filename, value] of Object.entries(this.props.values)) {
-                    if (value.content !== this.lastUpdates[filename]) {
-                        this.lastUpdates[filename] = value.content;
-                        this.models[filename].setValue(value.content);
-                    }
-                }
-            }
-        }
+        }, [values]);
 
-        render() {
-            const selectedSolutionFilename = this.getSelectedSolutionFilename();
-            return (
-                <>
-                    <div ref={this.assignRef} style={{width: this.props.width, height: this.props.height}} />
-                    {this.state.initialized && this.props.showSolutions && (
-                        <DiffDialog
-                            selectedFilename={selectedSolutionFilename}
-                            original={this.solutionsModels[selectedSolutionFilename]}
-                            modified={this.models[selectedSolutionFilename]}
-                            onClose={this.props.onSolutionsClose}
-                            onSelectFile={this.setSelectedSolutionFilename}
-                            filenames={this.solutionsFilenames}
-                        />
-                    )}
-                </>
+        useEffect(() => {
+            if (!modelsRef.current) {
+                return;
+            }
+
+            const disposables = Object.entries(modelsRef.current).map(([filename, model]) =>
+                model.onDidChangeContent(
+                    debounce(() => {
+                        const newValue = model.getValue();
+                        lastUpdatesRef.current[filename] = newValue;
+                        onChange(filename, newValue);
+                    }, 200)
+                )
             );
-        }
+            return () => disposables.forEach((d) => d.dispose());
+        }, [onChange]);
 
-        setSelectedSolutionFilename = (solutionsSelectedFilename: string) => this.setState({solutionsSelectedFilename});
-
-        getSelectedSolutionFilename() {
-            if (this.state && this.state.solutionsSelectedFilename) {
-                return this.state.solutionsSelectedFilename;
+        const divContainerRef = useRef<HTMLDivElement | null>(null);
+        const editorInstanceRef = useRef<editor.IStandaloneCodeEditor | undefined>();
+        const selectedFilenameRef = useRef(selectedFilename);
+        selectedFilenameRef.current = selectedFilename;
+        const optionsRef = useRef(options);
+        optionsRef.current = options;
+        useEffect(() => {
+            if (editorInstanceRef.current) {
+                return;
             }
-            return this.solutionsFilenames[0];
-        }
+            if (!divContainerRef.current || !isReadOnlyRef.current || !modelsRef.current) {
+                return;
+            }
 
-        assignRef = (newRef: HTMLElement | null) => (this.instanceDiv = newRef);
-    }
+            const model = modelsRef.current[selectedFilenameRef.current];
+
+            Promise.resolve().then(() => {
+                editorInstanceRef.current = editor.create(divContainerRef.current!, {
+                    ...optionsRef.current,
+                    model: model,
+                    readOnly: Boolean(isReadOnlyRef.current.get(model)),
+                    renderValidationDecorations: 'on'
+                });
+            });
+
+            revalidateModel(model);
+            return () => {
+                editorInstanceRef.current?.dispose();
+            };
+        }, []);
+
+        const viewStatesRef = useRef<Map<editor.IModel, editor.ICodeEditorViewState>>(new Map());
+        const switchToModel = useCallback((model: editor.IModel) => {
+            const editorInstance = editorInstanceRef.current;
+            if (!editorInstance || !isReadOnlyRef.current) {
+                return;
+            }
+            const currentlySelectedModel = editorInstance.getModel();
+            if (currentlySelectedModel !== model) {
+                if (currentlySelectedModel) {
+                    viewStatesRef.current.set(currentlySelectedModel, editorInstance.saveViewState()!);
+                }
+                editorInstance.setModel(model);
+                editorInstance.updateOptions({
+                    readOnly: Boolean(isReadOnlyRef.current.get(model))
+                });
+                const viewState = viewStatesRef.current.get(model);
+                if (viewState) {
+                    editorInstance.restoreViewState(viewState);
+                }
+                revalidateModel(model);
+            }
+        }, []);
+
+        useEffect(() => {
+            const editorInstance = editorInstanceRef.current;
+            if (!editorInstance || !modelsRef.current) {
+                return;
+            }
+            switchToModel(modelsRef.current[selectedFilename]);
+        }, [selectedFilename, switchToModel]);
+
+        useEffect(() => {
+            if (options && editorInstanceRef.current) {
+                editorInstanceRef.current?.updateOptions(options);
+            }
+        }, [options]);
+
+        useImperativeHandle(forwardedRef, () => ({
+            setFilenameAndPosition: (filename: string, pos: number) => {
+                const editorInstance = editorInstanceRef.current;
+                if (!editorInstance || !modelsRef.current) {
+                    return;
+                }
+                const model = modelsRef.current[filename];
+                switchToModel(model);
+                const position = model.getPositionAt(pos);
+                editorInstance.setPosition(position);
+                editorInstance.revealLine(position.lineNumber);
+                editorInstance.focus();
+            }
+        }));
+
+        useEffect(() => {
+            if (!onNavigated || !editorInstanceRef.current) {
+                return;
+            }
+            const disposable = editor.registerEditorOpener({
+                openCodeEditor(_source, resource, selectionOrPosition) {
+                    if (!editorInstanceRef.current || !modelsRef.current) {
+                        return false;
+                    }
+                    for (const [filename, model] of Object.entries(modelsRef.current)) {
+                        if (model.uri.toString() === resource.toString()) {
+                            switchToModel(model);
+                            if (selectionOrPosition) {
+                                let position;
+                                if ('startLineNumber' in selectionOrPosition) {
+                                    position = {
+                                        lineNumber: selectionOrPosition.startLineNumber,
+                                        column: selectionOrPosition.startColumn
+                                    };
+                                } else {
+                                    position = selectionOrPosition;
+                                }
+                                editorInstanceRef.current.setPosition(position);
+                                editorInstanceRef.current.revealLine(position.lineNumber);
+                            }
+                            editorInstanceRef.current.focus();
+                            onNavigated(filename);
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            });
+            return () => disposable.dispose();
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [onNavigated, switchToModel, editorInstanceRef.current]);
+
+        useLayoutEffect(() => {
+            editorInstanceRef.current?.layout();
+        }, [width, height]);
+
+        useEffect(() => {
+            editor.setTheme(theme || 'vs');
+        }, [theme]);
+
+        return (
+            <>
+                <div ref={divContainerRef} style={{width: width, height: height}} />
+                {showSolutions && modelsRef.current && solutionModelsRef.current && selectedSolutionFilename && (
+                    <DiffDialog
+                        selectedFilename={selectedSolutionFilename}
+                        original={solutionModelsRef.current[selectedSolutionFilename]}
+                        modified={modelsRef.current[selectedSolutionFilename]}
+                        onClose={onSolutionsClose}
+                        onSelectFile={setSelectedSolutionFilename}
+                        filenames={Object.keys(solutionModelsRef.current)}
+                    />
+                )}
+            </>
+        );
+    })
 );

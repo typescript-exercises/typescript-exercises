@@ -7,7 +7,7 @@
     "prettier",
     "plugin:prettier/recommended"
   ],
-  "plugins": ["react-app", "react", "@typescript-eslint", "prettier", "import"],
+  "plugins": ["react", "@typescript-eslint", "prettier", "import"],
   "env": {
     "browser": true,
     "jest": true,

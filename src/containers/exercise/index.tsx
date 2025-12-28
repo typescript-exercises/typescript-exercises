@@ -1,11 +1,11 @@
 import {useTheme} from '@emotion/react';
 import styled from '@emotion/styled';
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {CollapsiblePanel} from 'components/collapsible-panel';
 import {FileTitle} from 'components/file-title';
 import {FileTreeView} from 'components/file-tree-view';
 import {load} from 'components/loading-container';
-import {MonacoEditor} from 'components/monaco-editor';
+import {MonacoEditor, MonacoEditorRef} from 'components/monaco-editor';
 import {ValidationErrors} from 'components/validation-errors';
 import {exerciseStructures} from 'lib/exercise-structures';
 import {FileTree} from 'lib/file-tree';
@@ -86,9 +86,14 @@ function calculateModifiedFilenames(exerciseNumber: number, fileTree: FileTree) 
     return result;
 }
 
+const editorOptions = {
+    minimap: {
+        enabled: false
+    }
+} as const;
+
 export function Exercise({exerciseNumber}: {exerciseNumber: number}) {
     const exercise = useMemo(() => createExercise(exerciseNumber), [exerciseNumber]);
-    const [position, setPosition] = useState(undefined as number | undefined);
     const [solutionsVisible, setSolutionsVisible] = useState(false);
     const validationErrors$ = useMemo(() => exercise.observable$.pipe(checkTypeScriptProject()), [exercise]);
     const [selectedFilename, setSelectedFilename] = useState('/index.ts');
@@ -103,15 +108,17 @@ export function Exercise({exerciseNumber}: {exerciseNumber: number}) {
 
     const goToFile = useCallback((file: string) => urlParams.extend({file}), []);
 
+    const editorRef = useRef<MonacoEditorRef>(null);
+
     const onErrorClick = useCallback(
         (error: ValidationError) => {
             if (!error.file) {
                 return;
             }
+            editorRef.current?.setFilenameAndPosition(error.file, error.start);
             goToFile(error.file);
-            setPosition(error.start);
         },
-        [setPosition, goToFile]
+        [goToFile]
     );
     const onChange = useCallback(
         (filename: string, content: string) => {
@@ -122,6 +129,13 @@ export function Exercise({exerciseNumber}: {exerciseNumber: number}) {
     const [showSolutions, hideSolutions] = useMemo(
         () => [() => setSolutionsVisible(true), () => setSolutionsVisible(false)],
         [setSolutionsVisible]
+    );
+
+    const onNavigated = useCallback(
+        (filename: string) => {
+            goToFile(filename);
+        },
+        [goToFile]
     );
 
     return load(exercise.observable$, (fileTree) => (
@@ -139,20 +153,16 @@ export function Exercise({exerciseNumber}: {exerciseNumber: number}) {
                 <FileTitle filename={selectedFilename} readOnly={Boolean(fileTree[selectedFilename].readOnly)} />
                 <EditorWrapper>
                     <MonacoEditor
+                        ref={editorRef}
                         namespace={String(exerciseNumber)}
                         selectedFilename={selectedFilename}
                         values={fileTree}
                         onChange={onChange}
                         theme={theme.style === 'light' ? 'vs' : 'vs-dark'}
-                        position={position}
-                        onNavigate={() => null}
-                        options={{
-                            minimap: {
-                                enabled: false
-                            }
-                        }}
+                        options={editorOptions}
                         showSolutions={solutionsVisible}
                         onSolutionsClose={hideSolutions}
+                        onNavigated={onNavigated}
                     />
                 </EditorWrapper>
                 {load(validationErrors$, (errors) => (

@@ -10,7 +10,7 @@ interface TypeScriptService extends Worker {
 }
 
 // eslint-disable-next-line import/no-webpack-loader-syntax, @typescript-eslint/no-var-requires
-const createService = require('workerize-loader!./service.ts') as () => TypeScriptService;
+const createService = require('workerize-loader?inline!./service.ts') as () => TypeScriptService;
 
 function fileTreeToFileContents(tree: FileTree): FileContents {
     return Object.keys(tree).reduce((res, filename) => {
