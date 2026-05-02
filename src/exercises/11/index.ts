@@ -95,4 +95,4 @@ function logPerson(person: Person) {
     .forEach(logPerson);
 
 // In case you are stuck:
-// https://www.typescriptlang.org/docs/handbook/modules.html#ambient-modules
+// https://www.typescriptlang.org/docs/handbook/modules/reference.html#ambient-modules
